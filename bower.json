@@ -1,0 +1,26 @@
+{
+  "name": "supjirallo",
+  "description": "School project aiming to recreate an agile ticket manager.",
+  "main": "index.js",
+  "authors": [
+    "Titouan FREVILLE <titouanfreville@hotmail.fr>"
+  ],
+  "license": "ISC",
+  "keywords": [
+    "agile",
+    "ticket",
+    "manager"
+  ],
+  "homepage": "https://github.com/titouanfreville/SupJirallo",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular": "^1.5.7",
+    "angular-resource": "^1.5.7"
+  }
+}

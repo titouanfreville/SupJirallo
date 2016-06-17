@@ -1,0 +1,27 @@
+{
+  "name": "supjirallo",
+  "version": "0.0.1",
+  "description": "School project aiming to recreate an agile ticket manager. ",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/titouanfreville/SupJirallo.git"
+  },
+  "keywords": [
+    "agile",
+    "ticket",
+    "manager"
+  ],
+  "author": "Titouan FREVILLE <titouanfreville@hotmail.fr>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/titouanfreville/SupJirallo/issues"
+  },
+  "homepage": "https://github.com/titouanfreville/SupJirallo#readme",
+  "dependencies": {
+    "express": "^4.14.0"
+  }
+}
