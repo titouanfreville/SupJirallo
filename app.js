@@ -11,10 +11,6 @@ var HOME = ''
 var base_dir = '';
 var views=base_dir+'views/'
 
-app.use(function(req,res,next){
-    req.db = db;
-    next();
-});
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(session({ secret: config.secret, resave: false, saveUninitialized: true }));
