@@ -35,10 +35,22 @@
       <h2>Enjoy being Agile</h2>
     </header>
     <div>
-      <input type="text" ng-model="yourName" placeholder="Enter a name here">
-      <h1>Hello, {{ yourName }} !</h1>
+      <input action="POST" type="text" ng-model="yourName" placeholder="Enter a name here" />
+      <h1>Hello {{yourName}}, welcome to our Agile ticket manager !</h1>
       <br />
-      <span>Just tested angular was functionnal</span>
+      <span>If you want to use or services, please log in :)</span>
+      <!-- <form ng-controller="loginForm"> -->
+      <form >
+        <label>
+          <span>Enter your user name : </span>
+          <input type="text" ng-model="userName" name="username" value="{{yourName}}" />
+        </label>
+        <label>
+          <span>Enter your password here : </span>
+          <input type="password" ng-model="userPass" name="userpass" />
+        </label>
+        <input type="button" value="Submit" />
+      </form>
     </div>
   </body>
 </html>
