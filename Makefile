@@ -1,4 +1,4 @@
-include env_file
+# include env_file
 # FROZEN VAR DECLARATION
 PWD=$(shell pwd)
 PS=$(shell docker ps -a -q)
@@ -17,41 +17,41 @@ export PWD
 
 # determine platform
 ifeq (Boot2Docker, $(findstring Boot2Docker, $(shell docker info)))
-  PLATFORM := OSX
+	PLATFORM := OSX
 else
-  PLATFORM := Linux
+	PLATFORM := Linux
 endif
 
 # map user and group from host to container
 ifeq ($(PLATFORM), OSX)
-  CONTAINER_USERNAME = root
-  CONTAINER_GROUPNAME = root
-  HOMEDIR = /root
-  CREATE_USER_COMMAND =
-  COMPOSER_CACHE_DIR = ~/dev/composer
-  BOWER_CACHE_DIR = ~/dev/bower
+	CONTAINER_USERNAME = root
+	CONTAINER_GROUPNAME = root
+	HOMEDIR = /root
+	CREATE_USER_COMMAND =
+	COMPOSER_CACHE_DIR = ~/dev/composer
+	BOWER_CACHE_DIR = ~/dev/bower
 else
-  CONTAINER_USERNAME = dummy
-  CONTAINER_GROUPNAME = dummy
-  HOMEDIR = /home/$(CONTAINER_USERNAME)
-  GROUP_ID = $(shell id -g)
-  USER_ID = $(shell id -u)
-  CREATE_USER_COMMAND = \
-    groupadd -f -g $(GROUP_ID) $(CONTAINER_GROUPNAME) && \
-    useradd -u $(USER_ID) -g $(CONTAINER_GROUPNAME) $(CONTAINER_USERNAME) && \
-    mkdir -p $(HOMEDIR) &&
-  COMPOSER_CACHE_DIR = /var/dev/composer
-  BOWER_CACHE_DIR = /var/dev/bower
+	CONTAINER_USERNAME = dummy
+	CONTAINER_GROUPNAME = dummy
+	HOMEDIR = /home/$(CONTAINER_USERNAME)
+	GROUP_ID = $(shell id -g)
+	USER_ID = $(shell id -u)
+	CREATE_USER_COMMAND = \
+		groupadd -f -g $(GROUP_ID) $(CONTAINER_GROUPNAME) && \
+		useradd -u $(USER_ID) -g $(CONTAINER_GROUPNAME) $(CONTAINER_USERNAME) && \
+		mkdir -p $(HOMEDIR) &&
+	COMPOSER_CACHE_DIR = /var/dev/composer
+	BOWER_CACHE_DIR = /var/dev/bower
 endif
 
 # map SSH identity from host to container
 DOCKER_SSH_IDENTITY ?= ~/.ssh/id_rsa
 DOCKER_SSH_KNOWN_HOSTS ?= ~/.ssh/known_hosts
 ADD_SSH_ACCESS_COMMAND = \
-  mkdir -p $(HOMEDIR)/.ssh && \
-  test -e /var/dev/id && cp /var/dev/id $(HOMEDIR)/.ssh/id_rsa ; \
-  test -e /var/dev/known_hosts && cp /var/dev/known_hosts $(HOMEDIR)/.ssh/known_hosts ; \
-  test -e $(HOMEDIR)/.ssh/id_rsa && chmod 600 $(HOMEDIR)/.ssh/id_rsa ;
+	mkdir -p $(HOMEDIR)/.ssh && \
+	test -e /var/dev/id && cp /var/dev/id $(HOMEDIR)/.ssh/id_rsa ; \
+	test -e /var/dev/known_hosts && cp /var/dev/known_hosts $(HOMEDIR)/.ssh/known_hosts ; \
+	test -e $(HOMEDIR)/.ssh/id_rsa && chmod 600 $(HOMEDIR)/.ssh/id_rsa ;
 
 # utility commands
 AUTHORIZE_HOME_DIR_COMMAND = chown -R $(CONTAINER_USERNAME):$(CONTAINER_GROUPNAME) $(HOMEDIR) &&
@@ -61,10 +61,10 @@ EXECUTE_AS = sudo -u $(CONTAINER_USERNAME) HOME=$(HOMEDIR)
 SUPPORTED_COMMANDS := composer phpunit compass bower
 SUPPORTS_MAKE_ARGS := $(findstring $(firstword $(MAKECMDGOALS)), $(SUPPORTED_COMMANDS))
 ifneq "$(SUPPORTS_MAKE_ARGS)" ""
-  # use the rest as arguments for the command
-  COMMAND_ARGS := $(wordlist 2,$(words $(MAKECMDGOALS)),$(MAKECMDGOALS))
-  # ...and turn them into do-nothing targets
-  $(eval $(COMMAND_ARGS):;@:)
+	# use the rest as arguments for the command
+	COMMAND_ARGS := $(wordlist 2,$(words $(MAKECMDGOALS)),$(MAKECMDGOALS))
+	# ...and turn them into do-nothing targets
+	$(eval $(COMMAND_ARGS):;@:)
 endif
 
 .PHONY: build push shell run start stop rm release composer_build env_file
@@ -72,9 +72,6 @@ endif
 # nOOb user Tasks --------------------------------------------------------------
 # ### LOCAL TASKS ### #
 default: start_dev
-
-make_env_file: env_file
-  bash -c "if [ ! -f env_file ]; then cp env_file.fist env_file; fi"
 
 dev: build up
 
@@ -84,65 +81,64 @@ start_dev: beforehand test_require dev
 
 start_prod: beforehand test_require prod
 
-test: test_build phpunit
 # ------------------------------------------------------------------------------
 # Typo Tasks -------------------------------------------------------------------
 beforehand:
-  ./scripts/welcome.sh
+	./scripts/welcome.sh
 # ------------------------------------------------------------------------------
 # Install part -----------------------------------------------------------------
 test_require:
-  ./scripts/test_require.sh $(RSYNC_NAME)
+	./scripts/test_require.sh $(RSYNC_NAME)
 
 update:
-  cd dev && git pull
-  sudo composer self-update
-  cd dev && composer update
+	cd dev && git pull
+	sudo composer self-update
+	cd dev && composer update
 # ------------------------------------------------------------------------------
 # Docker compose tasks ---------------------------------------------------------
 build:
-  docker-compose -p $(NAME) build
+	docker-compose -p $(NAME) build
 
 up:
-  ./scripts/check_port.sh
-  docker-compose -p $(NAME) up
+	./scripts/check_port.sh
+	docker-compose -p $(NAME) up
 
 build_prod:
-  docker-compose -p $(NAME) build
+	docker-compose -p $(NAME) build
 
 up_prod:
-  ./scripts/check_port.sh
-  docker-compose -p $(NAME) up
+	./scripts/check_port.sh
+	docker-compose -p $(NAME) up
 
 cstop:
-  docker-compose -p $(NAME) stop
+	docker-compose -p $(NAME) stop
 
 cstart:
-  docker-compose -p $(NAME) start
+	docker-compose -p $(NAME) start
 
 ckill:
-  docker-compose -p $(NAME) kill
+	docker-compose -p $(NAME) kill
 
 crm:
-  docker-compose -p $(NAME) rm
+	docker-compose -p $(NAME) rm
 # ------------------------------------------------------------------------------
 # Other docker part ------------------------------------------------------------
 clean_vfs:
-  docker run -v /var/run/docker.sock:/var/run/docker.sock -v /var/lib/docker:/var/lib/docker --rm martin/docker-cleanup-volumes
+	docker run -v /var/run/docker.sock:/var/run/docker.sock -v /var/lib/docker:/var/lib/docker --rm martin/docker-cleanup-volumes
 
 stop:
-  @-docker stop $(PS)
+	@-docker stop $(PS)
 
 # Clean all the container stoped not forced
 rm:
-  @-docker rm -v $(PS)
+	@-docker rm -v $(PS)
 
 # Clean all images not forced
 rmi:
-  @-docker rmi $(IM)
+	@-docker rmi $(IM)
 # ------------------------------------------------------------------------------
 # Clean Part -------------------------------------------------------------------
 clean_docker: clean_vfs stop rm rmi
 
-clean: clean_build clean_logs clean_docker
+clean: clean_docker
 # ------------------------------------------------------------------------------

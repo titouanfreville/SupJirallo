@@ -1,4 +1,5 @@
 var schema = mongoose.Schema;
+var ObjectId = mongoose.ObjectId;
 
 var user = new schema({
   _id : Number,
