@@ -1,0 +1,77 @@
+// Definition of all the variable style and objects
+
+// Fonts ---------------------
+@font-face {
+  font-family: 'calibri';
+  src: url('../fonts/Calibri.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'anke';
+  src: url('../fonts/ankecallig.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'dactylo';
+  src: url('../fonts/dactylo.ttf') format('truetype');
+}
+
+
+$fonts:                       Calibri, 'calibri', Arial, Helvetica, sans-serif !default;
+$ptitle-font-style:           $fonts;
+$stitle-font-style:           $ptitle-font-style;
+$prog_font:                   $fonts;
+$h1_prog_font:                $fonts;
+$base-font-color:             #0131B4;
+
+// Body ----------------------
+/* 1600 - 1200 - 800 - 600 */
+$background-img:              url(../images/fond.png);
+$background-color:            #000;
+
+$action-color:                #600202;
+
+$rideau:                      url(../images/opening_rideau.png);
+
+
+$affiche_event:             url(../images/affiche-2015.jpg);
+// Utilities ----------------
+$h1-font-family:             $ptitle-font-style;
+$h1-font-size:                1.7rem;
+$h1-font-weight:              bold;
+$h1-font-color:               blue;
+
+// List ---------------------
+
+// ---- h1 ------------------
+$h1-list-font-size:          1.5rem;
+$h1-list-font-weight:        700;
+$h1-list-font-style:         normal;
+// ---- h2 ------------------
+$h2-list-font-size:          1.3rem;
+$h2-list-font-weight:        500;
+$h2-list-font-style:         italic;
+// Index --------------------
+
+// ----- Title --------------
+
+// ----- Contents -----------
+$accroche-font-size:          1.1rem;
+$accroche-font-style:         oblique;
+$accroche-font-weight:        normal;
+
+$description-font-size:       normal;
+$description-font-style:      normal;
+$description-font-weight:     normal;
+
+// Menu & cie ---------------
+$logo:                       url(../images/perso.png);
+$name-font:                  'anke',$fonts;
+$name-font-size:             3rem;
+$name-color:                 #860001;
+
+$action-font:                'dactylo',$fonts;
+$action-font-size:           1.5rem;
+
+// Images -------------------
+$warning:                    url(../images/warning.svg);

@@ -1,0 +1,60 @@
+
+.friends {
+  font-style: italic;
+  margin: 2rem;
+  font-size: medium;
+}
+// Style Sponsor Jardins en scènes
+.jes {
+  @include display-flex;
+  @include flex-direction(row);
+  @include align-items(center);
+  @include align-self(center);
+  @include justify-content(center);
+  width: 80%;
+  height: 200px;
+  min-height: 180px;
+  a {
+    @include display-flex;
+    width: 50%;
+    min-height: 180px;
+    padding: 0;
+    height: 100%;
+    margin-right: 1rem;
+    .img {
+      @include display-flex;
+      height: 100%;
+      width: 100%;
+      background: url(../images/jardins_en_scene.jpg) center center no-repeat;
+      background-size: contain;
+      pointer-events: auto;
+    }
+    &:hover {
+      ~ .txt {
+        a {
+          color: #F0C300;
+        }
+      }
+    }
+  }
+  .txt {
+    @include display-flex;
+    @include flex-direction(column);
+    @include justify-content (center);
+    text-align: center;
+    a {
+      @include align-self(center);
+      @include display-flex;
+      min-height: 0;
+      min-width: 200px;
+      pointer-events: auto;
+      font-style: italic;
+      font-size: 1.2rem;
+      color: #884345;
+      text-align: justify;
+      &:hover {
+        color: #F0C300;
+      }
+    }
+  }
+}

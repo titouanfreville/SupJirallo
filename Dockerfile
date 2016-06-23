@@ -13,5 +13,5 @@ RUN cd /home/supjirallo && bower install --allow-root
 EXPOSE 8080
 EXPOSE 3000
 
-CMD sleep 2s && node app.js
+CMD sleep 5s && node app.js
 

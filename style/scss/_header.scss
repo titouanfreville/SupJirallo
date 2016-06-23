@@ -1,0 +1,44 @@
+header {
+  @include display-flex;
+  @include flex-direction(column);
+  @include justify-content(flex-end);
+  text-align: right;
+  padding: 10px;
+  text-transform: uppercase;
+  width: 90%;
+  font-size: xx-large;
+  span {
+    @include display-flex;
+    @include flex-direction(row);
+    @include justify-content(flex-end);
+    p {
+      margin-right: 1ex;
+      &.nobreak {
+        margin: 0;
+      }
+    }
+  }
+
+  .intro {
+    @include display-flex;
+    @include flex-direction(row);
+    @include justify-content(space-around);
+    @include align-items(center);
+    margin-top: 10px;
+    .logomask {
+      background: url(../images/logo.png) no-repeat center center;
+      background-size: contain;
+      height: 100px;
+      width: 100px;
+    }
+    span {
+      text-align: left;
+      color: #000;
+      font-style: italic;
+      font-weight: normal;
+      text-transform: none;
+      font-size: medium;
+      width: 100%;
+    }
+  }
+}

@@ -1,0 +1,11 @@
+FROM node:argon
+
+RUN mkdir /home/supjirallo
+
+WORKDIR /home/supjirallo
+
+EXPOSE 8080
+EXPOSE 3000
+
+CMD sleep 5s; node app.js
+
