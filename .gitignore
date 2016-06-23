@@ -47,3 +47,8 @@ bower_components
 
 # sftp configuration file
 sftp-config.json
+
+###SASS - COMPASS ###
+
+.sass-cache
+*.css.map

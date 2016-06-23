@@ -8,6 +8,13 @@ services:
     ports:
       - "3000:3000"
 
+  compass:
+    build:
+      context: .
+      dockerfile: Dockerfile.compass
+    volumes:
+      - $PWD/style:/home/style
+
   mongo:
     image: mongo
     container_name: mongo_jiralo
