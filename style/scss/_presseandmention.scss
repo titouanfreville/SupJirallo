@@ -1,0 +1,66 @@
+.contactpress {
+  @include display-flex;
+  @include flex-direction(row);
+  @include justify-content(space-around);
+  @include align-self(center);
+  .desc {
+    @include display-flex;
+    @include flex-direction(column);
+    @include justify-content(space-around);
+    @include align-items(stretch);
+    margin: 5px;
+  }
+  .contact {
+    @include display-flex;
+    @include flex-direction(column);
+    @include justify-content(space-around);
+    @include align-items(stretch);
+    margin: 5px;
+
+    h1 {
+      font-weight: bold;
+      color: #000;
+      font-size: normal;
+      font-style: normal;
+      text-align: justify;
+      margin: 0;
+      padding: 0;
+    }
+    span {
+      font-size: normal;
+    }
+    a {
+      font-weight: normal;
+      font-size: normal;
+      font-style: italic;
+    }
+  }
+}
+
+.contentmention {
+  @include display-flex;
+  @include flex-direction(column);
+  @include justify-content(space-around);
+  @include align-self(flex-start);
+  @include align-items(stretch);
+  margin: 20px 3%;
+  min-height: 350px;
+  font-size: small;
+  h1 {
+    font-size: medium;
+    letter-spacing: 1pt;
+    color: #4B1E22;
+    font-style: normal;
+    margin: 20px 0;
+    padding: 0;
+    text-align: justify;
+  }
+
+  h2 {
+    color: #4B1E22;
+    font-weight: bold;
+    letter-spacing: 1pt;
+    text-transform: uppercase;
+  }
+
+}

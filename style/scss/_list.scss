@@ -1,0 +1,31 @@
+ul {
+  li {
+    .description {
+      margin: 0.5em 0;
+      padding-left: 1.7em;
+      font-size: 1.1rem;
+      ul {
+        margin: 5px;
+        padding-left: 1.5em;
+        font-style: oblique;
+      }
+    }
+  }
+
+  h1 {
+    font-size: $h1-list-font-size;
+    font-style: $h1-list-font-style;
+    font-weight: $h1-list-font-weight;
+    margin: 0.2rem 0 0.4rem 5px;
+    padding: 0 0 10px 0;
+    text-align: left;
+  }
+
+  h2 {
+    font-size: $h2-list-font-size;
+    font-style: $h2-list-font-style;
+    font-weight: $h2-list-font-weight;
+     margin: 0.1rem 0 0.2rem 5px;
+    padding: 0 0 0 0.5em;
+  }
+}
