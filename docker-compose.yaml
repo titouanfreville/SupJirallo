@@ -1,9 +1,11 @@
 version: '2'
 services:
   web:
-    build: .
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
     container_name: web_jiralo
-    volumes: 
+    volumes:
       - $PWD:/home/supjirallo
     ports:
       - "3000:3000"
