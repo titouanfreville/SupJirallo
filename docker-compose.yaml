@@ -1,0 +1,15 @@
+version: '2'
+services:
+  web:
+    build: .
+    container_name: web_jiralo
+    volumes: 
+      - $(pwd):/home/supjiralo
+    ports:
+      - "3000:3000"
+
+  mongo:
+    image: mongo
+    container_name: mongo_jiralo
+    hostname: mongo_jiralo
+

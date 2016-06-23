@@ -17,7 +17,7 @@ app.use(session({ secret: config.secret, resave: false, saveUninitialized: true 
 
 var mongo = require('mongodb');
 var mongoose = require('mongoose');
-mongoose.connect('localhost', 'dbname');
+mongoose.connect('mongo_jiralo', 'dbname');
 
 app.use("/", express.static(__dirname));
 
