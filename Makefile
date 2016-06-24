@@ -3,7 +3,7 @@
 PWD=$(shell pwd)
 PS=$(shell docker ps -a -q)
 IM=$(shell docker images -q)
-
+UID=$(shell id -u)
 # Standart docker variables
 NS ?= titouanfreville
 REPO ?= supjiralo
@@ -14,6 +14,7 @@ VERSION ?= latest
 SHELL ?= /bin/bash
 
 export PWD
+export UID
 
 # determine platform
 ifeq (Boot2Docker, $(findstring Boot2Docker, $(shell docker info)))
