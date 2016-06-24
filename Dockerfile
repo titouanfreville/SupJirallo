@@ -6,7 +6,7 @@ WORKDIR /home/supjirallo
 
 COPY . /home/supjirallo
 
-RUN cd /home/supjirallo && npm install 
+RUN cd /home/supjirallo && npm install --production
 RUN npm install -g bower
 RUN cd /home/supjirallo && bower install --allow-root
 
