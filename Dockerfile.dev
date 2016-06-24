@@ -1,11 +1,19 @@
 FROM node:argon
+ARG UID
 
 RUN mkdir /home/supjirallo
+RUN npm install -g bower
+
+RUN useradd -u $UID -m docker && echo "docker:docker" | chpasswd
+RUN mkdir /.npm && chown docker /.npm
+RUN mkdir /.config && chown docker /.config
+RUN mkdir /.cache && chown docker /.cache
+RUN mkdir /.local && chown docker /.local
 
 WORKDIR /home/supjirallo
 
 EXPOSE 8080
 EXPOSE 3000
 
-CMD sleep 5s; node app.js
+CMD sleep 5s; npm install; bower install; node app.js
 

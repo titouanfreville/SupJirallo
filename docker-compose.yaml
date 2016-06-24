@@ -4,16 +4,19 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.dev
+      args:
+        UID: $UID
     container_name: web_jiralo
     volumes:
       - $PWD:/home/supjirallo
     ports:
       - "3000:3000"
-
+    user: "$UID"
   compass:
     build:
       context: .
       dockerfile: Dockerfile.compass
+    user: "$UID"
     volumes:
       - $PWD/style:/home/style
 
@@ -21,4 +24,6 @@ services:
     image: mongo
     container_name: mongo_jiralo
     hostname: mongo_jiralo
+    ports:
+      - "27017:27017"
 
