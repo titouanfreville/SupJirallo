@@ -5,29 +5,25 @@ var mongoose = require('mongoose'),
     SALT_WORK_FACTOR = 10;
 
 var user = new schema({
-  _id : Number,
+  _id : { type: Number, required: true, index: {unique: true }},
   name: { type: String, required: true, index: { unique: true } },
+  email: { type: String, required: true, index: { unique: true } },
   password: { type: String, required: true },
-  email: { type: String, required: true },
-  // firstName: String,
-  // lastName: String,  
-  // dateOfBirth: Date
+  firstName: String,
+  lastName: String,  
+  dateOfBirth: Date
 });
 
 user.pre('save', function(next) {
   var us = this;
   if (!us.isModified('password')) return next();
-  console.log('Starting to add User');
 
   // Salting
   bcrypt.genSalt(SALT_WORK_FACTOR, function(err, salt) {
-    if (err) return next (err);
-    console.log('Salt generated');
-    // Hashing
+    if (err) return next (err);    // Hashing
     bcrypt.hash(us.password, salt, function(err, hash) {
       if (err) return next(err);
       us.password = hash;
-      console.log('Done adding user');
       next();
     })
   });
