@@ -4,7 +4,7 @@ var mongoose = require('mongoose'),
   should= require('should');
 
 // Connect to mongo DB as tester DB (DB only for TEST USAGE)
-var connStr = 'mongodb://localhost/tester';
+var connStr = 'mongodb://mongo_jiralo/tester';
 mongoose.connect(connStr, function(err) {
   if (err) throw err;
 });

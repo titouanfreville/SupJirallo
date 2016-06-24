@@ -35,6 +35,7 @@
     "merge-descriptors": "^1.0.1",
     "mocha": "^2.5.3",
     "mongoose": "^4.5.0",
+    "mongoose-schema-extend": "^0.2.2",
     "mongoskin": "^2.1.0",
     "q": "^1.4.1",
     "request": "^2.72.0",

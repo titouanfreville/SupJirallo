@@ -15,5 +15,5 @@ WORKDIR /home/supjirallo
 EXPOSE 8080
 EXPOSE 3000
 
-CMD sleep 5s; npm install; bower install; node app.js
+CMD sleep 5s; npm install; bower install; node serve.js
 

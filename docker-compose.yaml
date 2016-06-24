@@ -16,9 +16,21 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.compass
+    container_name: compass_jirallo
     user: "$UID"
     volumes:
       - $PWD/style:/home/style
+
+  test:
+    build:
+      context: .
+      dockerfile: Dockerfile.test
+      args:
+        UID: $UID
+    user: "$UID"
+    container_name: test_jirallo
+    volumes:
+      - $PWD:/home/supjirallo
 
   mongo:
     image: mongo
