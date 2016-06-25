@@ -54,3 +54,22 @@ sftp-config.json
 *.css.map
 
 angoose-client-*
+
+###NetBeans###
+
+nbproject/private/
+build/
+nbbuild/
+dist/
+nbdist/
+nbactions.xml
+nb-configuration.xml
+
+
+###IntelliJ###
+
+*.iml
+*.ipr
+*.iws
+.idea/
+
