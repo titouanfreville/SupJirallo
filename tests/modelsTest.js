@@ -28,8 +28,8 @@ dbcon.once('open', function callback() {
 // -----------------------------------------------------------------------------------------------
 // INIT TEST VALUES ------------------------------------------------------------------------------
 // Simple User ----------------------------
-// create a user
-var testDupUser = new User({
+// Correct ###
+var testNewUser = new User({
   name: 'Noisette',
   password: 'ecureil',
   email: 'noisette@ecureil',
@@ -37,62 +37,154 @@ var testDupUser = new User({
   lastName: 'Cap',
   dateOfBirth: new Date(1989,08,26)
 });
+// Incomplete ###
+var EmptyUserName = new User({
+  password: 'ecureil',
+  email: 'noisette@ecureil',
+  firstName: 'Ngân',
+  lastName: 'Cap',
+  dateOfBirth: new Date(1989,08,26)
+});
 
-var testNewUser = new User({
-  name: 'Bug',
+var EmptyUserMail = new User({
+  name: 'Omega',
+  password: 'ecureil',
+  firstName: 'Ngân',
+  lastName: 'Cap',
+  dateOfBirth: new Date(1989,08,26)
+});
+
+var EmptyUserPass = new User({
+  name: 'Omega',
+  email: 'noisette@ecureil',
+  firstName: 'Ngân',
+  lastName: 'Cap',
+  dateOfBirth: new Date(1989,08,26)
+});
+// Duplicates ###
+var testDupUserName = new User({
+  name: 'Noisette',
+  password: 'ecureil',
+  email: 'noir@blanc',
+  firstName: 'Ngân',
+  lastName: 'Cap',
+  dateOfBirth: new Date(1989,08,26)
+});
+
+var testDupUserMail = new User({
+  name: 'Alpha',
+  password: 'ecureil',
+  email: 'noisette@ecureil',
+  firstName: 'Ngân',
+  lastName: 'Cap',
+  dateOfBirth: new Date(1989,08,26)
+});
+// ----------------------------------------
+// Product Owner --------------------------
+// Correct ###
+var testNewProductOwner = new ProductOwner({
+  name: 'PONoisette',
+  password: 'ecureil',
+  email: 'POnoisette@ecureil',
+  firstName: 'Ngân',
+  lastName: 'Cap',
+  dateOfBirth: new Date(1989,08,26)
+});
+// Incomplete ###
+var EmptyProductOwnerName = new ProductOwner({
+  password: 'ecureil',
+  email: 'noisette@ecureil',
+  firstName: 'Ngân',
+  lastName: 'Cap',
+  dateOfBirth: new Date(1989,08,26)
+});
+
+var EmptyProductOwnerMail = new ProductOwner({
+  name: 'Omega',
+  password: 'ecureil',
+  firstName: 'Ngân',
+  lastName: 'Cap',
+  dateOfBirth: new Date(1989,08,26)
+});
+
+var EmptyProductOwnerPass = new ProductOwner({
+  name: 'Omega',
+  email: 'noisette@ecureil',
+  firstName: 'Ngân',
+  lastName: 'Cap',
+  dateOfBirth: new Date(1989,08,26)
+});
+// Duplicates ###
+var testDupProductOwnerName = new ProductOwner({
+  name: 'PONoisette',
   password: '2000',
   email: 'new@bug.2000',
   firstName: 'Bug',
   lastName: "De l'an 2000",
   dateOfBirth: new Date('2000','01','01')
 });
-// ----------------------------------------
-// Product Owner --------------------------
-// create a Product Owner
-var testDupPo = new ProductOwner({
-  name: 'PONoisette',
-  password: 'ecureil',
-  email: 'POnoisette@ecureil',
-  firstName: 'Ngân',
-  lastName: 'Cap',
-  dateOfBirth: new Date(1989,08,26),
-  po_ticket: []
-});
 
-var testNewPo = new ProductOwner({
-  name: 'PO1Bug',
+var testDupProductOwnerMail = new ProductOwner({
+  name: 'Omega',
   password: '2000',
-  email: 'PO1new@bug.2000',
-  firstName: 'PO1Bug',
+  email: 'POnoisette@ecureil',
+  firstName: 'Bug',
   lastName: "De l'an 2000",
-  dateOfBirth: new Date('2000','01','01'),
-  po_ticket: []
+  dateOfBirth: new Date('2000','01','01')
 });
-
 // ----------------------------------------
 // Developpers ----------------------------
-
-// create Dev
-var testDupDev = new Developer({
+// Correct ###
+var testNewDeveloper = new Developer({
   name: 'DEVNoisette',
   password: 'ecureil',
   email: 'DEVnoisette@ecureil',
   firstName: 'Ngân',
   lastName: 'Cap',
-  dateOfBirth: new Date(1989,08,26),
-  dev_ticket_field: 'Test'
+  dateOfBirth: new Date(1989,08,26)
+});
+// Incomplete ###
+var EmptyDeveloperName = new Developer({
+  password: 'ecureil',
+  email: 'noisette@ecureil',
+  firstName: 'Ngân',
+  lastName: 'Cap',
+  dateOfBirth: new Date(1989,08,26)
 });
 
-var testNewDev = new Developer({
-  name: 'PO2Bug',
+var EmptyDeveloperMail = new Developer({
+  name: 'Omega',
+  password: 'ecureil',
+  firstName: 'Ngân',
+  lastName: 'Cap',
+  dateOfBirth: new Date(1989,08,26)
+});
+
+var EmptyDeveloperPass = new Developer({
+  name: 'Omega',
+  email: 'noisette@ecureil',
+  firstName: 'Ngân',
+  lastName: 'Cap',
+  dateOfBirth: new Date(1989,08,26)
+});
+// Duplicates ###
+var testDupDeveloperName = new Developer({
+  name: 'DEVNoisette',
   password: '2000',
-  email: 'PO2new@bug.2000',
-  firstName: 'PO2Bug',
+  email: 'new@bug.2000',
+  firstName: 'Bug',
   lastName: "De l'an 2000",
-  dateOfBirth: new Date('2000','01','01'),
-  dev_ticket_field: 'Test'
+  dateOfBirth: new Date('2000','01','01')
 });
 
+var testDupDeveloperMail = new Developer({
+  name: 'Omega',
+  password: '2000',
+  email: 'DEVnoisette@ecureil',
+  firstName: 'Bug',
+  lastName: "De l'an 2000",
+  dateOfBirth: new Date('2000','01','01')
+});
 // ----------------------------------------
 // Tickets --------------------------------
 // create Ticket
@@ -105,15 +197,75 @@ var testNewTicket = new Ticket({
   reporter: null,
   assignee: null
 });
+
+var testEmptySummaryTicket = new Ticket({
+  description: "First test :p",
+  priority: "URGENT",
+  status: "BROKEN",
+  creationDate: new Date('2000','01','01'),
+  reporter: null,
+  assignee: null
+});
+
+var testEmptyReporterTicket = new Ticket({
+  description: "First test :p",
+  priority: "URGENT",
+  status: "BROKEN",
+  creationDate: new Date('2000','01','01'),
+  reporter: null,
+  assignee: null
+});
+
+var testDupTicket = new Ticket({
+  summary: "Test1",
+  description: "First test :p",
+  priority: "URGENT",
+  status: "BROKEN",
+  creationDate: new Date('2000','01','01'),
+  reporter: null,
+  assignee: null
+});
 // -----------------------------------------------------------------------------------------------
 // STARTING TESTS --------------------------------------------------------------------------------
 describe("Users", function(){
   it("Add a new user", function(done){
-    testDupUser.save(function(err){
+    testNewUser.save(function(err){
       should.not.exist(err);
       done();
     });
   });
+
+  it("Should Failed to insert Incomplete Users", function(done){
+    EmptyUserName.save(function(err){
+      should.exist(err);
+      err.name.should.be.equal('ValidationError');
+
+      EmptyUserMail.save(function(err){
+        should.exist(err);
+        err.name.should.be.equal('ValidationError');
+
+        EmptyUserPass.save(function(err){
+          should.exist(err);
+          err.name.should.be.equal('ValidationError');
+          done();
+        });
+      });
+    });
+  });
+
+  it("Should Failed to insert Duplicate Users", function(done){
+    testDupUserName.save(function(err){
+      should.exist(err);
+      err.code.should.be.equal(11000);
+
+      testDupUserMail.save(function(err){
+        should.exist(err);
+        err.code.should.be.equal(11000);
+        done();
+      });
+    });
+  });
+
 
   it('Should find an Existing user', function(done){
     User.findOne({name: 'Noisette'}, function(err, user) {
@@ -160,9 +312,41 @@ describe("Users", function(){
 // PO TEST ---------------------------------------------------------------------------------------
 describe("PO", function(){
   it("Add a new PO", function(done){
-    testDupPo.save(function(err){
+    testNewProductOwner.save(function(err){
       should.not.exist(err);
       done();
+    });
+  });
+
+  it("Should Failed to insert Incomplete PO", function(done){
+    EmptyProductOwnerName.save(function(err){
+      should.exist(err);
+      err.name.should.be.equal('ValidationError');
+
+      EmptyProductOwnerMail.save(function(err){
+        should.exist(err);
+         err.name.should.be.equal('ValidationError');
+
+        EmptyProductOwnerPass.save(function(err){
+          should.exist(err);
+          err.name.should.be.equal('ValidationError');
+          done();
+        });
+      });
+    });
+  });
+
+
+  it("Should Failed to insert Duplicate PO", function(done){
+    testDupProductOwnerName.save(function(err){
+      should.exist(err);
+      err.code.should.be.equal(11000);
+
+      testDupProductOwnerMail.save(function(err){
+        should.exist(err);
+        err.code.should.be.equal(11000);
+        done();
+      });
     });
   });
 
@@ -202,9 +386,40 @@ describe("PO", function(){
 // DEV TEST --------------------------------------------------------------------------------------
 describe("Dev", function(){
   it("Add a new Dev", function(done){
-    testDupDev.save(function(err){
+    testNewDeveloper.save(function(err){
       should.not.exist(err);
       done();
+    });
+  });
+
+  it("Should Failed to insert Incomplete Dev", function(done){
+    EmptyDeveloperName.save(function(err){
+      should.exist(err);
+      err.name.should.be.equal('ValidationError');
+
+      EmptyDeveloperMail.save(function(err){
+        should.exist(err);
+        err.name.should.be.equal('ValidationError');
+
+        EmptyDeveloperPass.save(function(err){
+          should.exist(err);
+          err.name.should.be.equal('ValidationError');
+          done();
+        });
+      });
+    });
+  });
+
+
+  it("Should Failed to insert Duplicate Dev", function(done){
+    testDupDeveloperName.save(function(err){
+      should.exist(err);
+      err.code.should.be.equal(11000);
+
+      testDupDeveloperMail.save(function(err){
+        should.exist(err);
+        done();
+      });
     });
   });
 
@@ -251,7 +466,7 @@ describe("Dev", function(){
   });
 });
 // -----------------------------------------------------------------------------------------------
-// TICKET TEST ------------------------------------------------------------------------------------
+// TICKET TEST -----------------------------------------------------------------------------------
 describe("Ticket", function(){
   it("Create ticket ", function(done){
     ProductOwner.findOne({name: 'PONoisette'}, function(err, po) {
@@ -265,6 +480,30 @@ describe("Ticket", function(){
           done();
         });
         po.save();
+      });
+    });
+  });
+
+
+  it("Should Failed to insert Incomplete Tickets", function(done){
+    ProductOwner.findOne({name: 'PONoisette'}, function(err, po) {
+      po.createTicket(testEmptySummaryTicket, function(err){
+      should.exist(err);
+      err.name.should.be.equal('ValidationError');
+      po.createTicket(testEmptyReporterTicket, function(err){
+        should.exist(err);
+        err.name.should.be.equal('ValidationError');
+        done();
+      });
+    });
+  });
+
+  it("Should Failed to insert Duplicate Tickets", function(done){
+    ProductOwner.findOne({name: 'PONoisette'}, function(err, po) {
+      po.createTicket(testDupTicket, function(err){
+        should.exist(err);
+        err.code.should.be.equal(11000)
+        });
       });
     });
   });
@@ -298,9 +537,11 @@ describe("Ticket", function(){
     });
   });
 
-  after(function(done) {
-    con.disconnect();
-    done();
-  })
+  // after(function(done) {
+  //   con.disconnect();
+  //   done();
+  // })
+
 });
 // -----------------------------------------------------------------------------------------------
+

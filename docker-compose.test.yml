@@ -1,0 +1,20 @@
+version: '2'
+services:
+  test:
+    build:
+      context: .
+      dockerfile: Dockerfile.test
+      args:
+        UID: $UID
+    user: "$UID"
+    container_name: test_jirallo
+    volumes:
+      - $PWD:/home/supjirallo
+
+  mongo:
+    image: mongo
+    container_name: mongo_jiralo
+    hostname: mongo_jiralo
+    ports:
+      - "27017:27017"
+

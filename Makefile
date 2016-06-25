@@ -78,6 +78,10 @@ dev: build up
 
 prod: build_prod up_prod
 
+first_test: build_test up_test
+
+test: up_test
+
 start_dev: beforehand test_require dev
 
 start_prod: beforehand test_require prod
@@ -105,11 +109,18 @@ up:
 	docker-compose -p $(NAME) up
 
 build_prod:
-	docker-compose -p $(NAME) build
+	docker-compose -p $(NAME) -f docker-compose.prod.yml build
 
 up_prod:
 	./scripts/check_port.sh
-	docker-compose -p $(NAME) up
+	docker-compose -p $(NAME) -f docker-compose.prod.yml up
+
+
+build_test:
+	docker-compose -p $(NAME) -f docker-compose.test.yml build
+
+up_test:
+	docker-compose -p $(NAME) -f docker-compose.test.yml up
 
 cstop:
 	docker-compose -p $(NAME) stop
