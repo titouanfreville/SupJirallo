@@ -1,8 +1,11 @@
 var mongoose = require('mongoose'),
     bcrypt = require('bcrypt'),
     extend = require('mongoose-schema-extend'),
+    Tickets = require('./tickets'),
     schema = mongoose.Schema,
-    ObjectId = mongoose.ObjectId,
+    // ObjectId = schema.ObjectId,
+    ticket = Tickets.TScheme,
+    Ticket = Tickets.Ticket,
     SALT_WORK_FACTOR = 10;
 // ########################### SCHEMES DEFINITION  ########################### //
 // USER -------------------------------------------------------------------------
@@ -21,13 +24,13 @@ var user = new schema({
 // ------------------------------------------------------------------------------
 // ProductOwner -----------------------------------------------------------------
 var po = user.extend({
-  po_ticket_field: String
-})
+  po_ticket: [ticket]
+});
 // ------------------------------------------------------------------------------
 // Developer --------------------------------------------------------------------
 var dev = user.extend({
-  dev_ticket_field: String
-})
+  dev_ticket: [ticket]
+});
 // ------------------------------------------------------------------------------
 // ########################################################################### //
 // ################################ FUNCTIONS ################################ //
@@ -42,7 +45,7 @@ user.pre('save', function(next) {
       if (err) return next(err);
       us.password = hash;
       next();
-    })
+    });
   });
 });
 // Checking Password
@@ -51,14 +54,48 @@ user.methods.checkPass = function (testPass, cb) {
     if (err) return cb(err);
     cb(null, isMatch);
   });
-}
+};
 // ------------------------------------------------------------------------------
 // Product Owner ----------------------------------------------------------------
 po.methods.pocheckPass = user.methods.checkPass;
+
+po.methods.createTicket = function (ticket, cb) {
+  po = this;
+  ticket.reporter = po.name;
+  ticket.save(function(err) {
+    po.po_ticket.push(ticket);
+    cb(err);
+  });
+};
 // ------------------------------------------------------------------------------
 // Developer --------------------------------------------------------------------
 // Checking Password
-dev.methods.checkPass = user.methods.checkPass;
+dev.methods.devcheckPass = user.methods.checkPass;
+
+dev.methods.startWorking = function(ticket_name, cb) {
+  dev=this;
+  Ticket.findOne({summary: ticket_name}, function(err, t) {
+    if (err) return cb(err);
+    t.assignee = dev.name;
+    t.save(function(err) {
+      dev.dev_ticket.push(t);
+      cb(err);
+    })
+  })
+}
+
+dev.methods.stopWorking = function(ticket_name, cb) {
+  dev=this;
+  Ticket.findOne({summary: ticket_name}, function(err, t) {
+    if (err) return cb(err);
+    t.assignee = null;
+    t.save(function(err) {
+      dev.dev_ticket.id(t._id).remove();
+      cb(err);
+    })
+  })
+
+}
 // ------------------------------------------------------------------------------
 // ########################################################################### //
 // ########################### MODULE EXPORTATIONS ########################### //
@@ -87,11 +124,14 @@ if (mongoose.models.Developer) {
 }
 // ------------------------------------------------------------------------------
 
-Users={
+var Users = {
   User: User,
   ProductOwner: ProductOwner,
-  Developer: Developer
-}
+  Developer: Developer,
+  // SUser: user,
+  // SPo: po,
+  // SDev: dev
+};
 
-module.exports = Users
+module.exports = Users;
 // ------------------------------------------------------------------------------

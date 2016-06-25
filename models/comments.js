@@ -1,5 +1,5 @@
 var mongoose = require('mongoose'),
-    Users = require('./comments'),
+    Users = require('./tickets'),
     schema = mongoose.Schema;
 
 var ticket = new schema({
@@ -11,7 +11,7 @@ var ticket = new schema({
   // REFERENCE TO ------
   reporter: {type: String, required: true, sparse: true}, // Will be used to store PRODUCT OWNER NAME.
   assignee: String, // Will be used to store DEVELOPER OWNER NAME.
-  // REFER ----
+  // REFET ----
 
 })
 

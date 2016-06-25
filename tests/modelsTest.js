@@ -1,12 +1,14 @@
+"use strict";
 // Include part to have required modules ...
 var mongoose = require('mongoose'),
   Users = require('./../models/users'),
+  Ticket = require('./../models/tickets').Ticket,
   should= require('should'),
   User= Users.User,
   ProductOwner= Users.ProductOwner,
   Developer= Users.Developer;
 
-if (mongoose.connection.readyState == 0) {
+if (mongoose.connection.readyState === 0) {
   // Connect to mongo DB as tester DB (DB only for TEST USAGE)
   // var connStr = 'mongodb://mongo_jiralo/tester';
   var connStr = 'mongodb://localhost/tester';
@@ -18,7 +20,10 @@ var dbcon = mongoose.connection;
 dbcon.on('error', console.error.bind(console, 'connection error:'));
 
 dbcon.once('open', function callback() {
-  console.log("Well Connected")
+  dbcon.db.dropDatabase(function(err, result){
+    if (err) throw err;
+  })
+  console.log("Well Connected");
 });
 
 // create a user
@@ -37,80 +42,63 @@ var testNewUser = new User({
   email: 'new@bug.2000',
   firstName: 'Bug',
   lastName: "De l'an 2000",
-  dateOfBirth: new Date(2000,01,01)
+  dateOfBirth: new Date('2000','01','01')
 });
 // Add test user in DB
 
 // USER TEST -------------------------------------------------------------------------------------
 describe("Users", function(){
-  this.timeout(20000);
-  before(function(done){
-    testDupUser.save(function(err) {
-    });
-    setTimeout(function(){
-      done()
-    }, 1);
-  })
-
-  it("Add a new user (should not pass if Duplicate pass", function(done){
+  it("Add a new user (should not pass if Duplicate pass)", function(){
     testNewUser.save(function(err){
       should.not.exist(err);
-      done();
-    })
-  })
+    });
+  });
 
   // This test seems to never be working. I'm quite sure it's a pb of sync DB - Classes
-  it("Try to add Duplicate user should not pass if Add pass", function(done){
-    this.timeout(20000000);
-    setTimeout(function(){
-      testDupUser.save(function(err) {
-          should.exist(err);
-          done()
-        })
-    },1);
-  })
+  it("Try to add Duplicate user (should not pass if Add pass)", function(){
+    testDupUser.save(function(err) {
+      should.exist(err);
+      err.code.should.be.equal(11000);
+    });
+  });
 
-  it('Should find an Existing user', function(done){
+  it('Should find an Existing user', function(){
     User.findOne({name: 'Noisette'}, function(err, user) {
       should.not.exist(err);
       should.exist(user);
       user.name.should.equal('Noisette');
-      done();
     });
-  })
+  });
 
-  it('Should not find an Imaginary user', function(done){
+  it('Should not find an Imaginary user', function(){
     User.findOne({name: 'Gasper'}, function(err, user) {
       should.not.exist(err);
       should.not.exist(user);
-      done();
-    })
-  })
+    });
+  });
 
-  it('Should validate correct Password', function(done){
+  it('Should validate correct Password', function(){
     User.findOne({name: 'Noisette'}, function(err,user){
       should.not.exist(err);
       should.exist(user);
       user.checkPass('ecureil', function(err, isMatch) {
         should.not.exist(err);
         isMatch.should.equal(true);
-        done();
-      })
-    })
-  })
+      });
+    });
+  });
 
-  it('Should not validate incorrect Password', function(done){
+  it('Should not validate incorrect Password', function(){
     User.findOne({name: 'Noisette'}, function(err,user){
       should.not.exist(err);
       should.exist(user);
       user.checkPass('PasBeau', function(err, isMatch) {
         should.not.exist(err);
         isMatch.should.equal(false);
-        done();
-      })
-    })
-  })
-})
+      });
+    });
+  });
+});
 // -----------------------------------------------------------------------------------------------
 
 // create a Product Owner
@@ -121,7 +109,7 @@ var testDupPo = new ProductOwner({
   firstName: 'Ngân',
   lastName: 'Cap',
   dateOfBirth: new Date(1989,08,26),
-  po_ticket_field: 'Test'
+  po_ticket: []
 });
 
 var testNewPo = new ProductOwner({
@@ -130,71 +118,65 @@ var testNewPo = new ProductOwner({
   email: 'PO1new@bug.2000',
   firstName: 'PO1Bug',
   lastName: "De l'an 2000",
-  dateOfBirth: new Date(2000,01,01),
-  po_ticket_field: 'Test'
+  dateOfBirth: new Date('2000','01','01'),
+  po_ticket: []
 });
 
 // PO TEST ---------------------------------------------------------------------------------------
 describe("PO", function(){
-  it("Add a new user", function(done){
-    testNewPo.save(function(err){
+  it("Add a new PO", function(){
+    testDupPo.save(function(err){
       should.not.exist(err);
-      done();
-    })
-  })
+    });
+  });
 
 
-  it("Try to add Duplicate user", function(done){
+  it("Try to add Duplicate PO (should not pass if Duplicate pass)", function(){
     testDupPo.save(function(err){
       should.exist(err);
-      done();
-    })
-  })
+      err.code.should.be.equal(11000);
+    });
+  });
 
-  it('Should find an Existing user', function(done){
+  it('Should find an Existing PO (should not pass if Add pass)', function(){
     ProductOwner.findOne({name: 'PONoisette'}, function(err, user) {
       should.not.exist(err);
       should.exist(user);
       user.name.should.equal('PONoisette');
-      done();
     });
-  })
+  });
 
-  it('Should not find an Imaginary user', function(done){
+  it('Should not find an Imaginary PO', function(){
     ProductOwner.findOne({name: 'Gasper'}, function(err, user) {
       should.not.exist(err);
       should.not.exist(user);
-      done();
-    })
-  })
+    });
+  });
 
-  it('Should validate correct Password', function(done){
+  it('Should validate correct Password', function(){
     ProductOwner.findOne({name: 'PONoisette'}, function(err,po){
       should.not.exist(err);
       should.exist(po);
       po.pocheckPass('ecureil', function(err, isMatch) {
         should.not.exist(err);
         isMatch.should.equal(true);
-        done();
-      })
-    })
-  })
+      });
+    });
+  });
 
-  it('Should not validate incorrect Password', function(done){
+  it('Should not validate incorrect Password', function(){
     ProductOwner.findOne({name: 'PONoisette'}, function(err,po){
       should.not.exist(err);
       should.exist(po);
       po.pocheckPass('PasBeau', function(err, isMatch) {
         should.not.exist(err);
         isMatch.should.equal(false);
-        done();
-      })
-    })
-  })
-})
+      });
+    });
+  });
+});
 // -----------------------------------------------------------------------------------------------
-
-// create a Product Owner
+// create Dev
 var testDupDev = new Developer({
   name: 'DEVNoisette',
   password: 'ecureil',
@@ -206,76 +188,144 @@ var testDupDev = new Developer({
 });
 
 var testNewDev = new Developer({
-  name: 'PO1Bug',
+  name: 'PO2Bug',
   password: '2000',
-  email: 'PO1new@bug.2000',
-  firstName: 'PO1Bug',
+  email: 'PO2new@bug.2000',
+  firstName: 'PO2Bug',
   lastName: "De l'an 2000",
-  dateOfBirth: new Date(2000,01,01),
+  dateOfBirth: new Date('2000','01','01'),
   dev_ticket_field: 'Test'
 });
 
 // DEV TEST --------------------------------------------------------------------------------------
 describe("Dev", function(){
-  it("Add a new user", function(done){
-    testNewDev.save(function(err){
+  it("Add a new Dev (should not pass if Duplicate pass)", function(){
+    testDupDev.save(function(err){
       should.not.exist(err);
-      done();
-    })
-  })
+    });
+  });
 
 
-  it("Try to add Duplicate user", function(done){
+  it("Try to add Duplicate Dev (should not pass if Add pass)", function(){
     testDupDev.save(function(err){
       should.exist(err);
-      done();
-    })
-  })
+      err.code.should.be.equal(11000);
+    });
+  });
 
-  it('Should find an Existing user', function(done){
-    User.findOne({name: 'DEVNoisette'}, function(err, user) {
+  it('Should find an Existing Dev', function(){
+    Developer.findOne({name: 'DEVNoisette'}, function(err, user) {
       should.not.exist(err);
       should.exist(user);
       user.name.should.equal('DEVNoisette');
-      done();
     });
-  })
+  });
 
-  it('Should not find an Imaginary user', function(done){
-    User.findOne({name: 'Gasper'}, function(err, user) {
+  it('Should not find an Imaginary Dev', function(){
+    Developer.findOne({name: 'Gasper'}, function(err, user) {
       should.not.exist(err);
       should.not.exist(user);
-      done();
-    })
-  })
+    });
+  });
 
-  it('Should validate correct Password', function(done){
-    User.findOne({name: 'DEVNoisette'}, function(err,dev){
+  it('Should validate correct Password', function(){
+    Developer.findOne({name: 'DEVNoisette'}, function(err,dev){
       should.not.exist(err);
       should.exist(dev);
-      dev.checkPass('ecureil', function(err, isMatch) {
+      dev.devcheckPass('ecureil', function(err, isMatch) {
         should.not.exist(err);
         isMatch.should.equal(true);
-        done();
-      })
-    })
-  })
+      });
+    });
+  });
 
 
-  it('Should not validate incorrect Password', function(done){
-    User.findOne({name: 'DEVNoisette'}, function(err,dev){
+  it('Should not validate incorrect Password', function(){
+    Developer.findOne({name: 'DEVNoisette'}, function(err,dev){
       should.not.exist(err);
       should.exist(dev);
-      dev.checkPass('PasBeau', function(err, isMatch) {
+      dev.devcheckPass('PasBeau', function(err, isMatch) {
         should.not.exist(err);
         isMatch.should.equal(false);
-        done();
-      })
-    })
-  })
-  after(function(done) {
-    con.disconnect();
-    done();
-  })
-})
+      });
+    });
+  });
+});
+// -----------------------------------------------------------------------------------------------
+
+// create Ticket
+var testNewTicket = new Ticket({
+  summary: "Test1",
+  description: "First test :p",
+  priority: "URGENT",
+  status: "BROKEN",
+  creationDate: new Date('2000','01','01'),
+  reporter: null,
+  assignee: null
+});
+
+// TICKET TEST ------------------------------------------------------------------------------------
+describe("Ticket", function(){
+  it("Create ticket (should not pass if Duplicate pass)", function(){
+    ProductOwner.findOne({name: 'PONoisette'}, function(err, po) {
+      po.createTicket(testNewTicket, function(err){
+        should.not.exist(err);
+        Ticket.findOne({reporter: 'PONoisette'}, function (err,ticket) {
+          should.not.exist(err);
+          should.exist(ticket);
+          ticket.reporter.should.be.equal('PONoisette');
+          ticket.summary.should.be.equal('Test1');
+        });
+        po.save();
+      });
+    });
+  });
+
+
+  it("Try to add Duplicate Ticket (should not pass if Add pass)", function(){
+    ProductOwner.findOne({name: 'PONoisette'}, function(err, po) {
+      po.createTicket(testNewTicket, function(err){
+        should.exist(err);
+        err.code.should.be.equal(11000);
+      });
+    });
+  });
+
+  it('Start Working on a Ticket', function(){
+    Developer.findOne({name: 'DEVNoisette'}, function(err, dev) {
+      dev.startWorking('Test1', function(err){
+        should.not.exist(err);
+        Ticket.findOne({assignee: 'DEVNoisette'}, function (err, ticket) {
+          should.not.exist(err);
+          should.exist(ticket);
+          ticket.assignee.should.be.equal('DEVNoisette');
+          ticket.summary.should.be.equal('Test1');
+        });
+        dev.save();
+      });
+    });
+  });
+
+  it("Try to Reassign on ticket", function(){
+    Developer.findOne({name: 'DEVNoisette'}, function(err, dev) {
+      dev.startWorking(testNewTicket, function(err, ticket){
+        should.exist(err);
+        err.code.should.be.equal(11000);
+      });
+    });
+  });
+
+  it('Stop Working on a Ticket', function(){
+    Developer.findOne({name: 'DEVNoisette'}, function(err, dev) {
+      dev.stopWorking('Test1', function(err){
+        should.not.exist(err);
+        Ticket.findOne({assignee: 'DEVNoisette'}, function (err, ticket) {
+          should.not.exist(err);
+          should.not.exist(ticket);
+        });
+        dev.save();
+      });
+    });
+  });
+});
 // -----------------------------------------------------------------------------------------------
