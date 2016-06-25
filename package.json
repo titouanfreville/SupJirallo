@@ -22,6 +22,7 @@
   },
   "homepage": "https://github.com/titouanfreville/SupJirallo#readme",
   "dependencies": {
+    "angoose": "^0.3.21",
     "bcrypt": "^0.8.7",
     "bcryptjs": "^2.3.0",
     "body-parser": "^1.15.1",
@@ -32,9 +33,15 @@
     "lodash": "^4.13.1",
     "merge-descriptors": "^1.0.1",
     "mongoose": "^4.5.0",
+    "mongoose-schema-extend": "^0.2.2",
     "mongoskin": "^2.1.0",
     "q": "^1.4.1",
     "request": "^2.72.0",
     "rootpath": "^0.1.2"
+  },
+  "devDependencies": {
+    "mocha": "^2.5.3",
+    "mocha-jshint": "^2.3.1",
+    "should": "^9.0.2"
   }
 }

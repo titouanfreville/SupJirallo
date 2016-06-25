@@ -52,3 +52,5 @@ sftp-config.json
 
 .sass-cache
 *.css.map
+
+angoose-client-*
