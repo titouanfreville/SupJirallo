@@ -7,26 +7,26 @@ var mongoose = require('mongoose'),
 // ########################### SCHEMES DEFINITION  ########################### //
 // USER -------------------------------------------------------------------------
 var user = new schema({
-  _id : { type: Number, required: true, index: {unique: true }},
   name: { type: String, required: true, index: { unique: true } },
   email: { type: String, required: true, index: { unique: true } },
   password: { type: String, required: true },
   firstName: String,
-  lastName: String,  
-  dateOfBirth: Date
+  lastName: String,
+  dateOfBirth: Date,
+  role: String
 }, {
   collection: 'users',
-  discriminatorKer: 'role'
+  discriminatorKey: 'role'
 });
 // ------------------------------------------------------------------------------
 // ProductOwner -----------------------------------------------------------------
 var po = user.extend({
-  ticket_field: String
+  po_ticket_field: String
 })
 // ------------------------------------------------------------------------------
 // Developer --------------------------------------------------------------------
 var dev = user.extend({
-  ticket_field: String
+  dev_ticket_field: String
 })
 // ------------------------------------------------------------------------------
 // ########################################################################### //
@@ -54,10 +54,11 @@ user.methods.checkPass = function (testPass, cb) {
 }
 // ------------------------------------------------------------------------------
 // Product Owner ----------------------------------------------------------------
-
+po.methods.pocheckPass = user.methods.checkPass;
 // ------------------------------------------------------------------------------
 // Developer --------------------------------------------------------------------
-
+// Checking Password
+dev.methods.checkPass = user.methods.checkPass;
 // ------------------------------------------------------------------------------
 // ########################################################################### //
 // ########################### MODULE EXPORTATIONS ########################### //
