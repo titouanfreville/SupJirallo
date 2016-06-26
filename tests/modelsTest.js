@@ -11,8 +11,8 @@ var mongoose = require('mongoose'),
 // CONNECT TP TEST DN ----------------------------------------------------------------------------
 if (mongoose.connection.readyState === 0) {
   // Connect to mongo DB as tester DB (DB only for TEST USAGE)
-  // var connStr = 'mongodb://mongo_jiralo/broked_again_tester';
-  var connStr = 'mongodb://localhost/tester';
+  var connStr = 'mongodb://mongo_jiralo/tester';
+  // var connStr = 'mongodb://localhost/tester';
   var con = mongoose.connect(connStr);
 }
 

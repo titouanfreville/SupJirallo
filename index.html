@@ -1,55 +1,33 @@
 .<!DOCTYPE html>
-<html ng-app>
+<html>
   <head>
     <meta charset='utf-8' />
     <meta name='viewport' content='initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width' />
     <title>SupJiralo, the agile board from Supinfo !</title>
     <!-- loading JS -->
-    <script src="bower_components/jquery/dist/jquery.min.js"></script>
     <script src="bower_components/angular/angular.js"></script>
-    <style type="text/css">
-      html, body {
-          /* The split-pane needs a container with width and height. */
-          height: 100%;
-          min-height: 100%;
-          margin: 0;
-          padding: 0;
-      }
-      /* The styling below is very simple. You can style things your own way. */
-      body {
-          box-sizing: border-box;
-          background: #aaa;
-          padding: 5px;
-      }
-      .split-pane-divider {
-          background: #aaa;
-      }
-      .split-pane-component {
-          background: #fff;
-      }
-    </style>
+    <script src="angoose/angoose-client.js"></script>
+    <script serc='js/controllers.js'></script>
   </head>
-  <body>
+  <body ng-app="jirallo">
     <header>
       <h1>SupJiralo</h1>
       <h2>Enjoy being Agile</h2>
     </header>
     <div>
-      <input action="POST" type="text" ng-model="yourName" placeholder="Enter a name here" />
-      <h1>Hello {{yourName}}, welcome to our Agile ticket manager !</h1>
+      <h1>Hello, welcome to our Agile ticket manager !</h1>
       <br />
       <span>If you want to use or services, please log in :)</span>
-      <!-- <form ng-controller="loginForm"> -->
-      <form >
+      <form ng-submit='submit()' ng-controller="loginForm" >
         <label>
           <span>Enter your user name : </span>
-          <input type="text" ng-model="userName" name="username" value="{{yourName}}" />
+          <input type="text" ng-model="userName" name="username" placeholder="Enter your User Name Here :)" required />
         </label>
         <label>
           <span>Enter your password here : </span>
-          <input type="password" ng-model="userPass" name="userpass" />
+          <input type="password" ng-model="userPass" name="userpass" required />
         </label>
-        <input type="button" value="Submit" />
+        <input type="submit" value="Submit" />
       </form>
     </div>
   </body>

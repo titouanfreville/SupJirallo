@@ -13,5 +13,5 @@ RUN cd /home/supjirallo && bower install --allow-root
 EXPOSE 8080
 EXPOSE 3000
 
-CMD sleep 5s && node serve.js
+CMD sleep 5s && node --harmony_proxies init_mongo.js; node --harmony_proxies serve.js
 

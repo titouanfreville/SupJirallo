@@ -15,5 +15,5 @@ WORKDIR /home/supjirallo
 EXPOSE 8080
 EXPOSE 3000
 
-CMD sleep 5s; npm install; bower install; node serve.js
+CMD sleep 5s; npm install; bower install; node --harmony_proxies init_mongo.js; node --harmony_proxies serve.js
 

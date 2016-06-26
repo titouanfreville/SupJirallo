@@ -14,7 +14,7 @@
 /* jshint +W097 */
 'use strict';
 /*jshint -W097 */
-var jirallo = angular.module('irallo', ['User'])
+var jirallo = angular.module('jirallo', ['angoose.client'])
 
 // .config(function ($stateProvider, $urlRouterProvider, settings) {
 
