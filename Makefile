@@ -108,6 +108,9 @@ up:
 	./scripts/check_port.sh
 	docker-compose -p $(NAME) up
 
+web:
+	docker-compose -p $(NAME) up web
+
 build_prod:
 	docker-compose -p $(NAME) -f docker-compose.prod.yml build
 

@@ -9,7 +9,7 @@ var mongoose = require('mongoose'),
     // ObjectId = schema.ObjectId,
     ticket = Tickets.TScheme,
     Ticket = Tickets.Ticket,
-    SALT_WORK_FACTOR = 10;
+    SALT_WORK_FACTOR = 5;
 // ########################### SCHEMES DEFINITION  ########################### //
 // USER -------------------------------------------------------------------------
 var user = new schema({
