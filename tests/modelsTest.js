@@ -2,6 +2,7 @@
 // Include part to have required modules ...
 var mongoose = require('mongoose'),
   Users = require('./../models/users'),
+  Comment = require('./../models/comments').Comment,
   Ticket = require('./../models/tickets').Ticket,
   should= require('should'),
   User= Users.User,
@@ -10,7 +11,7 @@ var mongoose = require('mongoose'),
 // CONNECT TP TEST DN ----------------------------------------------------------------------------
 if (mongoose.connection.readyState === 0) {
   // Connect to mongo DB as tester DB (DB only for TEST USAGE)
-  // var connStr = 'mongodb://mongo_jiralo/tester';
+  // var connStr = 'mongodb://mongo_jiralo/broked_again_tester';
   var connStr = 'mongodb://localhost/tester';
   var con = mongoose.connect(connStr);
 }
@@ -187,7 +188,6 @@ var testDupDeveloperMail = new Developer({
 });
 // ----------------------------------------
 // Tickets --------------------------------
-// create Ticket
 var testNewTicket = new Ticket({
   summary: "Test1",
   description: "First test :p",
@@ -196,6 +196,40 @@ var testNewTicket = new Ticket({
   creationDate: new Date('2000','01','01'),
   reporter: null,
   assignee: null
+});
+
+var testEmptySummaryTicket = new Ticket({
+  description: "First test :p",
+  priority: "URGENT",
+  status: "BROKEN",
+  creationDate: new Date('2000','01','01'),
+  reporter: null,
+  assignee: null
+});
+
+var testEmptyReporterTicket = new Ticket({
+  description: "First test :p",
+  priority: "URGENT",
+  status: "BROKEN",
+  creationDate: new Date('2000','01','01'),
+  reporter: null,
+  assignee: null
+});
+
+var testDupTicket = new Ticket({
+  summary: "Test1",
+  description: "First test :p",
+  priority: "URGENT",
+  status: "BROKEN",
+  creationDate: new Date('2000','01','01'),
+  reporter: null,
+  assignee: null
+});
+// ----------------------------------------
+// Comments -------------------------------
+var testNewComment = new Comment({
+  summary: "Test1",
+  creationDate: new Date('2000','01','01'),
 });
 
 var testEmptySummaryTicket = new Ticket({
@@ -253,11 +287,11 @@ describe("Users", function(){
     });
   });
 
-  it("Should Failed to insert Duplicate Users", function(done){
+
+  it("Should Failed (50% not link to time) to insert Duplicate Users", function(done){
     testDupUserName.save(function(err){
       should.exist(err);
       err.code.should.be.equal(11000);
-
       testDupUserMail.save(function(err){
         should.exist(err);
         err.code.should.be.equal(11000);
@@ -265,7 +299,6 @@ describe("Users", function(){
       });
     });
   });
-
 
   it('Should find an Existing user', function(done){
     User.findOne({name: 'Noisette'}, function(err, user) {
@@ -337,7 +370,7 @@ describe("PO", function(){
   });
 
 
-  it("Should Failed to insert Duplicate PO", function(done){
+  it("Should Failed (50% not link to time) to insert Duplicate PO", function(done){
     testDupProductOwnerName.save(function(err){
       should.exist(err);
       err.code.should.be.equal(11000);
@@ -537,11 +570,47 @@ describe("Ticket", function(){
     });
   });
 
-  // after(function(done) {
-  //   con.disconnect();
-  //   done();
-  // })
+});
+// -----------------------------------------------------------------------------------------------
+// COMMENT TEST ----------------------------------------------------------------------------------
+describe("Comments", function(){
+  it("Product Owner can Comment.", function(done){
+    ProductOwner.findOne({name: 'PONoisette'}, function(err, po) {
+      po.poComment(testNewComment, 'Test1',function(err){
+        should.not.exist(err);
+        Comment.findOne({author: 'PONoisette'}, function (err,ticket) {
+          should.not.exist(err);
+          should.exist(ticket);
+          ticket.author.should.be.equal('PONoisette');
+          done();
+        });
+        po.save();
+      });
+    });
+  });
+
+
+  it("Dev can Comment.", function(done){
+    Developer.findOne({name: 'DEVNoisette'}, function(err, dev) {
+      dev.devComment(testNewComment, 'Test1',function(err){
+        should.not.exist(err);
+        Comment.findOne({author: 'DEVNoisette'}, function (err,ticket) {
+          should.not.exist(err);
+          should.exist(ticket);
+          ticket.author.should.be.equal('DEVNoisette');
+          done();
+        });
+        dev.save();
+      });
+    });
+  });
+
+  after(function(done) {
+    con.disconnect();
+    done();
+  })
 
 });
 // -----------------------------------------------------------------------------------------------
+
 

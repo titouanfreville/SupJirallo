@@ -2,6 +2,9 @@ var mongoose = require('mongoose'),
     bcrypt = require('bcrypt'),
     extend = require('mongoose-schema-extend'),
     Tickets = require('./tickets'),
+    Comments = require('./comments'),
+    comment = Comments.CSheme,
+    Comment = Comments.Comment,
     schema = mongoose.Schema,
     // ObjectId = schema.ObjectId,
     ticket = Tickets.TScheme,
@@ -67,10 +70,38 @@ po.methods.createTicket = function (ticket, cb) {
     cb(err);
   });
 };
+
+po.methods.poComment = function(comment, ticket_name, cb) {
+  po=this;
+  Ticket.findOne({summary: ticket_name}, function(err, t) {
+    if (err) return cb(err);
+    t.createTicketComment(comment, po.name, function(err){
+      if (err) return cb(err)
+    });
+    t.save(function(err) {
+      po.po_ticket.push(t);
+      cb(err);
+    })
+  })
+}
 // ------------------------------------------------------------------------------
 // Developer --------------------------------------------------------------------
 // Checking Password
 dev.methods.devcheckPass = user.methods.checkPass;
+
+dev.methods.devComment = function(comment, ticket_name, cb) {
+  dev=this;
+  Ticket.findOne({summary: ticket_name}, function(err, t) {
+    if (err) return cb(err);
+    t.createTicketComment(comment, dev.name, function(err){
+      if (err) return cb(err)
+    });
+    t.save(function(err) {
+      dev.dev_ticket.push(t);
+      cb(err);
+    })
+  })
+}
 
 dev.methods.startWorking = function(ticket_name, cb) {
   dev=this;

@@ -1,5 +1,5 @@
 var mongoose = require('mongoose'),
-    Users = require('./comments'),
+    Comment = require('./comments').CScheme,
     schema = mongoose.Schema;
 
 var ticket = new schema({
@@ -12,8 +12,19 @@ var ticket = new schema({
   reporter: {type: String, required: true, sparse: true}, // Will be used to store PRODUCT OWNER NAME.
   assignee: String, // Will be used to store DEVELOPER OWNER NAME.
   // REFER ----
-
+  comments: [Comment]
 })
+
+
+ticket.methods.createTicketComment = function (comment, author_name, cb) {
+  ti = this;
+  comment.ticket = ti.name;
+  comment.author = author_name;
+  comment.save(function(err) {
+    ti.comments.push(comment);
+    cb(err);
+  });
+};
 
 var Ticket;
 if (mongoose.models.Ticket) {

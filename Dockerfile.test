@@ -10,4 +10,4 @@ COPY . /home/supjirallo
 
 WORKDIR /home/supjirallo
 
-CMD sleep 10s; mocha --recursive --harmony_proxies tests
+CMD sleep 5s; mocha --recursive --harmony_proxies tests

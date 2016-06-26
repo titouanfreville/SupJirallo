@@ -80,7 +80,7 @@ prod: build_prod up_prod
 
 first_test: build_test up_test
 
-test: up_test
+test: up_o_test
 
 start_dev: beforehand test_require dev
 
@@ -121,6 +121,9 @@ build_test:
 
 up_test:
 	docker-compose -p $(NAME) -f docker-compose.test.yml up
+
+up_o_test:
+	docker-compose -p $(NAME) -f docker-compose.test.yml up test
 
 cstop:
 	docker-compose -p $(NAME) stop

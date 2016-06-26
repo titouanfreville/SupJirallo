@@ -1,30 +1,25 @@
 var mongoose = require('mongoose'),
-    Users = require('./tickets'),
     schema = mongoose.Schema;
 
-var ticket = new schema({
-  summary: { type: String, required: true, index: {unique: true}, sparse: true },
-  description: String,
-  priority: String,
-  status: String,
+var comment = new schema();
+comment.add({
+  content: String,
   creationDate: Date,
   // REFERENCE TO ------
-  reporter: {type: String, required: true, sparse: true}, // Will be used to store PRODUCT OWNER NAME.
-  assignee: String, // Will be used to store DEVELOPER OWNER NAME.
-  // REFET ----
+  ticket: String, // Will be used to store TICKET SUMMURY.
+  author: String, // Will be used to store USER NAME.
+});
 
-})
-
-var Ticket;
-if (mongoose.models.Ticket) {
-  Ticket = mongoose.model('Ticket');
+var Comment;
+if (mongoose.models.comment) {
+  Comment = mongoose.model('Comment');
 } else {
-  Ticket = mongoose.model('Ticket', ticket);
+  Comment = mongoose.model('Comment', comment);
 }
 
-var Tickets = {
-  Ticket: Ticket,
-  TScheme: ticket
+var Comments = {
+  Comment: Comment,
+  CScheme: comment
 }
 
-module.exports = Tickets;
+module.exports = Comments;
