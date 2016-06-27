@@ -15,9 +15,9 @@ jirallo.controller('newTicketCtrl', ['$scope', '$rootScope', '$state', '$window'
 jirallo.controller('allTicketCtrl', ['$scope', '$rootScope', '$state', '$window', '$http', '$location', '$sce', 'Ticket', function($scope, $rootScope, $state, $window, $http, $location, $sce, Ticket){
   $scope.tickets=Ticket.$query({}, null, {sort: {creationDate: -1}});
   console.log(Ticket.$get({status: 'TO DO'}));
-  $scope.useractions = '<a ui-sref="details">View</a>';
+  $scope.useractions = '<button ng-click="go_details()">View</button>';
   if ($window.localStorage.userRole == 'ProductOwner') {
-    $scope.useractions =$scope.useractions + (' | <a ui-sref="editticket">Edit Ticket</a> | <button ng-click="destroy()">Delete Ticket</button>')
+    $scope.useractions =$scope.useractions + (' | <button ng-click="go_edit()">Edit Ticket</button> | <button ng-click="destroy()">Delete Ticket</button>')
   }
   $scope.useractions = $sce.trustAsHtml($scope.useractions);
 }]);
