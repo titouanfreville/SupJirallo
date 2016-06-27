@@ -102,20 +102,13 @@ angoose.init(app, {
    'module-dirs':'models',
    'mongo-opts': 'mongo_jiralo:27017/jiralo_db',
 });
-
 // Basic routes.
 app.get('/', function (req, res) {
   console.log('Session : '+req.session.loggedIn);
   res.sendFile(path.join(__dirname, 'index.html'));
 });
-
-app.get('/api', function(req, res) {
-  res.send('Hello ! The API is Listening you :p ');
-})
-
 // Api Routes
 apiRoutes.post('/signin', function(req, res){
-  console.log('Session : '+req.session);
   User.findOne({
     name: req.body.name
   }, function(err, user){
@@ -131,7 +124,7 @@ apiRoutes.post('/signin', function(req, res){
             req.session.regenerate(function(){
               req.session.loggedIn = true;
               req.session.name = user.name;
-              // var token = jwt.encode(user, config.secret);
+              req.session.role = user.role;
               req.session.successs = 'Authenticated as ' + user.name;
               res.json({success: true, message: 'successs in adding new user', role: user.role});
             });
@@ -148,6 +141,7 @@ apiRoutes.post('/signin', function(req, res){
             req.session.regenerate(function(){
               req.session.loggedIn = true;
               req.session.name = user.name;
+              req.session.role = user.role;
               // var token = jwt.encode(user, config.secret);
               req.session.successs = 'Authenticated as ' + user.name;
               res.json({success: true, message: 'successs in adding new user', role: user.role});
@@ -165,35 +159,36 @@ apiRoutes.post('/signin', function(req, res){
 
 // Api Routes
 apiRoutes.post('/private/newticket', function(req, res){
-  console.log('Session : '+req.session);
-  ProducOwner.findOne({
-    name: req.session.name,
-    role: 'ProducOwner'
-  }, function(err, user){
-    if (err) throw err;
-    if (!user) {
-      req.session.loggedIn=false;
-      req.session.error='You have been removed from the PO List.... Bad for you :(';
-      res.redirect('/');
-    } else {
-      if (user.role == 'ProductOwner') {
-        user.pocheckPass(req.body.password, function(err, isMatch) {
-          if (isMatch && !err) {
-            req.session.regenerate(function(){
-              req.session.loggedIn = true;
-              // var token = jwt.encode(user, config.secret);
-              req.session.successs = 'Authenticated as ' + user.name;
-              res.redirect('private/');
-            });
+  if (req.session.role == 'ProductOwner') {
+    ProductOwner.findOne({
+      name: req.session.name
+    }, function(err, user){
+      if (err) {
+        res.json({success: false, message: 'Failed. You have been removed from the Product Owner list. Too Bad :('})
+      } else {
+        var new_ticket= new Ticket({
+          summary: req.body.summary,
+          description: req.body.description,
+          priority: req.body.priority,
+          status: req.body.status,
+          creationDate: new Date(),
+          reporter: null,
+          assignee: null
+        });
+        user.createTicket(new_ticket, function(err) {
+          if (err) {
+            res.json({success: false, message: 'Internal error. Ticket failed to be created. Sorry for the inconveniance.'});
           } else {
-            req.session.loggedIn=false;
-            req.session.error='Autentification failed. Wrong password.'
-            res.redirect('/');
+            res.json({success: true, message: 'Ticket well aded. :)'});
           }
         })
       }
-    }
-  })
+    });
+  } else {
+    req.session.loggedIn=false;
+    req.session.error='You have been removed from the PO List.... Bad for you :(';
+    res.json({succes: false, message: 'Failed. You are not Allowed to perform this action.'});
+  }
 })
 
 app.use('/', apiRoutes);
@@ -206,3 +201,5 @@ var server = app.listen(3000, function () {
       console.log('Server listening at http://'+ server.address().address + ':' + server.address().port);
     }
 });
+
+module.exports = server;

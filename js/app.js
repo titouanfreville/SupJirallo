@@ -15,19 +15,6 @@
 'use strict';
 /*jshint -W097 */
 var jirallo=angular.module('jirallo', [ 'ngRoute', 'ui.router', 'jirallo.loginCtrl', 'jirallo.tickets']);
-/*
-jirallo.config(function($routeProvider) {
-  $routeProvider
-    // Main State
-    .when('/', {
-      templateUrl: 'main_view.html'
-    })
-
-    .when('/private', {
-      templateUrl: 'private/index.html'
-    })
-})
-*/
 jirallo.config(function ($stateProvider, $urlRouterProvider, $routeProvider) {
   // $urlRouterProvider.when('/', '/index').when('/index.html', '/index');
   $stateProvider
@@ -53,16 +40,25 @@ jirallo.config(function ($stateProvider, $urlRouterProvider, $routeProvider) {
   })
 
   .state('addticket', {
-    url: '/addticker',
+    url: '/addticket',
     templateUrl: 'private/add.html'
   })
   ;
 
-  $urlRouterProvider.otherwise('')
+  $urlRouterProvider.otherwise('/index')
 })
 
 jirallo.controller('mainCtrl',['$rootScope', '$scope', '$window', '$state', function($rootScope, $scope, $window, $state) {
-  $scope.userName=$window.localStorage.userName;
+  if ($rootScope.userName) {
+    $scope.userName = $rootScope.userName;
+  } else {
+    $scope.userName = $window.localStorage.userName;
+  }
+  console.log($scope.userName);
+  console.log(angular.isDefined($scope.userName));
+  $scope.logged = angular.isDefined($scope.userName);
+  console.log('logged ' + $scope.logged);
+
 }]);
 
 jirallo.controller('logoutCtrl', ['$scope', '$window', '$rootScope', '$state', function($scope, $window, $rootScope, $state) {

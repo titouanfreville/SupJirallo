@@ -1,75 +1,42 @@
-<!DOCTYPE html>
-<html ng-app>
-  <head>
-    <meta charset='utf-8' />
-    <meta name='viewport' content='initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width' />
-    <title>SupJiralo, the agile board from Supinfo !</title>
-    <!-- loading JS -->
-    <script src="../bower_components/jquery/dist/jquery.min.js"></script>
-    <script src="../bower_components/angular/angular.js"></script>
-    <style type="text/css">
-      html, body {
-          /* The split-pane needs a container with width and height. */
-          height: 100%;
-          min-height: 100%;
-          margin: 0;
-          padding: 0;
-      }
-      /* The styling below is very simple. You can style things your own way. */
-      body {
-          box-sizing: border-box;
-          background: #aaa;
-          padding: 5px;
-      }
-      .split-pane-divider {
-          background: #aaa;
-      }
-      .split-pane-component {
-          background: #fff;
-      }
-    </style>
-  </head>
-  <body>
-  <!-- Header to be inserted on every page.  -->
-    <header>
-      <!-- Please don't use <img> tag for logo. It should be a DIV background image instead :) -->
-      <div class="logo"></div>
-      <bar>
-        <h1>SupJiralo</h1>
-        <h2>Enjoy being Agile</h2>
-      </bar>
-      <!-- Navigation tools -->
-      <nav>
-        <ul>
-          <li><a href="index.html">New Tickets</a></li>
-          <li><a href="add.html">Create Ticket</a></li>
-          <li><a href="show.html">All Tickets</a></li>
-          <li ng-controller="logoutCtrl"><input ng-click="destoy()" type="button" name="submit" value="Logout" /></a></li>
-        </ul>
-      </nav>
-    </header>
-    <div>
-      <h2> All tickets</h2>
-      <!-- This will print table of new tickets :) div == table, p == lines, span == colulmns -->
-      <div ng-controller="allTicketCtrl">
-        <p>
-          <span>Ticket Id</span>
-          <span>Summary</span>
-          <span>Priority</span>
-          <span>Reported by</span>
-          <span>Status</span>
-          <span>Action</span>
-        </p>
-        <!-- Get all tickets from tickets table (cf scope in controller) -->
-        <p ng-repeat="t in ta">
-          <span>t.id</span>
-          <span>t.sum</span>
-          <span>t.pri</span>
-          <span>t.rep</span>
-          <span>t.sta</span>
-          <span>t.act</span>
-        </p>
-      </div>
-    </div>
-  </body>
-</html>
+<div>
+<!-- Header to be inserted on every page.  -->
+<header>
+  <!-- Please don't use <img> tag for logo. It should be a DIV background image instead :) -->
+  <div class="logo"></div>
+  <bar>
+    <h1>SupJiralo</h1>
+    <h2>Enjoy being Agile</h2>
+  </bar>
+  <!-- Navigation tools -->
+  <nav>
+    <ul>
+      <li><a ui-sref="private">New Tickets</a></li>
+      <li><a ui-sref="addticket">Create Ticket</a></li>
+      <li><a ui-sref="showticket">All Tickets</a></li>
+      <li ng-controller="logoutCtrl"><form ng-submit="destroy()"><input type="submit" name="submit" value="Logout" /></a></li>
+    </ul>
+  </nav>
+</header>
+<div>
+  <h2> All tickets</h2>
+  <!-- This will print table of new tickets :) div == table, p == lines, span == colulmns -->
+  <div ng-controller="allTicketCtrl">
+    <p>
+      <span>Ticket Id</span>
+      <span>Summary</span>
+      <span>Priority</span>
+      <span>Reported by</span>
+      <span>Status</span>
+      <span>Action</span>
+    </p>
+    <!-- Get all tickets from tickets table (cf scope in controller) -->
+    <p ng-repeat="t in ta">
+      <span>t.id</span>
+      <span>t.sum</span>
+      <span>t.pri</span>
+      <span>t.rep</span>
+      <span>t.sta</span>
+      <span>t.act</span>
+    </p>
+  </div>
+</div>

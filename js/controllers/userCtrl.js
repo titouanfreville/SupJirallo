@@ -17,7 +17,6 @@ jirallo.controller('loginForm', ['$scope', '$rootScope', '$state', '$window', '$
         },
         data: {name: $scope.userName , password: $scope.userPass}
       }).success(function(res) {
-        console.log(res);
         if (res.success) {
           $rootScope.userName=$scope.userName;
           $window.localStorage.setItem('userName', $scope.userName);

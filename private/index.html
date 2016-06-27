@@ -1,24 +1,24 @@
 <div>
-  <!-- Header to be inserted on every page.  -->
-  <header>
-    <!-- Please don't use <img> tag for logo. It should be a DIV background image instead :) -->
-    <div class="logo"></div>
-    <bar>
-      <h1>SupJiralo</h1>
-      <h2>Enjoy being Agile</h2>
-    </bar>
-    <!-- Navigation tools -->
-    <nav>
-      <ul>
-        <li><a href="{{ index_page }}">New Tickets</a></li>
-        <li><a href="add.html">Create Ticket</a></li>
-        <li><a href="show.html">All Tickets</a></li>
-        <li ng-controller="logoutCtrl"><form ng-submit="destroy()"><input type="submit" name="submit" value="Logout" /></a></li>
-      </ul>
-    </nav>
-  </header>
+<!-- Header to be inserted on every page.  -->
+<header>
+  <!-- Please don't use <img> tag for logo. It should be a DIV background image instead :) -->
+  <div class="logo"></div>
+  <bar>
+    <h1>SupJiralo</h1>
+    <h2>Enjoy being Agile</h2>
+  </bar>
+  <!-- Navigation tools -->
+  <nav>
+    <ul>
+      <li><a ui-sref="private">New Tickets</a></li>
+      <li><a ui-sref="addticket">Create Ticket</a></li>
+      <li><a ui-sref="showticket">All Tickets</a></li>
+      <li ng-controller="logoutCtrl"><form ng-submit="destroy()"><input type="submit" name="submit" value="Logout" /></a></li>
+    </ul>
+  </nav>
+</header>
   <div>
-    <h1> Welcome {{userName}}, welcome to your Profile !</h1>
+    <h1> Welcome {{userName}} to your Profile !</h1>
     <h2> New Tickets</h2>
     <!-- This will print table of new tickets :) div == table, p == lines, span == colulmns -->
     <div ng-controller="newTicketCtrl">
