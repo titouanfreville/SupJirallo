@@ -50,19 +50,14 @@ jirallo.config(function ($stateProvider, $urlRouterProvider, $routeProvider) {
   $urlRouterProvider.otherwise('')
 })
 
-jirallo.controller('indexController',['$rootScope', '$scope', '$window', '$state', function($rootScope, $scope, $window, $state) {
-  console.log('States Found :  ' + angular.toJson($state.get()))
-  if ($rootScope.userName) {
-    $scope.userName=$rootScope.userName;
-  } else {
-    $scope.userName=$window.localStorage.userName;
-  }
+jirallo.controller('mainCtrl',['$rootScope', '$scope', '$window', '$state', function($rootScope, $scope, $window, $state) {
+  $scope.userName=$window.localStorage.userName;
 }]);
 
 jirallo.controller('logoutCtrl', ['$scope', '$window', '$rootScope', '$state', function($scope, $window, $rootScope, $state) {
   $scope.destroy = function() {
-    $rootScope.name=null;
-    $window.localStorage.name=null;
+    $rootScope.userName=null;
+    $window.localStorage.clear();
     $state.go('index');
   }
 }])

@@ -2,11 +2,7 @@
 'use strict';
 var jirallo = angular.module('jirallo.tickets', ['ngCookies']);
 jirallo.controller('newTicketCtrl', ['$scope', '$rootScope', '$state', '$window', '$http', '$location', function($scope, $rootScope, $state, $window, $http, $location){
-
   var CredNotProvided = "You are missing something. Please make sure you provided both User name and Password.";
-  $scope.userName='Marsu';
-  $scope.userPass='mars';
-
   $scope.submit = function () {
     if ($scope.userName && $scope.userPass) {
       $http({
