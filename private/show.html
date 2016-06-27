@@ -10,9 +10,9 @@
   <!-- Navigation tools -->
   <nav>
     <ul>
-      <li><a ui-sref="private">New Tickets</a></li>
+      <li><a ui-sref="logged">New Tickets</a></li>
       <li><a ui-sref="addticket">Create Ticket</a></li>
-      <li><a ui-sref="showticket">All Tickets</a></li>
+      <li><a ui-sref="listtickets">All Tickets</a></li>
       <li ng-controller="logoutCtrl"><form ng-submit="destroy()"><input type="submit" name="submit" value="Logout" /></form></li>
     </ul>
   </nav>
@@ -30,13 +30,13 @@
       <span>Action</span>
     </p>
     <!-- Get all tickets from tickets table (cf scope in controller) -->
-    <p ng-repeat="t in ta">
-      <span>t.id</span>
-      <span>t.sum</span>
-      <span>t.pri</span>
-      <span>t.rep</span>
-      <span>t.sta</span>
-      <span>t.act</span>
+    <p ng-repeat="t in tickets">
+      <span>{{ t._id }}</span>
+      <span>{{ t.summary }}</span>
+      <span>{{ t.priority }}</span>
+      <span>{{ t.reporter }}</span>
+      <span>{{ t.status }}</span>
+      <span ng-bind-html="useractions"></span>
     </p>
   </div>
 </div>

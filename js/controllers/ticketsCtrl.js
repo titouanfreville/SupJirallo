@@ -12,6 +12,16 @@ jirallo.controller('newTicketCtrl', ['$scope', '$rootScope', '$state', '$window'
   $scope.useractions = $sce.trustAsHtml($scope.useractions);
 }]);
 
+jirallo.controller('allTicketCtrl', ['$scope', '$rootScope', '$state', '$window', '$http', '$location', '$sce', 'Ticket', function($scope, $rootScope, $state, $window, $http, $location, $sce, Ticket){
+  $scope.tickets=Ticket.$query();
+  console.log(Ticket.$get({status: 'TO DO'}));
+  $scope.useractions = '<a ui-sref="details">View</a>';
+  if ($window.localStorage.userRole == 'ProductOwner') {
+    $scope.useractions =$scope.useractions + (' | <a ui-sref="editticket">Edit Ticket</a> | <button ng-click="destroy()">Delete Ticket</button>')
+  }
+  $scope.useractions = $sce.trustAsHtml($scope.useractions);
+}]);
+
 jirallo.controller('addTicketCtrl', ['$scope', '$rootScope', '$state', '$window', '$http', '$location', function($scope, $rootScope, $state, $window, $http, $location){
   var CredNotProvided = "You are missing something. Please make sure you provided a Summary for the ticket.";
   $scope.priorities= {
@@ -35,8 +45,7 @@ jirallo.controller('addTicketCtrl', ['$scope', '$rootScope', '$state', '$window'
         data: {
           summary: $scope.summary ,
           description: $scope.description,
-          priority: $scope.priorities.value,
-          status: 'TO DO'
+          priority: $scope.priorities.value
         }
       }).success(function(res) {
         $window.alert(res.message);

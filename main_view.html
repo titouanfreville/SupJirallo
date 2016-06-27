@@ -11,9 +11,9 @@
     <!-- Navigation tools -->
     <nav ng-show='logged'>
       <ul>
-        <li><a ui-sref="private">New Tickets</a></li>
+        <li><a ui-sref="logged">New Tickets</a></li>
         <li><a ui-sref="addticket">Create Ticket</a></li>
-        <li><a ui-sref="showticket">All Tickets</a></li>
+        <li><a ui-sref="listtickets">All Tickets</a></li>
         <li ng-controller="logoutCtrl"><form ng-submit="destroy()"><input type="submit" name="submit" value="Logout" /></form></li>
       </ul>
     </nav>
