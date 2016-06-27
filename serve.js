@@ -38,7 +38,7 @@ secure = function (req, res, next) {
 
 not_po = function (req, res, next) {
   console.log("In midlle Ware ---------------------")
-  console.log('Session : '+req.session);
+  console.log('Session.role : '+req.session.role);
   if (req.session) {
     if (req.session.role == 'ProductOwner') {
       console.log('Ok :)');
