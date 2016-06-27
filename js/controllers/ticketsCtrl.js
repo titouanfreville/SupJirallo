@@ -3,7 +3,7 @@
 var jirallo = angular.module('jirallo.tickets', ['ngCookies']);
 
 jirallo.controller('newTicketCtrl', ['$scope', '$rootScope', '$state', '$window', '$http', '$location', '$sce', 'Ticket', function($scope, $rootScope, $state, $window, $http, $location, $sce, Ticket){
-  $scope.tickets=Ticket.$query({status: 'TO DO'});
+  $scope.tickets=Ticket.$query({status: 'TO DO'}, null, {sort: {creationDate: -1}});
   console.log(Ticket.$get({status: 'TO DO'}));
   $scope.useractions = '<a ui-sref="details">View</a>';
   if ($window.localStorage.userRole == 'ProductOwner') {
@@ -13,7 +13,7 @@ jirallo.controller('newTicketCtrl', ['$scope', '$rootScope', '$state', '$window'
 }]);
 
 jirallo.controller('allTicketCtrl', ['$scope', '$rootScope', '$state', '$window', '$http', '$location', '$sce', 'Ticket', function($scope, $rootScope, $state, $window, $http, $location, $sce, Ticket){
-  $scope.tickets=Ticket.$query();
+  $scope.tickets=Ticket.$query({}, null, {sort: {creationDate: -1}});
   console.log(Ticket.$get({status: 'TO DO'}));
   $scope.useractions = '<a ui-sref="details">View</a>';
   if ($window.localStorage.userRole == 'ProductOwner') {
