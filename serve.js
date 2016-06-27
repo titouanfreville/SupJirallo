@@ -71,13 +71,13 @@ app.use(session({
 
 app.use(function(req, res, next){
   var err = req.session.error;
-  var msg = req.session.success;
+  var msg = req.session.successs;
   console.log('Session ' + req.session.loggedIn);
   delete req.session.error;
-  delete req.session.success;
+  delete req.session.successs;
   res.locals.message = '';
   if (err) res.locals.message = '<p class="msg error">' + err + '</p>';
-  if (msg) res.locals.message = '<p class="msg success">' + msg + '</p>';
+  if (msg) res.locals.message = '<p class="msg successs">' + msg + '</p>';
   next();
 });
 
@@ -123,7 +123,7 @@ apiRoutes.post('/signin', function(req, res){
     if (!user) {
       req.session.loggedIn=false;
       req.session.error='Authentication failed. User not found.'
-      res.redirect('/');
+      res.json({success: false, message: 'Failed. User incorrect, please make sure you did not miss type.'});
     } else {
       if (user.role == 'ProductOwner') {
         user.pocheckPass(req.body.password, function(err, isMatch) {
@@ -132,13 +132,13 @@ apiRoutes.post('/signin', function(req, res){
               req.session.loggedIn = true;
               req.session.name = user.name;
               // var token = jwt.encode(user, config.secret);
-              req.session.success = 'Authenticated as ' + user.name;
-              res.redirect('private/index_po.html');
+              req.session.successs = 'Authenticated as ' + user.name;
+              res.json({success: true, message: 'successs in adding new user', role: user.role});
             });
           } else {
             req.session.loggedIn=false;
             req.session.error='Autentification failed. Wrong password.'
-            res.redirect('/');
+            res.json({success: false, message: 'Failed. Password incorrect, please make sure you did not miss type.'});
           }
         })
       }
@@ -149,13 +149,13 @@ apiRoutes.post('/signin', function(req, res){
               req.session.loggedIn = true;
               req.session.name = user.name;
               // var token = jwt.encode(user, config.secret);
-              req.session.success = 'Authenticated as ' + user.name;
-              res.redirect('private/');
+              req.session.successs = 'Authenticated as ' + user.name;
+              res.json({success: true, message: 'successs in adding new user', role: user.role});
             });
           } else {
             req.session.loggedIn=false;
             req.session.error='Autentification failed. Wrong password.'
-            res.redirect('/');
+            res.json({success: false, message: 'Failed. Password incorrect, please make sure you did not miss type.'});
           }
         })
       }
@@ -182,7 +182,7 @@ apiRoutes.post('/private/newticket', function(req, res){
             req.session.regenerate(function(){
               req.session.loggedIn = true;
               // var token = jwt.encode(user, config.secret);
-              req.session.success = 'Authenticated as ' + user.name;
+              req.session.successs = 'Authenticated as ' + user.name;
               res.redirect('private/');
             });
           } else {
