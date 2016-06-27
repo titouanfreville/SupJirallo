@@ -45,7 +45,18 @@ jirallo.config(function ($stateProvider, $urlRouterProvider, $routeProvider) {
   .state('logged', {
       url: '/logged',
       templateUrl: 'private/index.html'
-    });
+    })
+
+  .state('listtickets', {
+    url: '/listtickets',
+    templateUrl: 'private/show.html'
+  })
+
+  .state('addticket', {
+    url: '/addticker',
+    templateUrl: 'private/add.html'
+  })
+  ;
 
   $urlRouterProvider.otherwise('')
 })
