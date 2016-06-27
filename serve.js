@@ -36,6 +36,23 @@ secure = function (req, res, next) {
   }
 }
 
+not_po = function (req, res, next) {
+  console.log("In midlle Ware ---------------------")
+  console.log('Session : '+req.session);
+  if (req.session) {
+    if (req.session.role == 'ProductOwner') {
+      console.log('Ok :)');
+      next();
+    } else {
+      console.log('Can not access');
+    }
+  }
+  else {
+    console.log('Session not defined');
+    res.redirect('/');
+  }
+}
+
 getToken = function (headers) {
   if (headers && headers.authorization) {
     var parted = headers.authorization.split(' ');
@@ -92,6 +109,11 @@ app.use('/main_view.html', express.static(path.join(__dirname, 'main_view.html')
 // Defin private as path so we can protect it
 app.use('/private', secure);
 app.use('/private', express.static(path.join(__dirname, 'private')));
+// Only PO can access here (be saffer.)
+app.use('/po', not_po);
+app.use('/po', express.static(path.join(__dirname, 'po')));
+
+
 // ----------------------------------------------------------------------------------
 // Connect to Mongo -----------------------------------------------------------------
 mongoose.connect(config.database);
@@ -177,7 +199,12 @@ apiRoutes.post('/private/newticket', function(req, res){
         });
         user.createTicket(new_ticket, function(err) {
           if (err) {
-            res.json({success: false, message: 'Internal error. Ticket failed to be created. Sorry for the inconveniance.'});
+            console.log(err);
+            if (err.code='11000') {
+              res.json({success: false, message: 'It seems like you already reported this issue. Please check that it is not a duplicate. If it is not, make another summary so it can pass :).'});
+            } else {
+              res.json({success: false, message: 'Internal error. Ticket failed to be created. Sorry for the inconveniance.'});
+            }
           } else {
             res.json({success: true, message: 'Ticket well aded. :)'});
           }

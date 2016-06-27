@@ -14,7 +14,7 @@
 /* jshint +W097 */
 'use strict';
 /*jshint -W097 */
-var jirallo=angular.module('jirallo', [ 'ngRoute', 'ui.router', 'jirallo.loginCtrl', 'jirallo.tickets']);
+var jirallo=angular.module('jirallo', [ 'ngRoute', 'ui.router', 'angoose.client' ,'jirallo.loginCtrl', 'jirallo.tickets']);
 jirallo.config(function ($stateProvider, $urlRouterProvider, $routeProvider) {
   // $urlRouterProvider.when('/', '/index').when('/index.html', '/index');
   $stateProvider
@@ -41,7 +41,7 @@ jirallo.config(function ($stateProvider, $urlRouterProvider, $routeProvider) {
 
   .state('addticket', {
     url: '/addticket',
-    templateUrl: 'private/add.html'
+    templateUrl: 'po/add.html'
   })
   ;
 

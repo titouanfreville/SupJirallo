@@ -1,4 +1,4 @@
-<div>
+<div ng-controller="mainCtrl">
 <!-- Header to be inserted on every page.  -->
 <header>
   <!-- Please don't use <img> tag for logo. It should be a DIV background image instead :) -->
@@ -13,7 +13,7 @@
       <li><a ui-sref="private">New Tickets</a></li>
       <li><a ui-sref="addticket">Create Ticket</a></li>
       <li><a ui-sref="showticket">All Tickets</a></li>
-      <li ng-controller="logoutCtrl"><form ng-submit="destroy()"><input type="submit" name="submit" value="Logout" /></a></li>
+      <li ng-controller="logoutCtrl"><form ng-submit="destroy()"><input type="submit" name="submit" value="Logout" /></form></li>
     </ul>
   </nav>
 </header>
