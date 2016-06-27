@@ -37,26 +37,21 @@ jirallo.config(function ($stateProvider, $urlRouterProvider, $routeProvider) {
       templateUrl: 'main_view.html'
      })
 
-    .state('jirallo.index', {
+  .state('index', {
       url: '/index',
       templateUrl: 'main_view.html'
     })
 
-    .state('logged', {
-      url: '/private',
+  .state('logged', {
+      url: '/logged',
       templateUrl: 'private/index.html'
     });
 
   $urlRouterProvider.otherwise('')
-
-  // $routeProvider
-  //   .when('/', {
-  //     templateUrl: 'main_view.html'
-  //   });
 })
 
-jirallo.controller('indexController',['$rootScope', '$scope', '$window', function($rootScope, $scope, $window) {
-  console.log('Window Storage ' + $window.sessionStorage.userName)
+jirallo.controller('indexController',['$rootScope', '$scope', '$window', '$state', function($rootScope, $scope, $window, $state) {
+  console.log('States Found :  ' + angular.toJson($state.get()))
   if ($rootScope.userName) {
     $scope.userName=$rootScope.userName;
   } else {
@@ -66,8 +61,8 @@ jirallo.controller('indexController',['$rootScope', '$scope', '$window', functio
 
 jirallo.controller('logoutCtrl', ['$scope', '$window', '$rootScope', '$state', function($scope, $window, $rootScope, $state) {
   $scope.destroy = function() {
-    console.log('Wtf ?');
     $rootScope.name=null;
-    $state.go('jirallo.index');
+    $window.localStorage.name=null;
+    $state.go('index');
   }
 }])
