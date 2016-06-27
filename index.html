@@ -4,32 +4,23 @@
     <meta charset='utf-8' />
     <meta name='viewport' content='initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width' />
     <title>SupJiralo, the agile board from Supinfo !</title>
-    <!-- loading JS -->
-    <script src="bower_components/angular/angular.js"></script>
-    <script src="/angoose/angoose-client.js"></script>
-    <script src='js/app.js'></script>
-    <script src='js/controllers/loginCtrl.js'></script>
+    <!-- Loading CSS -->
+    <link href='style/style.css' rel='stylesheet'>
   </head>
-  <body ng-app='jirallo'>
-    <header>
-      <h1>SupJiralo</h1>
-      <h2>Enjoy being Agile</h2>
-    </header>
-    <div>
-      <h1>Hello, welcome to our Agile ticket manager !</h1>
-      <br />
-      <span>If you want to use or services, please log in :)</span>
-      <form ng-submit='submit()' ng-controller="loginForm" >
-        <label>
-          <span>Enter your user name : </span>
-          <input type="text" ng-model="userName" name="username" placeholder="Enter your User Name Here :)" required />
-        </label>
-        <label>
-          <span>Enter your password here : </span>
-          <input type="password" ng-model="userPass" name="userpass" required />
-        </label>
-        <input type="submit" value="Submit" />
-      </form>
-    </div>
+  <body ng-app='jirallo' ng-class='bodyClass' ng-controller="indexController">
+  <div ui-view>
+  </div>
+
+  <!-- loading JS -->
+  <script src="bower_components/angular/angular.js"></script>
+  <script src="bower_components/angular-cookies/angular-cookies.js"></script>
+  <script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
+  <script src="bower_components/angular-route/angular-route.js"></script>
+  <script src='js/app.js'></script>
+  <script src='js/controllers/loginCtrl.js'></script>
+  <script src='js/controllers/ticketsCtrl.js'></script>
+  <script src='js/controllers/commentsCtrl.js'></script>
+
+
   </body>
 </html>
