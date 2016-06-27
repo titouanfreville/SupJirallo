@@ -1,44 +1,61 @@
 header {
+  @include flex;
   @include display-flex;
   @include flex-direction(column);
-  @include justify-content(flex-end);
-  text-align: right;
+  @include justify-content(space-between);
+  text-align: center;
   padding: 10px;
-  text-transform: uppercase;
   width: 90%;
   font-size: xx-large;
-  span {
+
+  div, nav {
+    @include flex;
     @include display-flex;
     @include flex-direction(row);
-    @include justify-content(flex-end);
-    p {
-      margin-right: 1ex;
-      &.nobreak {
-        margin: 0;
+    @include justify-content(space-between);
+  }
+
+  div {
+    .logo {
+      @include flex(0.5);
+      @include display-flex;
+      background: $logo no-repeat center center;
+      background-size: contain;
+    }
+    bar {
+      @include flex;
+      @include display-flex;
+      @include flex-direction(Column);
+      @include justify-content(space-between);
+      h1, h2 {
+        @include flex;
+        @include display-flex;
+        @include flex-direction(Column);
+        @include justify-content(space-between);
       }
     }
   }
 
-  .intro {
-    @include display-flex;
-    @include flex-direction(row);
-    @include justify-content(space-around);
-    @include align-items(center);
-    margin-top: 10px;
-    .logomask {
-      background: url(../images/logo.png) no-repeat center center;
-      background-size: contain;
-      height: 100px;
-      width: 100px;
-    }
-    span {
-      text-align: left;
-      color: #000;
-      font-style: italic;
-      font-weight: normal;
-      text-transform: none;
-      font-size: medium;
-      width: 100%;
+  nav {
+    margin: 1ex;
+    ul {
+      @include flex;
+      @include display-flex;
+      @include flex-direction(row);
+      @include justify-content(space-between);
+      li {
+        @include flex;
+        @include display-flex;
+        @include flex-direction(row);
+        @include justify-content(space-between);
+        a {
+          text-decoration: underline;
+          &:hover {
+            font-style: italic;
+          }
+        }
+      }
     }
   }
+
 }
