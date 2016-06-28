@@ -3,12 +3,14 @@ require('rootpath');
 var express      = require('express'),
     app          = express(),
     session      = require('express-session'),
+    nodemailer   = require('nodemailer')
     morgan       = require('morgan'),
     jwt          = require('jwt-simple'),
     bodyParser   = require('body-parser'),
     path         = require('path'),
     mongoose     = require('mongoose'),
-    angoose      = require("angoose"),
+    angoose      = require('angoose'),
+    xoauth2      = require('xoauth2'),
     flash        = require('express-flash-notification'),
     config       = require('./config/database'),
     Users        = require('./models/users'),
@@ -18,6 +20,24 @@ var express      = require('express'),
     User         = Users.User,
     ProductOwner = Users.ProductOwner,
     Developer    = Users.Developer;
+var transporter  = nodemailer.createTransport({
+  service: 'GMail',
+  auth: {
+    xoauth2: xoauth2.createXOAuth2Generator({
+      user: 'supjirallo@gmail.com',
+      clientId: '135474674442-ngot4g8g60mil7kbsnbnltv8b80l9tjt.apps.googleusercontent.com',
+      clientSecret: 'CuAMhaXYueb2A8ITwAmaytG8',
+      refreshToken: '1/zDX8W8RHXrCZhOZMk5DrHXgqHRtZsdGk-12Y3GoVqS4',
+
+    })
+  }
+});
+var mailOptions  = {
+  from: 'supjirallo@gmail.com',
+  to: null,
+  subject: null,
+  text: null
+}
 // ----------------------------------------------------------------------------------
 secure = function (req, res, next) {
   console.log("In midlle Ware ---------------------")
@@ -52,6 +72,9 @@ not_po = function (req, res, next) {
     console.log('Session not defined');
     res.redirect('/');
   }
+}
+
+send_email = function(req,res) {
 }
 
 getToken = function (headers) {
@@ -210,7 +233,7 @@ apiRoutes.post('/private/newticket', function(req, res){
             console.log(err);
             if (err.code='11000') res.json({success: false, message: 'It seems like you already reported this issue. Please check that it is not a duplicate. If it is not, make another summary so it can pass :).'});
             else {
-              if (err.name == 'MyOwnMessage') res.json({success: false, message: res.message});
+              if (err.name == 'MyOwnMessage') res.json({success: false, message: errti.message});
               else res.json({success: false, message: 'Internal error. Ticket failed to be created. Sorry for the inconveniance.'})
             }
           }
@@ -240,7 +263,7 @@ apiRoutes.post('/private/updateticket', function(req, res){
         };
         user.updateTicket(req.body.summary, new_ticket, function(err) {
           if (err) {
-            if (err.name == 'MyOwnMessage') res.json({success: false, message: res.message});
+            if (err.name == 'MyOwnMessage') res.json({success: false, message: err.message});
             else res.json({success: false, message: 'Internal error. Ticket failed to be updated. Sorry for the inconveniance.'})
           }
           else res.json({success: true, message: 'Ticket well Updated. :)'});
@@ -264,7 +287,7 @@ apiRoutes.post('/private/deleteticket', function(req, res){
       } else {
         user.deleteTicket(req.body.summary, function(err) {
           if (err) {
-            if (err.name == 'MyOwnMessage') res.json({success: false, message: res.message});
+            if (err.name == 'MyOwnMessage') res.json({success: false, message: err.message});
             else res.json({success: false, message: 'Internal error. Ticket failed to be deleted. Sorry for the inconveniance.'})
           }
           else res.json({success: true, message: 'Ticket well deleted. :)'});
@@ -314,7 +337,7 @@ apiRoutes.post('/private/stopworking', function(req, res){
       } else {
         user.stopWorking(req.body.ticket_name, req.body.status, function(err) {
           if (err) {
-            if (err.name == 'MyOwnMessage') res.json({success: false, message: res.message});
+            if (err.name == 'MyOwnMessage') res.json({success: false, message: err.message});
             else res.json({success: false, message: 'Internal error. Ticket failed to be deleted. Sorry for the inconveniance.'})
           } else {
             res.json({success: true, message: 'You are done working on this ticket and it is '+ req.body.status});
@@ -331,6 +354,10 @@ apiRoutes.post('/private/stopworking', function(req, res){
 // ##################################################################
 // Comment Routes ###################################################
 apiRoutes.post('/private/newcomment', function(req, res){
+  var new_comment = new Comment({
+    content: req.body.content,
+    creationDate: new Date(),
+  });
   if (req.session.role == 'ProductOwner') {
     ProductOwner.findOne({
       name: req.session.name
@@ -338,85 +365,66 @@ apiRoutes.post('/private/newcomment', function(req, res){
       if (err) {
         res.json({success: false, message: 'Failed. You have been removed from the Product Owner list. Too Bad :('})
       } else {
-        var new_ticket= new Ticket({
-          summary: req.body.summary,
-          description: req.body.description,
-          priority: req.body.priority,
-          status: req.body.status,
-          creationDate: new Date(),
-          reporter: null,
-          assignee: null
-        });
-        user.createTicket(new_ticket, function(err) {
+        user.poComment(new_comment, req.body.ticket_name, function(err, reporter) {
           if (err) {
-            console.log(err);
-            if (err.code='11000') res.json({success: false, message: 'It seems like you already reported this issue. Please check that it is not a duplicate. If it is not, make another summary so it can pass :).'});
-            else {
-              if (err.name == 'MyOwnMessage') res.json({success: false, message: res.message});
+            if (err.name == 'MyOwnMessage') res.json({success: false, message: err.message});
+            else res.json({success: false, message: 'Internal error. Ticket failed to be created. Sorry for the inconveniance.'})
+          }
+          else {
+            ProductOwner.findOne({name: reporter}, function(err, reporter) {
+              if (err) console.log('Oups, some Product Owner is no more well referenced .... ~~');
+              else {
+                mailOptions.to=reporter.email;
+                mailOptions.subject = '[Jirallo] Comment added by '+user.name+', about '+ req.body.ticket_name+ '.'
+                mailOptions.html = '<h1>Hy '+reporter.name +',</h1></br><span>your ticket about '+ req.body.ticket_name +' as been commented by '+ user.name+ '.</span>'
+                transporter.sendMail(mailOptions, function(err, info) {
+                  if (err) console.log('Error while sending mail '+err);
+                  else console.log('message sent: '+info);
+                })
+              }
+            })
+            res.json({success: true, message: 'Comment well aded. :)'});
+          }
+        })
+      }
+    })
+  }
+  else {
+    if (req.session.role == 'Developer') {
+        Developer.findOne({
+        name: req.session.name
+      }, function(err, user){
+        if (err) {
+          res.json({success: false, message: 'Failed. You have been removed from the Product Owner list. Too Bad :('})
+        } else {
+          user.devComment(new_comment, req.body.ticket_name, function(err, reporter) {
+            if (err) {
+              if (err.name == 'MyOwnMessage') res.json({success: false, message: err.message});
               else res.json({success: false, message: 'Internal error. Ticket failed to be created. Sorry for the inconveniance.'})
             }
-          }
-          else res.json({success: true, message: 'Ticket well aded. :)'});
-        })
-      }
-    });
-  } else {
-    req.session.loggedIn=false;
-    req.session.error='You have been removed from the PO List.... Bad for you :(';
-    res.json({succes: false, message: 'Failed. You are not Allowed to perform this action.'});
-  }
-})
-
-apiRoutes.post('/private/updateticket', function(req, res){
-  if (req.session.role == 'ProductOwner') {
-    ProductOwner.findOne({
-      name: req.session.name
-    }, function(err, user){
-      if (err) {
-        res.json({success: false, message: 'Failed. You have been removed from the Product Owner list. Too Bad :('})
-      } else {
-        var new_ticket= {
-          description: req.body.description,
-          priority: req.body.priority,
-          status: req.body.status,
-        };
-        user.updateTicket(req.body.summary, new_ticket, function(err) {
-          if (err) {
-            if (err.name == 'MyOwnMessage') res.json({success: false, message: res.message});
-            else res.json({success: false, message: 'Internal error. Ticket failed to be updated. Sorry for the inconveniance.'})
-          }
-          else res.json({success: true, message: 'Ticket well Updated. :)'});
-        })
-      }
-    });
-  } else {
-    req.session.loggedIn=false;
-    req.session.error='You have been removed from the PO List.... Bad for you :(';
-    res.json({succes: false, message: 'Failed. You are not Allowed to perform this action.'});
-  }
-})
-
-apiRoutes.post('/private/deleteticket', function(req, res){
-  if (req.session.role == 'ProductOwner') {
-    ProductOwner.findOne({
-      name: req.session.name
-    }, function(err, user){
-      if (err) {
-        res.json({success: false, message: 'Failed. You have been removed from the Product Owner list. Too Bad :('})
-      } else {
-        user.deleteTicket(req.body.summary, function(err) {
-          if (err) {
-            if (err.name == 'MyOwnMessage') res.json({success: false, message: res.message});
-            else res.json({success: false, message: 'Internal error. Ticket failed to be deleted. Sorry for the inconveniance.'})
-          }
-          else res.json({success: true, message: 'Ticket well deleted. :)'});
-        })
-      }
-    });
-  } else {
-    req.session.loggedIn=false;
-    req.session.error='You have been removed from the PO List.... Bad for you :(';
-    res.json({succes: false, message: 'Failed. You are not Allowed to perform this action.'});
+            else {
+              Developer.findOne({name: reporter}, function(err, reporter) {
+                if (err) console.log('Oups, some Product Owner is no more well referenced .... ~~');
+                else {
+                  mailOptions.to=reporter.email;
+                  mailOptions.subject = '[Jirallo] Comment added by '+user.name+', about '+ req.body.ticket_name+ '.'
+                  mailOptions.html = '<h1>Hy '+reporter.name +',</h1></br><span>your ticket about '+ req.body.ticket_name +' as been commented by '+ user.name+ '.</span>'
+                  transporter.sendMail(mailOptions, function(err, info) {
+                    if (err) console.log('Error while sending mail '+err);
+                    else console.log('message sent: '+info);
+                  })
+                }
+              })
+              res.json({success: true, message: 'Comment well aded. :)'});
+            }
+          })
+        }
+      })
+    } else {
+      req.session.loggedIn=false;
+      req.session.error='You have been removed from the PO List.... Bad for you :(';
+      res.json({succes: false, message: 'Failed. You are not Allowed to perform this action.'});
+    }
   }
 })
 // ##################################################################

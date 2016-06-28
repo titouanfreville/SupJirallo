@@ -272,36 +272,8 @@ var testDupTicket = new Ticket({
 // ----------------------------------------
 // Comments -------------------------------
 var testNewComment = new Comment({
-  summary: "Test1",
+  content: "Test1",
   creationDate: new Date('2000','01','01'),
-});
-
-var testEmptySummaryTicket = new Ticket({
-  description: "First test :p",
-  priority: "URGENT",
-  status: "BROKEN",
-  creationDate: new Date('2000','01','01'),
-  reporter: null,
-  assignee: null
-});
-
-var testEmptyReporterTicket = new Ticket({
-  description: "First test :p",
-  priority: "URGENT",
-  status: "BROKEN",
-  creationDate: new Date('2000','01','01'),
-  reporter: null,
-  assignee: null
-});
-
-var testDupTicket = new Ticket({
-  summary: "Test1",
-  description: "First test :p",
-  priority: "URGENT",
-  status: "BROKEN",
-  creationDate: new Date('2000','01','01'),
-  reporter: null,
-  assignee: null
 });
 // -----------------------------------------------------------------------------------------------
 // STARTING TESTS --------------------------------------------------------------------------------

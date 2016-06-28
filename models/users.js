@@ -89,8 +89,8 @@ po.methods.updateTicket = function(ticket_name, new_ticket, cb) {
 po.methods.deleteTicket = function (ticket_name, cb) {
   po = this;
   Ticket.findOne({summary: ticket_name}, function(err, t) {
-    ticket.remove(function(err) {
-      po.po_ticket.pull(ticket);
+    t.remove(function(err) {
+      po.po_ticket.pull(t);
     });
     cb(err);
   });
@@ -100,9 +100,12 @@ po.methods.poComment = function(comment, ticket_name, cb) {
   po=this;
   Ticket.findOne({summary: ticket_name}, function(err, t) {
     if (err) return cb(err);
-    po.po_ticket.pull(ticket_name);
+    if (!t) return cb({name: 'MyOwnMessage', message: 'Error : You are trying to comment on a non existing issue. You must have lost yourself in the Lost Forest.'});
+    t.createTicketComment(comment, po.name, function(err){
+      if (err) return cb(err)
+    });
     t.save(function(err) {
-      cb(err);
+      cb(err, t.reporter);
     })
   })
 }
@@ -115,12 +118,12 @@ dev.methods.devComment = function(comment, ticket_name, cb) {
   dev=this;
   Ticket.findOne({summary: ticket_name}, function(err, t) {
     if (err) return cb(err);
+    if (!t) return cb({name: 'MyOwnMessage', message: 'Error : You are trying to comment on a non existing issue. You must have lost yourself in the Lost Forest.'});
     t.createTicketComment(comment, dev.name, function(err){
       if (err) return cb(err)
     });
     t.save(function(err) {
-      dev.dev_ticket.push(t);
-      cb(err);
+      cb(err, t.reporter);
     })
   })
 }
