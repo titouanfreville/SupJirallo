@@ -74,7 +74,8 @@ po.methods.createTicket = function (ticket, cb) {
 po.methods.updateTicket = function(ticket_name, new_ticket, cb) {
   po=this;
   Ticket.findOne({summary: ticket_name}, function(err, t) {
-    if (err) return cb(err)
+    if (err) return cb(err);
+    if (!t) return cb({message: 'Error : The ticket you are trying to update is not existing'});
     if (new_ticket.description) t.description = new_ticket.description;
     if (new_ticket.priority) t.priority = new_ticket.priority;
     if (new_ticket.status) t.status = new_ticket.status;
@@ -85,15 +86,22 @@ po.methods.updateTicket = function(ticket_name, new_ticket, cb) {
   })
 }
 
+po.methods.deleteTicket = function (ticket_name, cb) {
+  po = this;
+  Ticket.findOne({summary: ticket_name}, function(err, t) {
+    ticket.remove(function(err) {
+      po.po_ticket.pull(ticket);
+    });
+    cb(err);
+  });
+};
+
 po.methods.poComment = function(comment, ticket_name, cb) {
   po=this;
   Ticket.findOne({summary: ticket_name}, function(err, t) {
     if (err) return cb(err);
-    t.createTicketComment(comment, po.name, function(err){
-      if (err) return cb(err)
-    });
+    po.po_ticket.pull(ticket_name);
     t.save(function(err) {
-      po.po_ticket.push(t);
       cb(err);
     })
   })
@@ -121,6 +129,8 @@ dev.methods.startWorking = function(ticket_name, cb) {
   dev=this;
   Ticket.findOne({summary: ticket_name}, function(err, t) {
     if (err) return cb(err);
+    if (!t) return cb({message: 'Error : The ticket you are trying to work on is not existing'});
+    if (t.assignee) return cb({message: 'Error : Someone is alredy working on this ticket.'});
     t.assignee = dev.name;
     t.status = 'IN PROGRESS';
     t.save(function(err) {
@@ -134,10 +144,12 @@ dev.methods.stopWorking = function(ticket_name, status, cb) {
   dev=this;
   Ticket.findOne({summary: ticket_name}, function(err, t) {
     if (err) return cb(err);
+    if (!t) return cb({message: 'Error : The ticket you are trying to update has been deleted.'});
+    if (t.assignee != dev.name) return cb({message: 'Error : You are not working on this ticket.'});
     t.assignee = null;
     t.status = status;
     t.save(function(err) {
-      dev.dev_ticket.id(t._id).remove();
+      dev.dev_ticket.pull(ticket_name);
       cb(err);
     })
   })

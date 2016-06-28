@@ -87,8 +87,6 @@ app.use(session({
   }
 }))
 
-app.use(flas(app))
-
 app.use(function(req, res, next){
   var err = req.session.error;
   var msg = req.session.successs;
@@ -230,25 +228,16 @@ apiRoutes.post('/private/updateticket', function(req, res){
       if (err) {
         res.json({success: false, message: 'Failed. You have been removed from the Product Owner list. Too Bad :('})
       } else {
-        var new_ticket= new Ticket({
-          summary: req.body.summary,
+        var new_ticket= {
           description: req.body.description,
           priority: req.body.priority,
           status: req.body.status,
-          creationDate: new Date(),
-          reporter: null,
-          assignee: null
-        });
-        user.createTicket(new_ticket, function(err) {
+        };
+        user.updateTicket(req.body.summary, new_ticket, function(err) {
           if (err) {
-            console.log(err);
-            if (err.code='11000') {
-              res.json({success: false, message: 'It seems like you already reported this issue. Please check that it is not a duplicate. If it is not, make another summary so it can pass :).'});
-            } else {
-              res.json({success: false, message: 'Internal error. Ticket failed to be created. Sorry for the inconveniance.'});
-            }
+            res.json({success: false, message: 'Internal error. Ticket failed to be created. Sorry for the inconveniance.'});
           } else {
-            res.json({success: true, message: 'Ticket well aded. :)'});
+            res.json({success: true, message: 'Ticket well Updated. :)'});
           }
         })
       }
@@ -262,78 +251,50 @@ apiRoutes.post('/private/updateticket', function(req, res){
 
 // Api Routes
 apiRoutes.post('/private/startworking', function(req, res){
-  if (req.session.role == 'ProductOwner') {
-    ProductOwner.findOne({
+  if (req.session.role == 'Developer') {
+    Developer.findOne({
       name: req.session.name
     }, function(err, user){
       if (err) {
-        res.json({success: false, message: 'Failed. You have been removed from the Product Owner list. Too Bad :('})
+        res.json({success: false, message: 'Failed. You have been removed from the Developer list. Too Bad :('})
       } else {
-        var new_ticket= new Ticket({
-          summary: req.body.summary,
-          description: req.body.description,
-          priority: req.body.priority,
-          status: req.body.status,
-          creationDate: new Date(),
-          reporter: null,
-          assignee: null
-        });
-        user.createTicket(new_ticket, function(err) {
+        user.startWorking(req.body.ticket_name, function(err) {
           if (err) {
-            console.log(err);
-            if (err.code='11000') {
-              res.json({success: false, message: 'It seems like you already reported this issue. Please check that it is not a duplicate. If it is not, make another summary so it can pass :).'});
-            } else {
-              res.json({success: false, message: 'Internal error. Ticket failed to be created. Sorry for the inconveniance.'});
-            }
+            res.json({success: false, message: err.message});
           } else {
-            res.json({success: true, message: 'Ticket well aded. :)'});
+            res.json({success: true, message: 'You are now working on this ticket :)'});
           }
         })
       }
     });
   } else {
     req.session.loggedIn=false;
-    req.session.error='You have been removed from the PO List.... Bad for you :(';
+    req.session.error='You have been removed from the Dev List.... Bad for you :(';
     res.json({succes: false, message: 'Failed. You are not Allowed to perform this action.'});
   }
 })
 
 // Api Routes
-apiRoutes.post('/private/doneworking', function(req, res){
-  if (req.session.role == 'ProductOwner') {
-    ProductOwner.findOne({
+apiRoutes.post('/private/stopworking', function(req, res){
+  if (req.session.role == 'Developer') {
+    Developer.findOne({
       name: req.session.name
     }, function(err, user){
       if (err) {
-        res.json({success: false, message: 'Failed. You have been removed from the Product Owner list. Too Bad :('})
+        res.json({success: false, message: 'Failed. You have been removed from the Developer list. Too Bad :('})
       } else {
-        var new_ticket= new Ticket({
-          summary: req.body.summary,
-          description: req.body.description,
-          priority: req.body.priority,
-          status: req.body.status,
-          creationDate: new Date(),
-          reporter: null,
-          assignee: null
-        });
-        user.createTicket(new_ticket, function(err) {
+        user.stopWorking(req.body.ticket_name, req.body.status, function(err) {
           if (err) {
-            console.log(err);
-            if (err.code='11000') {
-              res.json({success: false, message: 'It seems like you already reported this issue. Please check that it is not a duplicate. If it is not, make another summary so it can pass :).'});
-            } else {
-              res.json({success: false, message: 'Internal error. Ticket failed to be created. Sorry for the inconveniance.'});
-            }
+            res.json({success: false, message: err.message});
           } else {
-            res.json({success: true, message: 'Ticket well aded. :)'});
+            res.json({success: true, message: 'You are done working on this ticket and it is '+ req.body.status});
           }
         })
       }
     });
   } else {
     req.session.loggedIn=false;
-    req.session.error='You have been removed from the PO List.... Bad for you :(';
+    req.session.error='You are not well log. Please try loggin again.';
     res.json({succes: false, message: 'Failed. You are not Allowed to perform this action.'});
   }
 })
