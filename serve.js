@@ -36,23 +36,6 @@ secure = function (req, res, next) {
   }
 }
 
-not_po = function (req, res, next) {
-  console.log("In midlle Ware ---------------------")
-  console.log('Session.role : '+req.session.role);
-  if (req.session) {
-    if (req.session.role == 'ProductOwner') {
-      console.log('Ok :)');
-      next();
-    } else {
-      console.log('Can not access');
-    }
-  }
-  else {
-    console.log('Session not defined');
-    res.redirect('/');
-  }
-}
-
 getToken = function (headers) {
   if (headers && headers.authorization) {
     var parted = headers.authorization.split(' ');
@@ -109,10 +92,6 @@ app.use('/main_view.html', express.static(path.join(__dirname, 'main_view.html')
 // Defin private as path so we can protect it
 app.use('/private', secure);
 app.use('/private', express.static(path.join(__dirname, 'private')));
-// Only PO can access here (be saffer.)
-app.use('/po', not_po);
-app.use('/po', express.static(path.join(__dirname, 'po')));
-
 
 // ----------------------------------------------------------------------------------
 // Connect to Mongo -----------------------------------------------------------------
