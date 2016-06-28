@@ -87,10 +87,17 @@ jirallo.controller('mainCtrl',['$rootScope', '$scope', '$window', '$state', func
   else $scope.ispo = ($window.sessionStorage.userRole == 'ProductOwner');
 }]);
 
-jirallo.controller('logoutCtrl', ['$scope', '$window', '$rootScope', '$state', function($scope, $window, $rootScope, $state) {
+jirallo.controller('logoutCtrl', ['$scope', '$window', '$rootScope', '$state', '$http', function($scope, $window, $rootScope, $state, $http) {
   $scope.destroy = function() {
     $rootScope.userName=null;
+    $rootScope.userRole=null;
     $window.sessionStorage.clear();
-    $state.go('index');
+    $http({
+      method: 'POST',
+      url: '/destroy_session'
+    }).success(function(res){
+      $window.alert(res.message);
+      $state.go('index');
+    })
   }
 }])

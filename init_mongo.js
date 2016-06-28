@@ -30,7 +30,7 @@ dbcon.once('open', function callback() {
 var PO1 = new ProductOwner({
   name: 'Marsu',
   password: 'mars',
-  email: 'marsu@jirallo.fr',
+  email: 'titouanfreville@hotmail.fr',
   firstName: 'Mars',
   lastName: 'Gonzales',
   dateOfBirth: new Date(1952,09,20)
