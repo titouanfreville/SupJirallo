@@ -9,6 +9,7 @@ var express      = require('express'),
     path         = require('path'),
     mongoose     = require('mongoose'),
     angoose      = require("angoose"),
+    flash        = require('express-flash-notification'),
     config       = require('./config/database'),
     Users        = require('./models/users'),
     Comment      = require('./models/comments').Comment,
@@ -85,6 +86,8 @@ app.use(session({
     httpOnly: false // <- set httpOnly to false
   }
 }))
+
+app.use(flas(app))
 
 app.use(function(req, res, next){
   var err = req.session.error;
@@ -218,8 +221,127 @@ apiRoutes.post('/private/newticket', function(req, res){
   }
 })
 
+// Api Routes
+apiRoutes.post('/private/updateticket', function(req, res){
+  if (req.session.role == 'ProductOwner') {
+    ProductOwner.findOne({
+      name: req.session.name
+    }, function(err, user){
+      if (err) {
+        res.json({success: false, message: 'Failed. You have been removed from the Product Owner list. Too Bad :('})
+      } else {
+        var new_ticket= new Ticket({
+          summary: req.body.summary,
+          description: req.body.description,
+          priority: req.body.priority,
+          status: req.body.status,
+          creationDate: new Date(),
+          reporter: null,
+          assignee: null
+        });
+        user.createTicket(new_ticket, function(err) {
+          if (err) {
+            console.log(err);
+            if (err.code='11000') {
+              res.json({success: false, message: 'It seems like you already reported this issue. Please check that it is not a duplicate. If it is not, make another summary so it can pass :).'});
+            } else {
+              res.json({success: false, message: 'Internal error. Ticket failed to be created. Sorry for the inconveniance.'});
+            }
+          } else {
+            res.json({success: true, message: 'Ticket well aded. :)'});
+          }
+        })
+      }
+    });
+  } else {
+    req.session.loggedIn=false;
+    req.session.error='You have been removed from the PO List.... Bad for you :(';
+    res.json({succes: false, message: 'Failed. You are not Allowed to perform this action.'});
+  }
+})
+
+// Api Routes
+apiRoutes.post('/private/startworking', function(req, res){
+  if (req.session.role == 'ProductOwner') {
+    ProductOwner.findOne({
+      name: req.session.name
+    }, function(err, user){
+      if (err) {
+        res.json({success: false, message: 'Failed. You have been removed from the Product Owner list. Too Bad :('})
+      } else {
+        var new_ticket= new Ticket({
+          summary: req.body.summary,
+          description: req.body.description,
+          priority: req.body.priority,
+          status: req.body.status,
+          creationDate: new Date(),
+          reporter: null,
+          assignee: null
+        });
+        user.createTicket(new_ticket, function(err) {
+          if (err) {
+            console.log(err);
+            if (err.code='11000') {
+              res.json({success: false, message: 'It seems like you already reported this issue. Please check that it is not a duplicate. If it is not, make another summary so it can pass :).'});
+            } else {
+              res.json({success: false, message: 'Internal error. Ticket failed to be created. Sorry for the inconveniance.'});
+            }
+          } else {
+            res.json({success: true, message: 'Ticket well aded. :)'});
+          }
+        })
+      }
+    });
+  } else {
+    req.session.loggedIn=false;
+    req.session.error='You have been removed from the PO List.... Bad for you :(';
+    res.json({succes: false, message: 'Failed. You are not Allowed to perform this action.'});
+  }
+})
+
+// Api Routes
+apiRoutes.post('/private/doneworking', function(req, res){
+  if (req.session.role == 'ProductOwner') {
+    ProductOwner.findOne({
+      name: req.session.name
+    }, function(err, user){
+      if (err) {
+        res.json({success: false, message: 'Failed. You have been removed from the Product Owner list. Too Bad :('})
+      } else {
+        var new_ticket= new Ticket({
+          summary: req.body.summary,
+          description: req.body.description,
+          priority: req.body.priority,
+          status: req.body.status,
+          creationDate: new Date(),
+          reporter: null,
+          assignee: null
+        });
+        user.createTicket(new_ticket, function(err) {
+          if (err) {
+            console.log(err);
+            if (err.code='11000') {
+              res.json({success: false, message: 'It seems like you already reported this issue. Please check that it is not a duplicate. If it is not, make another summary so it can pass :).'});
+            } else {
+              res.json({success: false, message: 'Internal error. Ticket failed to be created. Sorry for the inconveniance.'});
+            }
+          } else {
+            res.json({success: true, message: 'Ticket well aded. :)'});
+          }
+        })
+      }
+    });
+  } else {
+    req.session.loggedIn=false;
+    req.session.error='You have been removed from the PO List.... Bad for you :(';
+    res.json({succes: false, message: 'Failed. You are not Allowed to perform this action.'});
+  }
+})
+
 apiRoutes.post('/destroy_session', function(req, res) {
-  req.session.destroy();
+  req.session.destroy(function() {
+    res.json({success: true, message: 'Well Logged out. Please comme again :).'});
+  })
 })
 
 app.use('/', apiRoutes);

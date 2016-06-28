@@ -71,6 +71,20 @@ po.methods.createTicket = function (ticket, cb) {
   });
 };
 
+po.methods.updateTicket = function(ticket_name, new_ticket, cb) {
+  po=this;
+  Ticket.findOne({summary: ticket_name}, function(err, t) {
+    if (err) return cb(err)
+    if (new_ticket.description) t.description = new_ticket.description;
+    if (new_ticket.priority) t.priority = new_ticket.priority;
+    if (new_ticket.status) t.status = new_ticket.status;
+    t.save(function(err) {
+      po.po_ticket.push(t);
+      cb(err);
+    })
+  })
+}
+
 po.methods.poComment = function(comment, ticket_name, cb) {
   po=this;
   Ticket.findOne({summary: ticket_name}, function(err, t) {
@@ -108,6 +122,7 @@ dev.methods.startWorking = function(ticket_name, cb) {
   Ticket.findOne({summary: ticket_name}, function(err, t) {
     if (err) return cb(err);
     t.assignee = dev.name;
+    t.status = 'IN PROGRESS';
     t.save(function(err) {
       dev.dev_ticket.push(t);
       cb(err);
@@ -115,17 +130,17 @@ dev.methods.startWorking = function(ticket_name, cb) {
   })
 }
 
-dev.methods.stopWorking = function(ticket_name, cb) {
+dev.methods.stopWorking = function(ticket_name, status, cb) {
   dev=this;
   Ticket.findOne({summary: ticket_name}, function(err, t) {
     if (err) return cb(err);
     t.assignee = null;
+    t.status = status;
     t.save(function(err) {
       dev.dev_ticket.id(t._id).remove();
       cb(err);
     })
   })
-
 }
 // ------------------------------------------------------------------------------
 // ########################################################################### //

@@ -198,6 +198,40 @@ var testNewTicket = new Ticket({
   assignee: null
 });
 
+var testUdTicket = {
+  description: "D Update",
+};
+
+var testUpTicket = {
+  priority: "P UPDATE",
+};
+
+var testUsTicket = {
+  status: "S UPDATE",
+};
+
+var testUdpTicket = {
+  description: "DP Update",
+  priority: "DP UPDATE"
+};
+
+var testUdsTicket = {
+  description: "DS Update",
+  status: "DS UPDATE",
+};
+
+var testUpsTicket = {
+  priority: "PS UPDATE",
+  status: "PS UPDATE",
+};
+
+
+var testUallTicket = {
+  description: "All Update",
+  priority: "ALL UPDATE",
+  status: "ALL UPDATE",
+};
+
 var testEmptySummaryTicket = new Ticket({
   description: "First test :p",
   priority: "URGENT",
@@ -541,6 +575,88 @@ describe("Ticket", function(){
     });
   });
 
+  it("Should be able to update tickets", function(done){
+    ProductOwner.findOne({name: 'PONoisette'}, function(err, po) {
+      po.updateTicket('Test1', testUallTicket, function(err){
+        should.not.exist(err);
+        Ticket.findOne({summary: 'Test1'}, function(err, t) {
+          should.not.exist(err);
+          should.exist(t);
+          t.description.should.be.equal('All Update');
+          t.priority.should.be.equal('ALL UPDATE');
+          t.status.should.be.equal('ALL UPDATE');
+
+          po.updateTicket('Test1', testUpsTicket, function(err){
+            should.not.exist(err);
+            Ticket.findOne({summary: 'Test1'}, function(err, t) {
+              should.not.exist(err);
+              should.exist(t);
+              t.description.should.be.equal('All Update');
+              t.priority.should.be.equal('PS UPDATE');
+              t.status.should.be.equal('PS UPDATE');
+
+              po.updateTicket('Test1', testUdsTicket, function(err){
+                should.not.exist(err);
+                Ticket.findOne({summary: 'Test1'}, function(err, t) {
+                  should.not.exist(err);
+                  should.exist(t);
+                  t.description.should.be.equal('DS Update');
+                  t.priority.should.be.equal('PS UPDATE');
+                  t.status.should.be.equal('DS UPDATE');
+
+                  po.updateTicket('Test1', testUdpTicket, function(err){
+                    should.not.exist(err);
+                    Ticket.findOne({summary: 'Test1'}, function(err, t) {
+                      should.not.exist(err);
+                      should.exist(t);
+                      t.description.should.be.equal('DP Update');
+                      t.priority.should.be.equal('DP UPDATE');
+                      t.status.should.be.equal('DS UPDATE');
+
+                      po.updateTicket('Test1', testUsTicket, function(err){
+                        should.not.exist(err);
+                        Ticket.findOne({summary: 'Test1'}, function(err, t) {
+                          should.not.exist(err);
+                          should.exist(t);
+                          t.description.should.be.equal('DP Update');
+                          t.priority.should.be.equal('DP UPDATE');
+                          t.status.should.be.equal('S UPDATE');
+
+                          po.updateTicket('Test1', testUpTicket, function(err){
+                            should.not.exist(err);
+                            Ticket.findOne({summary: 'Test1'}, function(err, t) {
+                              should.not.exist(err);
+                              should.exist(t);
+                              t.description.should.be.equal('DP Update');
+                              t.priority.should.be.equal('P UPDATE');
+                              t.status.should.be.equal('S UPDATE');
+
+                              po.updateTicket('Test1', testUdTicket, function(err){
+                                should.not.exist(err);
+                                Ticket.findOne({summary: 'Test1'}, function(err, t) {
+                                  should.not.exist(err);
+                                  should.exist(t);
+                                  t.description.should.be.equal('D Update');
+                                  t.priority.should.be.equal('P UPDATE');
+                                  t.status.should.be.equal('S UPDATE');
+                                  done();
+                                })
+                              })
+                            })
+                          })
+                        })
+                      })
+                    })
+                  })
+                })
+              })
+            })
+          })
+        });
+      });
+    });
+  });
+
   it('Start Working on a Ticket', function(done){
     Developer.findOne({name: 'DEVNoisette'}, function(err, dev) {
       dev.startWorking('Test1', function(err){
@@ -550,6 +666,7 @@ describe("Ticket", function(){
           should.exist(ticket);
           ticket.assignee.should.be.equal('DEVNoisette');
           ticket.summary.should.be.equal('Test1');
+          ticket.status.should.be.equal('IN PROGRESS');
           done();
         });
         dev.save();
@@ -557,13 +674,30 @@ describe("Ticket", function(){
     });
   });
 
-  it('Stop Working on a Ticket', function(done){
+  it('Done Working on a Ticket', function(done){
     Developer.findOne({name: 'DEVNoisette'}, function(err, dev) {
-      dev.stopWorking('Test1', function(err){
+      dev.stopWorking('Test1', 'DONE', function(err){
         should.not.exist(err);
-        Ticket.findOne({assignee: 'DEVNoisette'}, function (err, ticket) {
+        Ticket.findOne({summary: 'Test1'}, function (err, ticket) {
           should.not.exist(err);
-          should.not.exist(ticket);
+          should.exist(ticket);
+          should.not.exist(ticket.assignee);
+          ticket.status.should.be.equal('DONE');
+          done();
+        });
+      });
+    });
+  });
+
+  it('Back to TO DO on a Ticket', function(done){
+    Developer.findOne({name: 'DEVNoisette'}, function(err, dev) {
+      dev.stopWorking('Test1', 'TO DO', function(err){
+        should.not.exist(err);
+        Ticket.findOne({summary: 'Test1'}, function (err, ticket) {
+          should.not.exist(err);
+          should.exist(ticket);
+          should.not.exist(ticket.assignee);
+          ticket.status.should.be.equal('TO DO');
           done();
         });
       });
@@ -589,7 +723,6 @@ describe("Comments", function(){
     });
   });
 
-
   it("Dev can Comment.", function(done){
     Developer.findOne({name: 'DEVNoisette'}, function(err, dev) {
       dev.devComment(testNewComment, 'Test1',function(err){
@@ -609,7 +742,6 @@ describe("Comments", function(){
     con.disconnect();
     done();
   })
-
 });
 // -----------------------------------------------------------------------------------------------
 
