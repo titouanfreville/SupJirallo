@@ -19,9 +19,9 @@ jirallo.controller('loginForm', ['$scope', '$rootScope', '$state', '$window', '$
       }).success(function(res) {
         if (res.success) {
           $rootScope.userName=$scope.userName;
-          $window.localStorage.setItem('userName', $scope.userName);
+          $window.sessionStorage.setItem('userName', $scope.userName);
           $rootScope.userRole=res.role;
-          $window.localStorage.setItem('userRole', res.role);
+          $window.sessionStorage.setItem('userRole', res.role);
           $state.go('logged');
         }
         else {

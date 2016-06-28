@@ -1,43 +1,41 @@
-<div ng-controller="mainCtrl">
-  <!-- Header to be inserted on every page.  -->
-  <header>
-    <!-- Please don't use <img> tag for logo. It should be a DIV background image instead :) -->
-    <div class="logo"></div>
-    <bar>
-      <h1>SupJiralo</h1>
-      <h2>Enjoy being Agile</h2>
-    </bar>
-    <!-- Navigation tools -->
-    <nav>
-      <ul>
-        <li><a ui-sref="logged">New Tickets</a></li>
-        <li><a ui-sref="addticket">Create Ticket</a></li>
-        <li><a ui-sref="listtickets">All Tickets</a></li>
-        <li ng-controller="logoutCtrl"><form ng-submit="destroy()"><input type="submit" name="submit" value="Logout" /></form></li>
-      </ul>
-    </nav>
-  </header>
-  <div class='main'>
-    <h2> All tickets</h2>
-    <!-- This will print table of new tickets :) div == table, p == lines, span == colulmns -->
-    <div ng-controller="allTicketCtrl">
-      <p>
-        <span>Ticket Id</span>
-        <span>Summary</span>
-        <span>Priority</span>
-        <span>Reported by</span>
-        <span>Status</span>
-        <span>Action</span>
-      </p>
-      <!-- Get all tickets from tickets table (cf scope in controller) -->
-      <p ng-repeat="t in tickets">
-        <span>{{ t._id }}</span>
-        <span>{{ t.summary }}</span>
-        <span>{{ t.priority }}</span>
-        <span>{{ t.reporter }}</span>
-        <span>{{ t.status }}</span>
-        <span ng-bind-html="useractions"></span>
-      </p>
-    </div>
+<!-- Header to be inserted on every page.  -->
+<header>
+  <!-- Please don't use <img> tag for logo. It should be a DIV background image instead :) -->
+  <div class="logo"></div>
+  <bar>
+    <h1>SupJiralo</h1>
+    <h2>Enjoy being Agile</h2>
+  </bar>
+  <!-- Navigation tools -->
+  <nav>
+    <ul>
+      <li><a ui-sref="logged">New Tickets</a></li>
+      <li><a href="/#/addticket">Create Ticket</a></li>
+      <li><a ui-sref="listtickets">All Tickets</a></li>
+      <li ng-controller="logoutCtrl"><form ng-submit="destroy()"><input type="submit" name="submit" value="Logout" /></form></li>
+    </ul>
+  </nav>
+</header>
+<div class='main'>
+  <h2> All tickets</h2>
+  <!-- This will print table of new tickets :) div == table, p == lines, span == colulmns -->
+  <div ng-controller="allTicketCtrl">
+    <p>
+      <span>Ticket Id</span>
+      <span>Summary</span>
+      <span>Priority</span>
+      <span>Reported by</span>
+      <span>Status</span>
+      <span>Action</span>
+    </p>
+    <!-- Get all tickets from tickets table (cf scope in controller) -->
+    <p ng-repeat="t in tickets">
+      <span>{{ t._id }}</span>
+      <span>{{ t.summary }}</span>
+      <span>{{ t.priority }}</span>
+      <span>{{ t.reporter }}</span>
+      <span>{{ t.status }}</span>
+      <span ng-bind-html="useractions"></span>
+    </p>
   </div>
 </div>

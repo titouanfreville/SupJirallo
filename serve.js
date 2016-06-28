@@ -218,6 +218,10 @@ apiRoutes.post('/private/newticket', function(req, res){
   }
 })
 
+apiRoutes.post('/destroy_session', function(req, res) {
+  req.session.destroy();
+})
+
 app.use('/', apiRoutes);
 // start server
 var server = app.listen(3000, function () {

@@ -4,9 +4,8 @@ var jirallo = angular.module('jirallo.tickets', ['ngCookies']);
 
 jirallo.controller('newTicketCtrl', ['$scope', '$rootScope', '$state', '$window', '$http', '$location', '$sce', 'Ticket', function($scope, $rootScope, $state, $window, $http, $location, $sce, Ticket){
   $scope.tickets=Ticket.$query({status: 'TO DO'}, null, {sort: {creationDate: -1}});
-  console.log(Ticket.$get({status: 'TO DO'}));
   $scope.useractions = '<a ui-sref="details">View</a>';
-  if ($window.localStorage.userRole == 'ProductOwner') {
+  if ($window.sessionStorage.userRole == 'ProductOwner') {
     $scope.useractions =$scope.useractions + (' | <a ui-sref="editticket">Edit Ticket</a> | <button ng-click="destroy()">Delete Ticket</button>')
   }
   $scope.useractions = $sce.trustAsHtml($scope.useractions);
@@ -16,7 +15,7 @@ jirallo.controller('allTicketCtrl', ['$scope', '$rootScope', '$state', '$window'
   $scope.tickets=Ticket.$query({}, null, {sort: {creationDate: -1}});
   console.log(Ticket.$get({status: 'TO DO'}));
   $scope.useractions = '<button ng-click="go_details()">View</button>';
-  if ($window.localStorage.userRole == 'ProductOwner') {
+  if ($window.sessionStorage.userRole == 'ProductOwner') {
     $scope.useractions =$scope.useractions + (' | <button ng-click="go_edit()">Edit Ticket</button> | <button ng-click="destroy()">Delete Ticket</button>')
   }
   $scope.useractions = $sce.trustAsHtml($scope.useractions);
@@ -30,7 +29,6 @@ jirallo.controller('addTicketCtrl', ['$scope', '$rootScope', '$state', '$window'
     'value': 'Major',
     'values': ['Trivial', 'Minor', 'Major', 'Critical', 'Blocker'] };
   $scope.submit = function () {
-    console.log('In submit');
     if ($scope.summary) {
       $http({
         method: 'POST',
@@ -45,7 +43,8 @@ jirallo.controller('addTicketCtrl', ['$scope', '$rootScope', '$state', '$window'
         data: {
           summary: $scope.summary ,
           description: $scope.description,
-          priority: $scope.priorities.value
+          priority: $scope.priorities.value,
+          status: 'TO DO'
         }
       }).success(function(res) {
         $window.alert(res.message);
