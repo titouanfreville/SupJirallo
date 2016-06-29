@@ -38,6 +38,7 @@ jirallo.config(function ($stateProvider, $urlRouterProvider, $routeProvider) {
         }
       },
       controller: 'mainCtrl',
+      controller: 'newTicketCtrl',
       templateUrl: 'private/index.html'
     })
 
