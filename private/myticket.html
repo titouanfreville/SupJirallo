@@ -20,15 +20,15 @@
   </nav>
 </header>
 <div class='main'>
-  <h1> Welcome {{userName}} to your Profile !</h1>
-  <h2> New Tickets</h2>
+  <h2> All tickets</h2>
   <!-- This will print table of new tickets :) div == table, p == lines, span == colulmns -->
-  <div ng-controller="newTicketCtrl">
+  <div ng-controller="myTicketCtrl">
     <p>
       <span>Ticket Id</span>
       <span>Summary</span>
       <span>Priority</span>
       <span>Reported by</span>
+      <span>Assigned to</span>
       <span>Status</span>
       <span>Action</span>
     </p>
@@ -38,6 +38,7 @@
       <span>{{ t.summary }}</span>
       <span>{{ t.priority }}</span>
       <span>{{ t.reporter }}</span>
+      <span>{{ t.assignee }}</span>
       <span>{{ t.status }}</span>
       <span>
         <button ng-click="go_details(t.summary);">Views</button>

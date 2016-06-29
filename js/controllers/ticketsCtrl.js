@@ -6,6 +6,7 @@ jirallo.controller('detailsTicket', function($scope, $rootScope, $state, $window
   $scope.ticket=Ticket.$get({summary: summary});
   $scope.comments=Comment.$query({ticket: summary}, null, {sort: {creationDate: -1}});
   $scope.ngDialog = ngDialog;
+  $scope.userName = $window.sessionStorage.userName;
   console.log($scope.comment);
   $scope.add_comment = function() {
     console.log("ready"),
@@ -19,12 +20,14 @@ jirallo.controller('detailsTicket', function($scope, $rootScope, $state, $window
       className: 'ng-dialog-theme-default'
     });
   }
+
   $scope.go_edit = function(summary) {
     $rootScope.summary=summary;
     $rootScope.previous_state='listtickets'
     $window.sessionStorage.summary = summary;
     $state.go('edit');
   }
+
   $scope.destroy = function(summary) {
     $http({
       method: 'POST',
@@ -117,6 +120,42 @@ jirallo.controller('newTicketCtrl', ['$scope', '$rootScope', '$state', '$window'
     });;
   };
 }]);
+
+jirallo.controller('myTicketCtrl', ['$scope', '$rootScope', '$state', '$window', '$http', '$location', '$sce', 'Ticket', function($scope, $rootScope, $state, $window, $http, $location, $sce, Ticket){
+  if ($window.sessionStorage.userRole == 'ProductOwner') $scope.tickets=Ticket.$query({reporter: $window.sessionStorage.userName}, null, {sort: {creationDate: -1}});
+  else $scope.tickets=Ticket.$query({assignee: $window.sessionStorage.userName}, null, {sort: {creationDate: -1}});
+
+  $scope.go_details = function(summary) {
+    $rootScope.summary=summary;
+    $window.sessionStorage.summary = summary;
+    $state.go('details');
+  }
+  $scope.go_edit = function(summary) {
+    $rootScope.summary=summary;
+    $rootScope.previous_state='listtickets'
+    $window.sessionStorage.summary = summary;
+    $state.go('edit');
+  }
+  $scope.destroy = function(summary) {
+    $http({
+      method: 'POST',
+      url: '/private/deleteticket',
+      headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+      transformRequest: function(obj) {
+          var str = [];
+          for(var p in obj)
+          str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+          return str.join("&");
+      },
+      data: {
+        summary: summary
+      }
+    }).success(function(res) {
+      $window.alert(res.message);
+    });;
+  };
+}]);
+
 
 jirallo.controller('allTicketCtrl', ['$scope', '$rootScope', '$state', '$window', '$http', '$location', '$sce', 'Ticket', function($scope, $rootScope, $state, $window, $http, $location, $sce, Ticket){
   $scope.tickets=Ticket.$query({}, null, {sort: {creationDate: -1}});

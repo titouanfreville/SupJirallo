@@ -14,6 +14,7 @@
       <li><a ui-sref="logged">New Tickets</a></li>
       <li><a ui-sref="addticket">Create Ticket</a></li>
       <li><a ui-sref="listtickets">All Tickets</a></li>
+      <li><a ui-sref="mytickets">My Tickets</a></li>
       <li ng-controller="logoutCtrl"><button ng-click='destroy();' type="button" name="submit" >Logout</button></li>
     </ul>
   </nav>
@@ -35,8 +36,12 @@
   </div>
   <div class='actions'>
     <!-- ng-show is visible for PO only, ng-hide is visible for DEVELOPPER only. Can be break as it's a js property evaluate on navigator -->
-    <span ng-show='{{ispo}}'><button ng-click="go_edit(ticket.summary)">Edit Ticket</button> | <button ng-click="destroy('ticket.summary')">Delete Ticket</button></span>
-    <span ng-hide='{{ispo}}'><button ng-click="start_working()">Start working on ticket</button> | <button ng-click="stop_working('DONE')">DONE</button> | <button ng-click="stop_working('TO DO')">Back to TO DO</button></span>
+    <span ng-show='ispo'><button ng-click="go_edit(ticket.summary)">Edit Ticket</button> | <button ng-click="destroy('ticket.summary')">Delete Ticket</button></span>
+    <span ng-hide='ispo'>
+      <button ng-hide='ticket.assignee || ticket.assignee == userName' ng-click="start_working()">Start working on ticket</button>
+      <button ng-show='ticket.assignee == userName' ng-click="stop_working('DONE')">DONE</button>
+      <button ng-show='ticket.assignee == userName' ng-click="stop_working('TO DO')">Back to TO DO</button>
+    </span>
   </div>
   <div class='comments'>
     <p ng-repeat="c in comments">
