@@ -1,43 +1,45 @@
 <!-- Header to be inserted on every page.  -->
 <header>
   <!-- Please don't use <img> tag for logo. It should be a DIV background image instead :) -->
-  <div class="logo"></div>
-  <bar>
-    <h1>SupJiralo</h1>
-    <h2>Enjoy being Agile</h2>
-  </bar>
+  <div>
+    <div class="logo"></div>
+    <bar>
+      <h1>SupJiralo</h1>
+      <h2>Enjoy being Agile</h2>
+    </bar>
+  </div>
   <!-- Navigation tools -->
   <nav>
     <ul>
       <li><a ui-sref="logged">New Tickets</a></li>
       <li><a ui-sref="addticket">Create Ticket</a></li>
       <li><a ui-sref="listtickets">All Tickets</a></li>
-    <li ng-controller="logoutCtrl"><form ng-submit="destroy()"><input type="submit" name="submit" value="Logout" /></form></li>
-  </ul>
+      <li ng-controller="logoutCtrl"><button ng-click='destroy();' type="button" name="submit" >Logout</button></li>
+    </ul>
   </nav>
 </header>
 <div>
   <h1>Hy {{userName}}, modifiing an issue ?</h1>
   <h2> Create Tickets</h2>
-  <form ng-submit=submit() ng-controller="updateTicketCtrl">
+  <form ng-submit=submit(back_state) ng-controller="updateTicketCtrl">
     <label>
       <span>Summary :</span>
       <input type="text" ng-model="summary" name="summary" value="{{ summary }}" readonly />
     </label>
     <label>
       <span>Description :</span>
-      <input type="textarea" rows="4" cols="50" ng-model="description" name="description" placeholder="Ticket name" />
+      <textarea rows="4" cols="50" ng-model="description" placeholder='{{ ticket.description }}' name="description" required>{{ ticket.description }}</textarea>
     </label>
     <label>
       <span>Priority : </span>
-      <select ng-model="priorities.value" name='priority' ng-options="v for v in priorities.values" >
+      <select ng-model="ticket.priority" name='priority' ng-options="v for v in priorities.values" >
       </select>
     </label>
     <label>
       <span>Status : </span>
-      <select ng-model="status.value" name='priority' ng-options="v for v in status.values" >
+      <select ng-model="ticket.status" name='status' ng-options="v for v in status.values" >
       </select>
     </label>
-    <input type='submit' value='Add' />
+    <input type='submit' value='Update' />
   </form>
 </div>

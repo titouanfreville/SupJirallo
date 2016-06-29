@@ -1,18 +1,20 @@
 <!-- Header to be inserted on every page.  -->
 <header>
   <!-- Please don't use <img> tag for logo. It should be a DIV background image instead :) -->
-  <div class="logo"></div>
-  <bar>
-    <h1>SupJiralo</h1>
-    <h2>Enjoy being Agile</h2>
-  </bar>
+  <div>
+    <div class="logo"></div>
+    <bar>
+      <h1>SupJiralo</h1>
+      <h2>Enjoy being Agile</h2>
+    </bar>
+  </div>
   <!-- Navigation tools -->
   <nav ng-show='logged'>
     <ul>
       <li><a ui-sref="logged">New Tickets</a></li>
       <li><a ui-sref="addticket">Create Ticket</a></li>
       <li><a ui-sref="listtickets">All Tickets</a></li>
-      <li ng-controller="logoutCtrl"><form ng-submit="destroy()"><input type="submit" name="submit" value="Logout" /></form></li>
+      <li ng-controller="logoutCtrl"><button ng-click='destroy();' type="button" name="submit" >Logout</button></li>
     </ul>
   </nav>
 </header>
@@ -21,16 +23,15 @@
   <h1>Hello, welcome to our Agile ticket manager !</h1>
   <br />
   <span>If you want to use or services, please log in :)</span>
-    <form ng-submit='submit()' ng-controller="loginForm">
-      <label>
-        <span>Enter your user name : </span>
-        <input type="text" ng-model="userName" name="username" placeholder="Enter your User Name Here :)" required />
-      </label>
-      <label>
-        <span>Enter your password here : </span>
-        <input type="password" ng-model="userPass" name="userpass" required />
-      </label>
-      <input type="submit" value="Submit" />
-    </form>
-
+  <form ng-submit='submit()' ng-controller="loginForm">
+    <label>
+      <span>Enter your user name : </span>
+      <input type="text" ng-model="userName" name="username" placeholder="Enter your User Name Here :)" required />
+    </label>
+    <label>
+      <span>Enter your password here : </span>
+      <input type="password" ng-model="userPass" name="userpass" required />
+    </label>
+    <input type="submit" value="Submit" />
+  </form>
 </div>

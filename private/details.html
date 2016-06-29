@@ -1,0 +1,53 @@
+<!-- Header to be inserted on every page.  -->
+<header>
+  <!-- Please don't use <img> tag for logo. It should be a DIV background image instead :) -->
+  <div>
+    <div class="logo"></div>
+    <bar>
+      <h1>SupJiralo</h1>
+      <h2>Enjoy being Agile</h2>
+    </bar>
+  </div>
+  <!-- Navigation tools -->
+  <nav>
+    <ul>
+      <li><a ui-sref="logged">New Tickets</a></li>
+      <li><a ui-sref="addticket">Create Ticket</a></li>
+      <li><a ui-sref="listtickets">All Tickets</a></li>
+      <li ng-controller="logoutCtrl"><button ng-click='destroy();' type="button" name="submit" >Logout</button></li>
+    </ul>
+  </nav>
+</header>
+<div class='main' ng-controller="detailsTicket">
+<!-- Will Print a detailed Ticket. -->
+  <div class='t_header'>
+    <h1>{{ ticket.summary }} </h1>
+    <span>Created on {{ ticket.creationDate }}</span>
+    <span>Reported by {{ ticket.reporter }}</span>
+  </div>
+  <div class='content'>
+    {{ ticket.description }}
+  </div>
+  <div class='info'>
+    <span> {{ ticket.priority }} </span>
+    <span> {{ ticket.assignee }} </span>
+    <span> {{ ticket.status }}</span>
+  </div>
+  <div class='actions'>
+    <!-- ng-show is visible for PO only, ng-hide is visible for DEVELOPPER only. Can be break as it's a js property evaluate on navigator -->
+    <span ng-show='{{ispo}}'><button ng-click="go_edit(ticket.summary)">Edit Ticket</button> | <button ng-click="destroy('ticket.summary')">Delete Ticket</button></span>
+    <span ng-hide='{{ispo}}'><button ng-click="start_working()">Start working on ticket</button> | <button ng-click="stop_working('DONE')">DONE</button> | <button ng-click="stop_working('TO DO')">Back to TO DO</button></span>
+  </div>
+  <div class='comments'>
+    <p ng-repeat="c in comments">
+      <span class='c_hearder'>
+        <span>{{ c.author }}</span>
+        <span>{{ c.creationDate }}</span>
+      </span>
+      <span>{{ c.content }}</span>
+    </p>
+  </div>
+  <div class='c_action'>
+    <button ng-click='add_comment();'>Comment</button>
+  </div>
+</div>

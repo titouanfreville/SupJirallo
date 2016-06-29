@@ -14,7 +14,7 @@
       <li><a ui-sref="logged">New Tickets</a></li>
       <li><a ui-sref="addticket">Create Ticket</a></li>
       <li><a ui-sref="listtickets">All Tickets</a></li>
-      <li ng-controller="logoutCtrl"><form ng-submit="destroy()"><input type="submit" name="submit" value="Logout" /></form></li>
+      <li ng-controller="logoutCtrl"><button ng-click='destroy();' type="button" name="submit" >Logout</button></li>
     </ul>
   </nav>
 </header>
@@ -38,7 +38,12 @@
       <span>{{ t.priority }}</span>
       <span>{{ t.reporter }}</span>
       <span>{{ t.status }}</span>
-      <span ng-bind-html="useractions"></span>
+      <span>
+        <button ng-click="go_details(t.summary);">Views</button>
+        <span ng-show="{{ispo}}">
+          | <button ng-click="go_edit(t.summary)">Edit Ticket</button> | <button ng-click="destroy(t.summary)">Delete Ticket</button>
+        </span>
+      </span>
     </p>
   </div>
 </div>

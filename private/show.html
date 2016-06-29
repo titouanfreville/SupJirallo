@@ -1,18 +1,20 @@
 <!-- Header to be inserted on every page.  -->
 <header>
   <!-- Please don't use <img> tag for logo. It should be a DIV background image instead :) -->
-  <div class="logo"></div>
-  <bar>
-    <h1>SupJiralo</h1>
-    <h2>Enjoy being Agile</h2>
-  </bar>
+  <div>
+    <div class="logo"></div>
+    <bar>
+      <h1>SupJiralo</h1>
+      <h2>Enjoy being Agile</h2>
+    </bar>
+  </div>
   <!-- Navigation tools -->
   <nav>
     <ul>
       <li><a ui-sref="logged">New Tickets</a></li>
-      <li><a href="/#/addticket">Create Ticket</a></li>
+      <li><a ui-sref="addticket">Create Ticket</a></li>
       <li><a ui-sref="listtickets">All Tickets</a></li>
-      <li ng-controller="logoutCtrl"><form ng-submit="destroy()"><input type="submit" name="submit" value="Logout" /></form></li>
+      <li ng-controller="logoutCtrl"><button ng-click='destroy();' type="button" name="submit" >Logout</button></li>
     </ul>
   </nav>
 </header>
@@ -37,7 +39,12 @@
       <span>{{ t.reporter }}</span>
       <span>{{ t.assignee }}</span>
       <span>{{ t.status }}</span>
-      <span ng-bind-html="useractions"></span>
+      <span>
+        <button ng-click="go_details(t.summary);">Views</button>
+        <span ng-show="{{ispo}}">
+          | <button ng-click="go_edit(t.summary)">Edit Ticket</button> | <button ng-click="destroy(t.summary)">Delete Ticket</button>
+        </span>
+      </span>
     </p>
   </div>
 </div>
