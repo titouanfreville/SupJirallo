@@ -1,0 +1,53 @@
+<!-- Header to be inserted on every page.  -->
+<header>
+  <!-- Please don't use <img> tag for logo. It should be a DIV background image instead :) -->
+  <div>
+    <div class="logo"></div>
+    <bar>
+      <h1>SupJiralo</h1>
+      <h2>Enjoy being Agile</h2>
+    </bar>
+  </div>
+  <!-- Navigation tools -->
+  <nav>
+    <ul>
+      <li><a ui-sref="logged">New Tickets</a></li>
+      <li ng-show='ispo'><a ui-sref="addticket">Create Ticket</a></li>
+      <li><a ui-sref="listtickets">All Tickets</a></li>
+      <li><a ui-sref="mytickets">My Tickets</a></li>
+      <li ng-controller="logoutCtrl"><button ng-click='destroy();' type="button" name="submit" >Logout</button></li>
+    </ul>
+  </nav>
+</header>
+<div class='main'>
+  <h2> All tickets</h2>
+  <!-- This will print table of new tickets :) div == table, p == lines, span == colulmns -->
+  <div>
+    <p>
+      <span><button ng-click="order_by('_id');">Ticket Id</button></span>
+      <span><button ng-click="order_by('summary ');">Summary</button></span>
+      <span><button ng-click="order_by('creationDate');">Creation Date</button></span>
+      <span><button ng-click="order_by('priority');">Priority</button></span>
+      <span><button ng-click="order_by('reporter');">Reported by</button></span>
+      <span><button ng-click="order_by('assignee');">Assigned to</button></span>
+      <span><button ng-click="order_by('status');">Status</button></span>
+      <span>Action</span>
+    </p>
+    <!-- Get all tickets from tickets table (cf scope in controller) -->
+    <p ng-repeat="t in tickets | orderBy: orderPlace">
+      <span>{{ t._id }}</span>
+      <span>{{ t.summary }}</span>
+      <span>{{ t.creationDate }}</span>
+      <span>{{ t.priority }}</span>
+      <span>{{ t.reporter }}</span>
+      <span>{{ t.assignee }}</span>
+      <span>{{ t.status }}</span>
+      <span>
+        <button ng-click="go_details(t.summary);">Views</button>
+        <span ng-show="{{ispo}}">
+          | <button ng-click="go_edit(t.summary)">Edit Ticket</button> | <button ng-click="destroy(t.summary)">Delete Ticket</button>
+        </span>
+      </span>
+    </p>
+  </div>
+</div>

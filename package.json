@@ -2,7 +2,7 @@
   "name": "supjirallo",
   "version": "0.0.1",
   "description": "School project aiming to recreate an agile ticket manager. ",
-  "main": "index.js",
+  "main": " node.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -22,7 +22,32 @@
   },
   "homepage": "https://github.com/titouanfreville/SupJirallo#readme",
   "dependencies": {
+    "angoose": "^0.3.21",
+    "bcrypt": "^0.8.7",
+    "bcryptjs": "^2.3.0",
+    "body-parser": "^1.15.1",
     "express": "^4.14.0",
-    "mongoose": "^4.5.0"
+    "express-flash-notification": "^0.4.0",
+    "express-jwt": "^3.4.0",
+    "express-session": "^1.13.0",
+    "jwt-simple": "^0.5.0",
+    "lodash": "^4.13.1",
+    "merge-descriptors": "^1.0.1",
+    "mongoose": "^4.5.0",
+    "mongoose-api": "0.0.2",
+    "mongoose-schema-extend": "^0.2.2",
+    "mongoskin": "^2.1.0",
+    "morgan": "^1.7.0",
+    "nodemailer": "^2.4.2",
+    "request": "^2.72.0",
+    "rootpath": "^0.1.2",
+    "xoauth2": "^1.1.0"
+  },
+  "devDependencies": {
+    "mocha": "^2.5.3",
+    "mocha-jshint": "^2.3.1",
+    "nodemon": "^1.9.2",
+    "should": "^9.0.2",
+    "supertest": "^1.2.0"
   }
 }

@@ -1,0 +1,40 @@
+version: '2'
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+      args:
+        UID: $UID
+    container_name: web_jiralo
+    volumes:
+      - $PWD:/home/supjirallo
+    ports:
+      - "3000:3000"
+    user: "$UID"
+  compass:
+    build:
+      context: .
+      dockerfile: Dockerfile.compass
+    container_name: compass_jirallo
+    user: "$UID"
+    volumes:
+      - $PWD/style:/home/style
+  test:
+    build:
+      context: .
+      dockerfile: Dockerfile.test
+      args:
+        UID: $UID
+    user: "$UID"
+    container_name: test_jirallo
+    volumes:
+      - $PWD:/home/supjirallo
+
+  mongo:
+    image: mongo
+    container_name: mongo_jiralo
+    hostname: mongo_jiralo
+    ports:
+      - "27017:27017"
+

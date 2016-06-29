@@ -1,0 +1,392 @@
+// @author: FREVILLE Titouan <titouanfreville@hotmail.fr, tfreville@nexway.com, titouan.freville@ensiie.fr >
+// This is on of the projected version. Official version will be upload on <http://www.festival-saint-valery.fr/>
+
+a {
+  min-height: 1px;
+}
+
+@include keyframes(slider) {
+    from       { left: 0 }
+    5%         { left: -100% }
+    10%        { left: -200% }
+    15%        { left: -300% }
+    20%        { left: -400% }
+    25%        { left: -500% }
+    30%        { left: -600% }
+    35%        { left: -700% }
+    40%        { left: -800% }
+    45%        { left: -900% }
+    50%        { left: -1000% }
+    54%        { left: -1100% }
+    60%        { left: -1200% }
+    65%        { left: -1300% }
+    70%        { left: -1400% }
+    75%        { left: -1500% }
+    80%        { left: -1600% }
+    85%        { left: -1700% }
+    90%        { left: -1800% }
+    95%        { left: -1900% }
+    to         { left: -2000% }
+}
+@include keyframes(translate){
+  0%,5%    { left: 0 }
+  81%,to   { left: -5000px; }
+}
+
+@include keyframes(mslider) {
+    from, 33%    { left: 0 }
+    35%, 67%     { left: -100% }
+    69%, to      { left: -200% }
+}
+
+@include keyframes(dotser) {
+  // Initial coloration
+  from       { opacity: 1; left: 5px;  }
+  // Transition 1
+  33%        { opacity: 1; left: 5px;    }
+  34%        { opacity: 0; left: 5px;    }
+  35%        { opacity: 0; left: 23px; }
+  36%        { opacity: 1; left: 23px; }
+  // Transition 2
+  67%        { opacity: 1; left: 23px; }
+  68%        { opacity: 0; left: 23px; }
+  69%        { opacity: 0; left: 41px; }
+  70%,to     { opacity: 1; left: 41px; }
+
+}
+/* Sponseor slider */
+.slideshow {
+  position: relative;
+  width: 283px;
+  height: 160px;
+  margin: 5% auto 2em;
+
+  img{
+    width: 283px;
+    height: 160px;
+  }
+
+  .container {
+    position:relative;
+    width: 283px;
+    height: 160px;
+    overflow: hidden;
+  }
+
+  // Slider container => width : n_diap * 100% !important
+  .slider {
+    position: absolute;
+    left:0; top:0;
+    width: 2100%;
+    height: 160px;
+  }
+
+  figure {
+    position:relative;
+    display:inline-block;
+    padding:0; margin:0;
+    // Effect on the slide
+   &:after {
+      position: absolute;
+      display:block;
+      content: " ";
+      top:0; left:0;
+      width: 100%; height: 100%;
+      box-shadow: 0 0 65px rgba(0,0,0, 0.5) inset;
+    }
+  }
+
+  .play_commands {
+
+    position: absolute;
+    top: 15px;
+    right: 5px;
+    z-index: 10;
+
+    width: 12px;
+    height: 12px;
+    text-indent: -9999px;
+    border: 0 none;
+
+    opacity: 0;
+
+    /* transition on opacicty && right */
+    @include transition(opacity 1s, right 1s);
+  }
+
+  .play {
+    right: 55px;
+    cursor: default;
+  }
+
+  /* Pause graph */
+  .pause:after,
+  .pause:before {
+    position: absolute;
+    display: block;
+    content: " ";
+    top:0;
+    width:38%;
+    height: 12px;
+    background: #884345;
+    background: rgba(136,67,69,0.5);
+  }
+  .pause:after { right:0; }
+  .pause:before { left:0; }
+
+  /* Play graph */
+  .play {
+    width: 1px;
+    height: 1px;
+
+    border-top: 5px solid transparent;
+    border-bottom: 5px solid transparent;
+    border-left: 10px solid #884345;
+    border-left: 10px solid rgba(136,67,69,0.5);
+
+    opacity: 0;
+  }
+
+  /* Stop animations */
+  .pacommand:target ~ & .slider {
+    @include animation-play-state(paused);
+  }
+
+  /* Launch animation */
+  #pa_play:target ~ & .slider {
+      @include animation-play-state(running);
+  }
+
+  /* switch beetween boutons */
+  .pacommand:target ~ & .pause         { opacity:0; }
+  #pa_play:target ~ &:hover .pause,
+  #pa_play:target ~ & .pause:focus   { opacity:1; }
+  .pacommand:target ~ & .play          { opacity:1; right: 25px; cursor: pointer; }
+  #pa_play:target ~ & .play          { opacity:0; right: 35px; cursor: default; }
+  
+  // Show buttons when over/focused
+  &:hover {
+    .pause, .play_commands:focus {
+      opacity: 1;
+      outline: none;
+    }
+  }
+
+  .animate {
+    @include animation(slider 48s infinite alternate);
+  }
+}
+
+/* Slider txt 
+*/
+.mslide {
+  @include display-flex;
+  @include flex-direction(column);
+  position: relative;
+  width: 425px;
+  height: 300px;
+  margin: 5% auto 2em;
+
+  .play_commands {
+    position: absolute;
+    top: 15px;
+    right: 5px;
+    z-index: 10;
+
+    width: 12px;
+    height: 12px;
+    text-indent: -9999px;
+    border: 0 none;
+    opacity: 0;
+
+    @include transition(opacity 1s, right 1s);
+  }
+  .play {
+    right: 55px;
+    cursor: default;
+  }
+
+  .pause:after,
+  .pause:before {
+    position: absolute;
+    display: block;
+    content: " ";
+    top:0;
+    width:38%;
+    height: 12px;
+    background: #884345;
+    background: rgba(136,67,69,0.5);
+  }
+  .pause:after { right:0; }
+  .pause:before { left:0; }
+
+  .play {
+    width: 1px;
+    height: 1px;
+    border-top: 5px solid transparent;
+    border-bottom: 5px solid transparent;
+    border-left: 10px solid #884345;
+    border-left: 10px solid rgba(136,67,69,0.5);
+    opacity: 0;
+  }
+  // Show buttons when over/focused
+  &:hover {
+    .pause, .play_commands:focus {
+      opacity: 1;
+      outline: none;
+    }
+  }
+
+  /* dots styles */
+  .dots_commands  {
+    @include display-flex;
+    @include justify-content(center);
+    @include align-self(center);
+    position: relative;
+    width: 54px;
+    top: 32px;
+    padding:0;
+    margin:0;
+    text-align: center;
+
+      li {
+        @include display-flex;
+        padding:0;
+        margin:0;
+        list-style:none;
+
+        a {
+          height:8px;
+          width: 8px;
+          margin: 0 5px;
+          text-indent: -9999px;
+          background: transparent;
+          border-bottom:0;
+          @include border-radius(50%);
+          @include box-shadow(0 1px 2px rgba(0,0,0,0.55) inset);
+          z-index:25;
+        }
+        &:first-child {
+          a:after, a:before {
+            position: absolute;
+            top: 0;
+            left: 0;
+            content: " ";
+            width: 8px;
+            height: 8px;
+            background: #bd9b83;
+            z-index:20;
+            @include border-radius(50%);
+            @include box-shadow(0 1px 2px rgba(0,0,0,0.55) inset);
+          }
+        }
+
+        &:first-child {
+          a:after {
+            @include animation(dotser 30s infinite alternate);
+          }
+        }
+
+        &:first-child {
+          a:before {
+            display:none;
+          }
+        }
+      }
+
+      li + li a {
+        z-index:10;
+      }
+
+  }
+  
+  .mslider {
+    @include display-flex;
+    @include flex-direction(row);
+    @include justify-content(flex-start);
+    position: absolute;
+    left:0;
+    top:0;
+    min-width: 100%;
+    width: 300%;
+    height: 300px;
+  }
+
+  /* stop animation */
+  .command:target ~ & .mslider,
+  .command:target ~ & .dots_commands li:first-child a:after {
+    @include animation-play-state(paused);
+  }
+
+  /* launch animations */
+  #sl_play:target ~ & .b1,
+  #sl_play:target ~ & .b2,
+  #sl_play:target ~ & .b3,             { @include display-flex; }
+  #sl_play:target ~ & .mslider,
+  #sl_play:target ~ & .dots_commands li:first-child a:after {
+      @include animation-play-state(running);
+  }
+  #sl_play:target ~ & .mslider {
+    @include display-flex;
+  }
+  #sl_play:target ~ & .dslider {
+    display: none;
+  }
+
+  /* switch beetween butons */
+  .command:target ~ & .pause         { opacity:0; }
+  #sl_play:target ~ &:hover .pause,
+  #sl_play:target ~ & .pause:focus   { opacity:1; }
+  .command:target ~ & .play          { opacity:1; right: 25px; cursor: pointer; }
+  #sl_play:target ~ & .play          { opacity:0; right: 35px; cursor: default; }
+
+  /* Dots navigation */
+  .i:target ~ & .bar .mslider { display: none;}
+  .i:target ~ & .bar .dslider { @include display-flex; width: 100%; left : 0 !important;}
+  .i:target ~ & .dots_commands li:first-child a:after   { display:none; }
+  .i:target ~ & .dots_commands li:first-child a:before  { display:block; }
+
+  #sl_i1:target ~ & .b1                                     { @include display-flex;}
+  #sl_i1:target ~ & .b2                                     { display: none; }
+  #sl_i1:target ~ & .b3                                     { display: none; }
+  #sl_i1:target ~ & .dots_commands li:first-child a:before  { left:5px; }
+
+  #sl_i2:target ~ & .b2                                     { @include display-flex;}
+  #sl_i2:target ~ & .b1                                     { display: none; }
+  #sl_i2:target ~ & .b3                                     { display: none; }
+  #sl_i2:target ~ & .dots_commands li:first-child a:before  { left:23px; }
+  #sl_i2:target ~ & .dots_commands li:first-child a:after   { left:23px; }
+
+  #sl_i3:target ~ & .b3                                     { @include display-flex;}
+  #sl_i3:target ~ & .b2                                     { display: none; }
+  #sl_i3:target ~ & .b1                                     { display: none; }
+  #sl_i3:target ~ & .dots_commands li:first-child a:before  { left:41px; }
+
+  .bar {
+    position:relative;
+    width: 425px;
+    height: 300px;
+    overflow: hidden;
+  }
+  .animate {
+    @include animation(mslider 30s infinite alternate);
+  }
+}
+.command {
+  display: none;
+}
+
+.pacommand {
+  display: none;
+}
+
+.rideau {
+  @include animation(translate 20s 1 forwards);
+  position: fixed;
+  top: 180px;
+  z-index: 500;
+  width: calc(100% + 500px);
+  height: calc(100% - 180px);
+  background: url(../images/opening_rideau.png) no-repeat 0% 70% !important;
+  background-size: cover !important;
+}

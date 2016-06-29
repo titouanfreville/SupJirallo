@@ -1,0 +1,13 @@
+FROM node:argon
+ARG UID
+
+RUN mkdir /home/supjirallo
+RUN npm install -g mocha
+
+RUN useradd -u $UID -m docker && echo "docker:docker" | chpasswd
+
+COPY . /home/supjirallo
+
+WORKDIR /home/supjirallo
+
+CMD sleep 5s; mocha --recursive --harmony_proxies tests

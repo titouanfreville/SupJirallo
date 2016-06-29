@@ -21,6 +21,13 @@
   ],
   "dependencies": {
     "angular": "^1.5.7",
-    "angular-resource": "^1.5.7"
+    "angular-cookies": "^1.5.7",
+    "angular-ui-router": "ui-router#^0.3.1",
+    "angular-route": "^1.5.7",
+    "ng-dialog": "^0.6.2",
+    "angular-pusher": "^0.0.14"
+  },
+  "resolutions": {
+    "angular": "^1.5.7"
   }
 }

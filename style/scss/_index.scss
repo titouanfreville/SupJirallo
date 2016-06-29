@@ -1,0 +1,50 @@
+.main {
+  @include flex;
+  @include display-flex;
+  @include flex-direction(column);
+  @include justify-content(space-between);
+  h1, h2 {
+    @include flex;
+    @include display-flex;
+    @include flex-direction(row);
+    @include justify-content(space-between);
+  }
+
+  div {
+    @include flex;
+    @include display-flex;
+    @include flex-direction(column);
+    @include justify-content(space-between);
+
+    p {
+      @include flex;
+      @include display-flex;
+      @include flex-direction(row);
+      @include justify-content(space-between);
+      span {
+        &:first-child{
+          @include flex(1.5);
+        }
+        &:nth-child(2) {
+          @include flex(2.5)
+        }
+        &:nth-child(3) {
+          @include flex(0.8)
+        }
+        &:last-child {
+          @include flex(1.2)
+        }
+        @include flex;
+        @include display-flex;
+        @include flex-direction(row);
+        @include justify-content(space-between);
+        button {
+          @include flex;
+          @include display-flex;
+          @include justify-content(space-between);
+        }
+      }
+    }
+  }
+
+}

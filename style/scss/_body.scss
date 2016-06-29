@@ -1,0 +1,24 @@
+body {
+  // frozen properties -------------------
+  @include font-smoothing(antialiased);
+  @include text-size-adjust();
+  @include tap-highlight-transparent();
+  @include user-select(none);
+  @include display-flex;
+  @include justify-content(center);
+  @include flex-direction(column);
+  word-wrap: break-word;
+  line-height: 20px;
+  -webkit-backface-visibility: hidden;
+  -webkit-user-drag: none;
+  padding: 0;
+  margin: 0;
+  // configurable properties -------------
+  background-color: $background-color;
+  background: $background-img fixed no-repeat;
+  background-size: cover;
+  font-family: $fonts;
+  font-size: medium;
+  text-align: justify;
+  color: black;
+}

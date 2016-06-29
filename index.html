@@ -1,44 +1,30 @@
 <!DOCTYPE html>
-<html ng-app>
+<html>
   <head>
     <meta charset='utf-8' />
     <meta name='viewport' content='initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width' />
     <title>SupJiralo, the agile board from Supinfo !</title>
     <!-- loading JS -->
-    <script src="bower_components/jquery/dist/jquery.min.js"></script>
     <script src="bower_components/angular/angular.js"></script>
-    <style type="text/css">
-      html, body {
-          /* The split-pane needs a container with width and height. */
-          height: 100%;
-          min-height: 100%;
-          margin: 0;
-          padding: 0;
-      }
-      /* The styling below is very simple. You can style things your own way. */
-      body {
-          box-sizing: border-box;
-          background: #aaa;
-          padding: 5px;
-      }
-      .split-pane-divider {
-          background: #aaa;
-      }
-      .split-pane-component {
-          background: #fff;
-      }
-    </style>
+    <script src="bower_components/angular-cookies/angular-cookies.js"></script>
+    <script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
+    <script src="bower_components/angular-route/angular-route.js"></script>
+    <script src="bower_components/ng-dialog/js/ngDialog.js"></script>
+    <script src="/angoose/angoose-client.js"></script>
+    <script src='js/app.js'></script>
+    <script src='js/controllers/userCtrl.js'></script>
+    <script src='js/controllers/ticketsCtrl.js'></script>
+    <script src='js/controllers/commentsCtrl.js'></script>
+    <script src="bower_components/angular-pusher/angular-pusher.min.js" type="text/javascript"></script>
+    <!-- Loading CSS -->
+    <link href='style/style.css' rel='stylesheet'>
+    <link href='bower_components/ng-dialog/css/ngDialog.css' rel='stylesheet'>
+    <link href='bower_components/ng-dialog/css/ngDialog-theme-default.css' rel='stylesheet'>
   </head>
-  <body>
-    <header>
-      <h1>SupJiralo</h1>
-      <h2>Enjoy being Agile</h2>
-    </header>
-    <div>
-      <input type="text" ng-model="yourName" placeholder="Enter a name here">
-      <h1>Hello, {{ yourName }} !</h1>
-      <br />
-      <span>Just tested angular was functionnal</span>
+  <body ng-app='jirallo' ng-class='bodyClass' >
+    <div ui-view>
+    <!-- Here will be loaded the views. -->
+      <span> If you see this message, this mean you are not login. Go back to <a ui-sref='index'>Home to Login :) </a></span>
     </div>
   </body>
 </html>
