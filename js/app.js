@@ -37,9 +37,8 @@ jirallo.config(function ($stateProvider, $urlRouterProvider, $routeProvider) {
           $state.go('index');
         }
       },
-      controller: 'mainCtrl',
       controller: 'newTicketCtrl',
-      templateUrl: 'private/index.html'
+      templateUrl: 'private/show.html'
     })
 
     .state('listtickets', {
@@ -50,7 +49,7 @@ jirallo.config(function ($stateProvider, $urlRouterProvider, $routeProvider) {
           $state.go('index');
         }
       },
-      controller: 'mainCtrl',
+      controller: 'allTicketCtrl',
       templateUrl: 'private/show.html'
     })
 
@@ -62,8 +61,8 @@ jirallo.config(function ($stateProvider, $urlRouterProvider, $routeProvider) {
           $state.go('index');
         }
       },
-      controller: 'mainCtrl',
-      templateUrl: 'private/myticket.html'
+      controller: 'myTicketCtrl',
+      templateUrl: 'private/show.html'
     })
 
     .state('details', {

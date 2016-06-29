@@ -2,6 +2,14 @@
 'use strict';
 var jirallo = angular.module('jirallo.tickets', ['ngDialog']);
 jirallo.controller('detailsTicket', function($scope, $rootScope, $state, $window, $http, $location, $sce, Ticket, Comment, ngDialog){
+
+  if ($rootScope.userName) $scope.userName = $rootScope.userName
+  else $scope.userName = $window.sessionStorage.userName;
+  $scope.logged = angular.isDefined($scope.userName);
+
+  if ($rootScope.userRole) $scope.ispo = ($rootScope.userRole == 'ProductOwner')
+  else $scope.ispo = ($window.sessionStorage.userRole == 'ProductOwner');
+
   var summary=$rootScope.summary=$window.sessionStorage.summary;
   $scope.ticket=Ticket.$get({summary: summary});
   $scope.comments=Comment.$query({ticket: summary}, null, {sort: {creationDate: -1}});
@@ -94,6 +102,13 @@ jirallo.controller('detailsTicket', function($scope, $rootScope, $state, $window
 })
 
 jirallo.controller('newTicketCtrl', ['$scope', '$rootScope', '$state', '$window', '$http', '$location', '$sce', 'Ticket', function($scope, $rootScope, $state, $window, $http, $location, $sce, Ticket){
+
+  if ($rootScope.userName) $scope.userName = $rootScope.userName
+  else $scope.userName = $window.sessionStorage.userName;
+  $scope.logged = angular.isDefined($scope.userName);
+  if ($rootScope.userRole) $scope.ispo = ($rootScope.userRole == 'ProductOwner')
+  else $scope.ispo = ($window.sessionStorage.userRole == 'ProductOwner');
+
   $scope.tickets=Ticket.$query({status: 'TO DO'}, null, {sort: {creationDate: -1}});
   $scope.orderPlace= $rootScope.orderPlace;
   $scope.order_by = function (value) {
@@ -135,9 +150,17 @@ jirallo.controller('newTicketCtrl', ['$scope', '$rootScope', '$state', '$window'
 }]);
 
 jirallo.controller('myTicketCtrl', ['$scope', '$rootScope', '$state', '$window', '$http', '$location', '$sce', 'Ticket', function($scope, $rootScope, $state, $window, $http, $location, $sce, Ticket){
+
+  if ($rootScope.userName) $scope.userName = $rootScope.userName
+  else $scope.userName = $window.sessionStorage.userName;
+  $scope.logged = angular.isDefined($scope.userName);
+  if ($rootScope.userRole) $scope.ispo = ($rootScope.userRole == 'ProductOwner')
+  else $scope.ispo = ($window.sessionStorage.userRole == 'ProductOwner');
+
   if ($window.sessionStorage.userRole == 'ProductOwner') $scope.tickets=Ticket.$query({reporter: $window.sessionStorage.userName}, null, {sort: {creationDate: -1}});
   else $scope.tickets=Ticket.$query({assignee: $window.sessionStorage.userName}, null, {sort: {creationDate: -1}});
   $rootScope.orderSens=1;
+
   $scope.order_by = function (value) {
     if ($rootScope.orderPlace == value) $rootScope.orderSens = $rootScope.orderSens * -1;
     else {$rootScope.orderPlace = value; $rootScope.orderSens=1;}
@@ -178,6 +201,13 @@ jirallo.controller('myTicketCtrl', ['$scope', '$rootScope', '$state', '$window',
 
 
 jirallo.controller('allTicketCtrl', ['$scope', '$rootScope', '$state', '$window', '$http', '$location', '$sce', 'Ticket', function($scope, $rootScope, $state, $window, $http, $location, $sce, Ticket){
+
+  if ($rootScope.userName) $scope.userName = $rootScope.userName
+  else $scope.userName = $window.sessionStorage.userName;
+  $scope.logged = angular.isDefined($scope.userName);
+  if ($rootScope.userRole) $scope.ispo = ($rootScope.userRole == 'ProductOwner')
+  else $scope.ispo = ($window.sessionStorage.userRole == 'ProductOwner');
+
   $scope.tickets=Ticket.$query({}, null, {sort: {creationDate: -1}});
     $scope.order_by = function (value) {
     if ($rootScope.orderPlace == value) $rootScope.orderSens = $rootScope.orderSens * -1;
