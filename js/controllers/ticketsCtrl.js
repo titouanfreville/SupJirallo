@@ -7,6 +7,8 @@ jirallo.controller('detailsTicket', function($scope, $rootScope, $state, $window
   $scope.comments=Comment.$query({ticket: summary}, null, {sort: {creationDate: -1}});
   $scope.ngDialog = ngDialog;
   $scope.userName = $window.sessionStorage.userName;
+  $scope.base_state = $state.current.name;
+  $scope.state=$state;
   console.log($scope.comment);
   $scope.add_comment = function() {
     console.log("ready"),
@@ -44,6 +46,7 @@ jirallo.controller('detailsTicket', function($scope, $rootScope, $state, $window
       }
     }).success(function(res) {
       $window.alert(res.message);
+      $state.reload($state.current.name);
     });;
   };
 
@@ -64,6 +67,7 @@ jirallo.controller('detailsTicket', function($scope, $rootScope, $state, $window
       }
     }).success(function(res) {
       $window.alert(res.message);
+      $state.reload($state.current.name);
     });;
   }
 
@@ -84,6 +88,7 @@ jirallo.controller('detailsTicket', function($scope, $rootScope, $state, $window
       }
     }).success(function(res) {
       $window.alert(res.message);
+      $state.reload($state.current.name);
     });;
   }
 })
@@ -117,6 +122,7 @@ jirallo.controller('newTicketCtrl', ['$scope', '$rootScope', '$state', '$window'
       }
     }).success(function(res) {
       $window.alert(res.message);
+      $state.reload($state.current.name);
     });;
   };
 }]);
@@ -152,6 +158,7 @@ jirallo.controller('myTicketCtrl', ['$scope', '$rootScope', '$state', '$window',
       }
     }).success(function(res) {
       $window.alert(res.message);
+      $state.reload($state.current.name);
     });;
   };
 }]);
@@ -186,6 +193,7 @@ jirallo.controller('allTicketCtrl', ['$scope', '$rootScope', '$state', '$window'
       }
     }).success(function(res) {
       $window.alert(res.message);
+      $state.reload($state.current.name);
     });;
   };
 }]);
@@ -217,9 +225,11 @@ jirallo.controller('addTicketCtrl', ['$scope', '$rootScope', '$state', '$window'
         }
       }).success(function(res) {
         $window.alert(res.message);
+       $state.reload($state.current.name);
       });
     } else {
       $window.alert(CredNotProvided);
+      $state.reload($state.current.name);
     }
   }
 }]);
@@ -269,7 +279,6 @@ jirallo.controller('updateTicketCtrl', function($scope, $rootScope, $state, $win
         }
       }).success(function(res) {
         $window.alert(res.message);
-        console.log(previous_state);
         $state.go(previous_state);
       });
     } else {

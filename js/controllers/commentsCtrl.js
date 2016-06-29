@@ -20,7 +20,8 @@ jirallo.controller('commentCtrl', function($scope, $rootScope, $state, $window, 
         }
       }).success(function(res) {
         $window.alert(res.message);
-        $scope.ngDialog.close()
+        $scope.state.reload($scope.base_state);
+        $scope.ngDialog.close();
       });
     } else {
       $window.alert(CredNotProvided);
