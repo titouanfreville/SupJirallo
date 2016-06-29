@@ -21,6 +21,13 @@ It must be done using MEAN Stack even if MongoDB is not the most optimize databa
 ## HOW TO - Run Without docker :
 **This is a not testing way but it should work**
 - **Make sure mongodb is running**
-- **update config/database to make mongo connect to your local database**
+- **update config/database to make mongo connect to your local database and angoose.mod**
+- npm install --production; bower install
+- node --harmony_proxies serve.js
+
+## HOW TO - Dev Without Docker :
+**This is a not testing way but it should work**
+- **Make sure mongodb is running**
+- **update configurations to use you own mongo server**
 - npm install; bower install
-- npm --harmony_proxies serve.js
+- node --harmony_proxies serve.js

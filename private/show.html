@@ -30,9 +30,9 @@
       <span>Action</span>
     </p>
     <!-- Get all tickets from tickets table (cf scope in controller) -->
-    <p ng-repeat="t in tickets">
+    <form ng-submit='go_to_ticket()' ng-repeat="t in tickets">
       <span>{{ t._id }}</span>
-      <span>{{ t.summary }}</span>
+      <span ng-model='summary'>{{ t.summary }}</span>
       <span>{{ t.priority }}</span>
       <span>{{ t.reporter }}</span>
       <span>{{ t.assignee }}</span>

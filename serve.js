@@ -5,7 +5,7 @@ var express      = require('express'),
     session      = require('express-session'),
     nodemailer   = require('nodemailer')
     morgan       = require('morgan'),
-    jwt          = require('jwt-simple'),
+    // jwt          = require('jwt-simple'),
     bodyParser   = require('body-parser'),
     path         = require('path'),
     mongoose     = require('mongoose'),
@@ -20,6 +20,7 @@ var express      = require('express'),
     User         = Users.User,
     ProductOwner = Users.ProductOwner,
     Developer    = Users.Developer;
+// Create and configure mail sender (We are using a GMail sender via a dumb mail adress for the project.)
 var transporter  = nodemailer.createTransport({
   service: 'GMail',
   auth: {
@@ -28,17 +29,21 @@ var transporter  = nodemailer.createTransport({
       clientId: '135474674442-ngot4g8g60mil7kbsnbnltv8b80l9tjt.apps.googleusercontent.com',
       clientSecret: 'CuAMhaXYueb2A8ITwAmaytG8',
       refreshToken: '1/zDX8W8RHXrCZhOZMk5DrHXgqHRtZsdGk-12Y3GoVqS4',
-
     })
   }
 });
+// Set basic mail option : from
 var mailOptions  = {
-  from: 'supjirallo@gmail.com',
+  from: 'no-reply@supjirallo.com',
   to: null,
   subject: null,
   text: null
 }
 // ----------------------------------------------------------------------------------
+// Middleware to secure path private. It checked if you are well logged. If you aren't, it send you back to root.
+// Thought, as we are using Angular State, this is usefull only if people unactive javascript client ~~ 
+// It ensure that you can't access private methods/views without being log in the app previously.
+// If the server is shutdown, you need to log again, even if you were using the app.
 secure = function (req, res, next) {
   console.log("In midlle Ware ---------------------")
   console.log('Session : '+req.session);
@@ -56,29 +61,16 @@ secure = function (req, res, next) {
     res.redirect('/');
   }
 }
-
-getToken = function (headers) {
-  if (headers && headers.authorization) {
-    var parted = headers.authorization.split(' ');
-    if (parted.length === 2) {
-      return parted[1];
-    } else {
-      return null;
-    }
-  } else {
-    return null;
-  }
-};
 // ----------------------------------------------------------------------------------
 // Base configs ---------------------------------------------------------------------
 // get request parameters
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-// Log info to console
+// More logs on request with better informations.
 app.use(morgan('dev'));
 
-// Init session
+// Set up session
 app.use(session({
   name: 'session',
   secret: 'bla',
@@ -89,19 +81,6 @@ app.use(session({
     httpOnly: false // <- set httpOnly to false
   }
 }))
-
-app.use(function(req, res, next){
-  var err = req.session.error;
-  var msg = req.session.successs;
-  console.log('Session ' + req.session.loggedIn);
-  delete req.session.error;
-  delete req.session.successs;
-  res.locals.message = '';
-  if (err) res.locals.message = '<p class="msg error">' + err + '</p>';
-  if (msg) res.locals.message = '<p class="msg successs">' + msg + '</p>';
-  next();
-});
-
 // Define root as current directory
 app.use('/bower_components', express.static(path.join(__dirname, 'bower_components')));
 app.use('/js', express.static(path.join(__dirname, 'js')));
@@ -109,28 +88,34 @@ app.use('/node_modules', express.static(path.join(__dirname, 'node_modules')));
 app.use('/style', express.static(path.join(__dirname, 'style')));
 app.use('/index.html', express.static(path.join(__dirname, 'index.html')));
 app.use('/main_view.html', express.static(path.join(__dirname, 'main_view.html')));
-
 // Defin private as path so we can protect it
 app.use('/private', secure);
 app.use('/private', express.static(path.join(__dirname, 'private')));
-
 // ----------------------------------------------------------------------------------
 // Connect to Mongo -----------------------------------------------------------------
+// If you are not using docker launch, please make sure to update the config file
+// with your own database access
 mongoose.connect(config.database);
 // ----------------------------------------------------------------------------------
 // Routing --------------------------------------------------------------------------
-/** Angoose bootstraping */
+// Init angoose module so he can expose models for angular and acces database.
 angoose.init(app, {
    'module-dirs':'models',
    'mongo-opts': 'mongo_jiralo:27017/jiralo_db',
 });
-// Basic routes.
+// Base path / loadin index
 app.get('/', function (req, res) {
-  console.log('Session : '+req.session.loggedIn);
   res.sendFile(path.join(__dirname, 'index.html'));
 });
 // Api Routes #######################################################
 // User Routes ######################################################
+// Sign in function.
+// @require name Request must have name paramter. It will be use to search the user.
+// @ensure User is well login and able to use logged only services.
+// @response {succes: false, message: error message } if fail, {success: true, message: 'Logged in succed'}
+// @set session.loggedIn Will take value true if log in succed, false else
+// @set session.role Save logged user role in session
+// @set session.name Save logged user name in session
 apiRoutes.post('/signin', function(req, res){
   User.findOne({
     name: req.body.name
@@ -138,7 +123,6 @@ apiRoutes.post('/signin', function(req, res){
     if (err) throw err;
     if (!user) {
       req.session.loggedIn=false;
-      req.session.error='Authentication failed. User not found.'
       res.json({success: false, message: 'Failed. User incorrect, please make sure you did not miss type.'});
     } else {
       if (user.role == 'ProductOwner') {
@@ -148,8 +132,7 @@ apiRoutes.post('/signin', function(req, res){
               req.session.loggedIn = true;
               req.session.name = user.name;
               req.session.role = user.role;
-              req.session.successs = 'Authenticated as ' + user.name;
-              res.json({success: true, message: 'successs in adding new user', role: user.role});
+              res.json({success: true, message: 'You are now well log in :)', role: user.role});
             });
           } else {
             req.session.loggedIn=false;
@@ -166,12 +149,10 @@ apiRoutes.post('/signin', function(req, res){
               req.session.name = user.name;
               req.session.role = user.role;
               // var token = jwt.encode(user, config.secret);
-              req.session.successs = 'Authenticated as ' + user.name;
-              res.json({success: true, message: 'successs in adding new user', role: user.role});
+              res.json({success: true, message: 'You are now well log in :)', role: user.role});
             });
           } else {
             req.session.loggedIn=false;
-            req.session.error='Autentification failed. Wrong password.'
             res.json({success: false, message: 'Failed. Password incorrect, please make sure you did not miss type.'});
           }
         })
@@ -179,7 +160,9 @@ apiRoutes.post('/signin', function(req, res){
     }
   })
 })
-
+// Destroy session function
+// @response {success: true, message: 'Well Logged out. Please comme again'}
+// @ensure Current session is destroyed.
 apiRoutes.post('/destroy_session', function(req, res) {
   req.session.destroy(function() {
     res.json({success: true, message: 'Well Logged out. Please comme again :).'});
@@ -187,6 +170,14 @@ apiRoutes.post('/destroy_session', function(req, res) {
 })
 // ##################################################################
 // Manage Tickets Routes ############################################
+// YOU NEED TO BE A PRODUCT OWNER TO USE THOSE METHODS.
+// New Ticket function
+// @require summary Summary of the ticket to create
+// @param description Descrition for the new ticket
+// @param priority Priortiy of the ticket
+// @param status Status for the ticket
+// @ensure Ticket is well created with provided value if no error occurs.
+// @resonse {succes: false, message: error message} if failed, {success: true, message: 'Ticket well added.'} else
 apiRoutes.post('/private/newticket', function(req, res){
   if (req.session.role == 'ProductOwner') {
     ProductOwner.findOne({
@@ -223,7 +214,13 @@ apiRoutes.post('/private/newticket', function(req, res){
     res.json({succes: false, message: 'Failed. You are not Allowed to perform this action.'});
   }
 })
-
+// Update Ticket function
+// @require summary Summary of the ticket to update
+// @param description Descrition for the new ticket
+// @param priority Priortiy of the ticket
+// @param status Status for the ticket
+// @ensure Ticket is updated if no error occurs
+// @response {succes: false, message: error message} if failed, {success: true, message: 'Ticket well Updated.'} else
 apiRoutes.post('/private/updateticket', function(req, res){
   if (req.session.role == 'ProductOwner') {
     ProductOwner.findOne({
@@ -252,7 +249,10 @@ apiRoutes.post('/private/updateticket', function(req, res){
     res.json({succes: false, message: 'Failed. You are not Allowed to perform this action.'});
   }
 })
-
+// Delete Ticket function
+// @require summary Summary of the ticket to update
+// @resonse {succes: false, message: error message} if failed, {success: true, message: 'Ticket well deleted.'} else
+// @ensure Ticket is deleted if no error occurs
 apiRoutes.post('/private/deleteticket', function(req, res){
   if (req.session.role == 'ProductOwner') {
     ProductOwner.findOne({
@@ -278,6 +278,11 @@ apiRoutes.post('/private/deleteticket', function(req, res){
 })
 // ##################################################################
 // Manage Workers ###################################################
+// You need to be a Developer to use those functions
+// Start Working function
+// @require ticket_name Summary of the ticket to work on (used as name cause it is REQUIRED AND UNIQUE)
+// @ensure User is set as assignee for the ticket and Ticket is in state IN PROGRESS.
+// @resonse {succes: false, message: error message} if failed, {success: true, message: 'You are now working on this ticket :).'} else
 apiRoutes.post('/private/startworking', function(req, res){
   if (req.session.role == 'Developer') {
     Developer.findOne({
@@ -302,7 +307,10 @@ apiRoutes.post('/private/startworking', function(req, res){
     res.json({succes: false, message: 'Failed. You are not Allowed to perform this action.'});
   }
 })
-
+// Stop Working function
+// @require ticket_name Summary of the ticket you finished working on (used as name cause it is REQUIRED AND UNIQUE)
+// @ensure User is set as assignee for the ticket and Ticket is in state provided (TO DO if task not solved, DONE if solved).
+// @resonse {succes: false, message: error message} if failed, {success: true, message: 'You are done working on this ticket and it is.' + new status} else
 apiRoutes.post('/private/stopworking', function(req, res){
   if (req.session.role == 'Developer') {
     Developer.findOne({
@@ -329,6 +337,12 @@ apiRoutes.post('/private/stopworking', function(req, res){
 })
 // ##################################################################
 // Comment Routes ###################################################
+// You need to be logged in to use this function ;)
+// new Comment function
+// @require ticket_name Summary of the ticket you finished working on (used as name cause it is REQUIRED AND UNIQUE)
+// @param content Content of the comment to create
+// @ensure Comment is created and linked to the good tickets and author. A mail is well send to the ticket reporter.
+// @resonse {succes: false, message: error message} if failed, {success: true, message: 'Comment well aded..' + new status} else
 apiRoutes.post('/private/newcomment', function(req, res){
   var new_comment = new Comment({
     content: req.body.content,
@@ -406,6 +420,7 @@ apiRoutes.post('/private/newcomment', function(req, res){
 // ##################################################################
 app.use('/', apiRoutes);
 // start server
+// Start serving on port 3000
 var server = app.listen(3000, function () {
     if (server.address().address == '::') {
       console.log('Server listening at http://localhost:' + server.address().port);
@@ -414,5 +429,5 @@ var server = app.listen(3000, function () {
       console.log('Server listening at http://'+ server.address().address + ':' + server.address().port);
     }
 });
-
+// Export server as a module for unit testing need
 module.exports = server;
