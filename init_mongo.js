@@ -3,7 +3,6 @@ var mongoose = require('mongoose'),
   Users = require('./models/users'),
   Comment = require('./models/comments').Comment,
   Ticket = require('./models/tickets').Ticket,
-  should= require('should'),
   User= Users.User,
   ProductOwner= Users.ProductOwner,
   Developer= Users.Developer;
@@ -25,7 +24,6 @@ dbcon.once('open', function callback() {
   })
   console.log("Well Connected");
 });
-
 // Create Product Owners Account ------------
 var PO1 = new ProductOwner({
   name: 'Marsu',

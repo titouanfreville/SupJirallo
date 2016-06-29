@@ -38,11 +38,14 @@
     <!-- ng-show is visible for PO only, ng-hide is visible for DEVELOPPER only. Can be break as it's a js property evaluate on navigator -->
     <span ng-show='ispo'><button ng-click="go_edit(ticket.summary)">Edit Ticket</button> | <button ng-click="destroy('ticket.summary')">Delete Ticket</button></span>
     <span ng-hide='ispo'>
+    <!-- diplay only if User is not working on ticket && ticket is not assigned yet -->
       <button ng-hide='ticket.assignee || ticket.assignee == userName' ng-click="start_working()">Start working on ticket</button>
+      <!-- Displayed only if User is working on ticket -->
       <button ng-show='ticket.assignee == userName' ng-click="stop_working('DONE')">DONE</button>
       <button ng-show='ticket.assignee == userName' ng-click="stop_working('TO DO')">Back to TO DO</button>
     </span>
   </div>
+  <!-- Print comment -->
   <div class='comments'>
     <p ng-repeat="c in comments">
       <span class='c_hearder'>

@@ -1,5 +1,9 @@
 'use strict';
 var jirallo = angular.module('jirallo.comment', ['ngDialog']);
+// commentCtrl Controller to get data to create comment. 
+// http call on /private/newcomment
+// Alert error 
+// Alert Well added + quit ngDialog view.
 jirallo.controller('commentCtrl', function($scope, $rootScope, $state, $window, $http, $location, ngDialog){
   var CredNotProvided = "You are missing something. Please make sure you provided a Summary for the ticket.";
   $scope.submit = function () {

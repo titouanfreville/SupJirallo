@@ -1,8 +1,9 @@
 <!-- Header to be inserted on every page.  -->
+<!-- Display view to add comment -->
 <form ng-submit='submit() && closeThisDialog()'>
   <label>
     <span>Your comment :</span></span>
-    <input type="textarea" rows="10" cols="50" ng-model="content" name="content" />
+    <textarea rows="10" cols="50" ng-model="content" name="content"></textarea>
   </label>
   <input type='submit' value='Comment' />
 </form>

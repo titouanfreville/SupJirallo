@@ -1,6 +1,10 @@
 // ProductOwner
 'use strict';
 var jirallo = angular.module('jirallo.loginCtrl', ['ngCookies']);
+// LoginController
+// Perform all required step to user.
+// go to logged state if well login
+// alert for error else
 jirallo.controller('loginForm', ['$scope', '$rootScope', '$state', '$window', '$http', '$location', function($scope, $rootScope, $state, $window, $http, $location){
   var CredNotProvided = "You are missing something. Please make sure you provided both User name and Password.";
   $scope.submit = function () {

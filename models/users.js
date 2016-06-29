@@ -1,3 +1,4 @@
+// User Schema ----------------------------------------------
 var mongoose = require('mongoose'),
     bcrypt = require('bcrypt'),
     extend = require('mongoose-schema-extend'),
@@ -27,17 +28,19 @@ var user = new schema({
 // ------------------------------------------------------------------------------
 // ProductOwner -----------------------------------------------------------------
 var po = user.extend({
-  po_ticket: [ticket]
+  po_ticket: [ticket] // Refer to ticket sub document
 });
 // ------------------------------------------------------------------------------
 // Developer --------------------------------------------------------------------
 var dev = user.extend({
-  dev_ticket: [ticket]
+  dev_ticket: [ticket] // Refer to ticket sub document
 });
 // ------------------------------------------------------------------------------
 // ########################################################################### //
 // ################################ FUNCTIONS ################################ //
 // User -------------------------------------------------------------------------
+// User Save
+// @ensure password is well encoding with bcrypt salt and hash before saving it.
 user.pre('save', function(next) {
   var us = this;
   if (!us.isModified('password')) return next();
@@ -52,6 +55,8 @@ user.pre('save', function(next) {
   });
 });
 // Checking Password
+// @require testPass Password to test (not encoded)
+// @return (err, isMatch) where isMatch is true if testPass == userPass, false else
 user.methods.checkPass = function (testPass, cb) {
   bcrypt.compare(testPass, this.password, function(err, isMatch) {
     if (err) return cb(err);
@@ -60,8 +65,15 @@ user.methods.checkPass = function (testPass, cb) {
 };
 // ------------------------------------------------------------------------------
 // Product Owner ----------------------------------------------------------------
+// Po Check Pass
+// Copy of checkPass for ProducOwners
 po.methods.pocheckPass = user.methods.checkPass;
-
+// Po Create Ticket
+// Function reserved for Product Owner
+// @require ticket New Ticket object
+// @return err
+// @ensure if err == null ticket is well added to database using current PO as reporter.
+//         ticket is well referenced in ProductOwner ticket field.
 po.methods.createTicket = function (ticket, cb) {
   po = this;
   ticket.reporter = po.name;
@@ -70,7 +82,12 @@ po.methods.createTicket = function (ticket, cb) {
     cb(err);
   });
 };
-
+// Po update Ticket
+// Function reserved for Product Owner
+// @require ticket_name Summary of the ticket to update
+// @require new_ticket JSON Object containing field to be update && new values
+// @return err
+// @ensure if err == null ticket is well update in database and ProductOwner reference.
 po.methods.updateTicket = function(ticket_name, new_ticket, cb) {
   po=this;
   Ticket.findOne({summary: ticket_name}, function(err, t) {
@@ -85,7 +102,11 @@ po.methods.updateTicket = function(ticket_name, new_ticket, cb) {
     })
   })
 }
-
+// Po update Ticket
+// Function reserved for Product Owner
+// @require ticket_name Summary of the ticket to update
+// @return err
+// @ensure if err == null ticket is well removed in database and ProductOwner reference.
 po.methods.deleteTicket = function (ticket_name, cb) {
   po = this;
   Ticket.findOne({summary: ticket_name}, function(err, t) {
@@ -96,7 +117,11 @@ po.methods.deleteTicket = function (ticket_name, cb) {
     cb(err);
   });
 };
-
+// Po comment
+// @require ticket_name Summary of the ticket to update
+// @require comment new Comment object
+// @return (err, ticket reporter) 
+// @ensure if err == null comment is well added in database and well reference current User and Ticket chosen.
 po.methods.poComment = function(comment, ticket_name, cb) {
   po=this;
   Ticket.findOne({summary: ticket_name}, function(err, t) {
@@ -112,9 +137,14 @@ po.methods.poComment = function(comment, ticket_name, cb) {
 }
 // ------------------------------------------------------------------------------
 // Developer --------------------------------------------------------------------
-// Checking Password
+// Dev Check Pass
+// Copy of checkPass for ProducOwners
 dev.methods.devcheckPass = user.methods.checkPass;
-// Coment
+// Dev comment
+// @require ticket_name Summary of the ticket to update
+// @require comment new Comment object
+// @return (err, ticket reporter) 
+// @ensure if err == null comment is well added in database and well reference current User and Ticket chosen.
 dev.methods.devComment = function(comment, ticket_name, cb) {
   dev=this;
   Ticket.findOne({summary: ticket_name}, function(err, t) {
@@ -129,6 +159,9 @@ dev.methods.devComment = function(comment, ticket_name, cb) {
   })
 }
 // Start Working
+// @require ticket_name Summary of the ticket to update
+// @return (err) 
+// @ensure if err == null ticket status is updated to 'IN PROGRESS' and assignee set to Current User.
 dev.methods.startWorking = function(ticket_name, cb) {
   dev=this;
   Ticket.findOne({summary: ticket_name}, function(err, t) {
@@ -144,6 +177,10 @@ dev.methods.startWorking = function(ticket_name, cb) {
   })
 }
 // Stop Working
+// @require ticket_name Summary of the ticket to update
+// @require satutus New status of the ticker (should be in {'TO DO', 'DONE'})
+// @return (err) 
+// @ensure if err == null ticket status is updated to status and assignee remove.
 dev.methods.stopWorking = function(ticket_name, status, cb) {
   dev=this;
   Ticket.findOne({summary: ticket_name}, function(err, t) {
@@ -185,7 +222,6 @@ if (mongoose.models.Developer) {
   Developer = mongoose.model('Developer', dev);
 }
 // ------------------------------------------------------------------------------
-
 var Users = {
   User: User,
   ProductOwner: ProductOwner,
