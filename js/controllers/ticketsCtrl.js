@@ -6,6 +6,7 @@ jirallo.controller('detailsTicket', function($scope, $rootScope, $state, $window
   $scope.ticket=Ticket.$get({summary: summary});
   $scope.comments=Comment.$query({ticket: summary}, null, {sort: {creationDate: -1}});
   $scope.ngDialog = ngDialog;
+  $scope.userName = $window.sessionStorage.userName;
   console.log($scope.comment);
   $scope.add_comment = function() {
     console.log("ready"),
