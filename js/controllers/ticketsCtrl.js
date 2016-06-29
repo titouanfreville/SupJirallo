@@ -1,24 +1,36 @@
 // ProductOwner
 'use strict';
 var jirallo = angular.module('jirallo.tickets', ['ngCookies']);
+jirallo.controller('detailsTicket', ['$scope', '$rootScope', '$state', '$window', '$http', '$location', '$sce', 'Ticket', 'Comment', function($scope, $rootScope, $state, $window, $http, $location, $sce, Ticket, Comment){
+  var summary=$rootScope.ticket=$window.sessionStorage.ticket;
+  $scope.ticket=Ticket.$get({summary: summary});
+  $scope.comments=Comment.$query({ticket: summary}, null, {sort: {creationDate: -1}});
+  console.log($scope.ticket);
+  $scope.go_details = function(ticket) {
+    console.log(ticket);
+    $rootScope.ticket=ticket;
+    $state.go('details');
+  }
+}]);
+
 
 jirallo.controller('newTicketCtrl', ['$scope', '$rootScope', '$state', '$window', '$http', '$location', '$sce', 'Ticket', function($scope, $rootScope, $state, $window, $http, $location, $sce, Ticket){
   $scope.tickets=Ticket.$query({status: 'TO DO'}, null, {sort: {creationDate: -1}});
-  $scope.useractions = '<button ng-click="go_details()">View</button>';
-  if ($window.sessionStorage.userRole == 'ProductOwner') {
-    $scope.useractions =$scope.useractions + (' | <button ng-click="go_edit()">Edit Ticket</button> | <button ng-click="destroy()">Delete Ticket</button>')
+  $scope.go_details = function(ticket) {
+    console.log(ticket);
+    $rootScope.ticket=ticket;
+    $state.go('details');
   }
-  $scope.useractions = $sce.trustAsHtml($scope.useractions);
 }]);
 
 jirallo.controller('allTicketCtrl', ['$scope', '$rootScope', '$state', '$window', '$http', '$location', '$sce', 'Ticket', function($scope, $rootScope, $state, $window, $http, $location, $sce, Ticket){
   $scope.tickets=Ticket.$query({}, null, {sort: {creationDate: -1}});
-  console.log(Ticket.$get({status: 'TO DO'}));
-  $scope.useractions = '<button ng-click="go_details()">View</button>';
-  if ($window.sessionStorage.userRole == 'ProductOwner') {
-    $scope.useractions =$scope.useractions + (' | <button ng-click="go_edit()">Edit Ticket</button> | <button ng-click="destroy()">Delete Ticket</button>')
+  $scope.go_details = function(ticket) {
+    console.log(ticket);
+    $rootScope.ticket=ticket;
+    $window.sessionStorage.ticket = ticket;
+    $state.go('details');
   }
-  $scope.useractions = $sce.trustAsHtml($scope.useractions);
 }]);
 
 jirallo.controller('addTicketCtrl', ['$scope', '$rootScope', '$state', '$window', '$http', '$location', function($scope, $rootScope, $state, $window, $http, $location){
@@ -101,3 +113,4 @@ jirallo.controller('updateTicketCtrl', ['$scope', '$rootScope', '$state', '$wind
     }
   }
 }]);
+

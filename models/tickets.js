@@ -18,7 +18,7 @@ var ticket = new schema({
 
 ticket.methods.createTicketComment = function (comment, author_name, cb) {
   ti = this;
-  comment.ticket = ti.name;
+  comment.ticket = ti.summary;
   comment.author = author_name;
   comment.save(function(err) {
     ti.comments.push(comment);
