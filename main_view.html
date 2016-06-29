@@ -12,7 +12,7 @@
   <nav ng-show='logged'>
     <ul>
       <li><a ui-sref="logged">New Tickets</a></li>
-      <li><a ui-sref="addticket">Create Ticket</a></li>
+      <li ng-show='ispo'><a ui-sref="addticket">Create Ticket</a></li>
       <li><a ui-sref="listtickets">All Tickets</a></li>
       <li><a ui-sref="mytickets">My Tickets</a></li>
       <li ng-controller="logoutCtrl"><button ng-click='destroy();' type="button" name="submit" >Logout</button></li>
