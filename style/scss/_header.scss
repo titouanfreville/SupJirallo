@@ -2,57 +2,76 @@ header {
   @include flex;
   @include display-flex;
   @include flex-direction(column);
-  @include justify-content(space-between);
+  @include justify-content(space-around);
+  @include align-self(center);
   text-align: center;
   padding: 10px;
-  width: 90%;
   font-size: xx-large;
 
   div, nav {
     @include flex;
     @include display-flex;
     @include flex-direction(row);
-    @include justify-content(space-between);
   }
 
   div {
+    @include justify-content(center);
     .logo {
       @include flex(0.5);
       @include display-flex;
-      background: $logo no-repeat center center;
+      background: $logo no-repeat center right;
       background-size: contain;
     }
     bar {
       @include flex;
       @include display-flex;
       @include flex-direction(Column);
-      @include justify-content(space-between);
+      @include justify-content(space-around);
+      padding: 0 0 0 10% ;
+
       h1, h2 {
         @include flex;
         @include display-flex;
         @include flex-direction(Column);
-        @include justify-content(space-between);
+        @include justify-content(space-around);
+        text-align: left;
+      }
+
+      h1 {
+        font-size: 3rem;
+        font-family: $header_title;
+        margin:0.5ex;
+      }
+
+      h2 {
+        font-family: $header_sub_title;
       }
     }
   }
 
   nav {
+    @include justify-content(space-around);
     margin: 1ex;
     ul {
       @include flex;
       @include display-flex;
       @include flex-direction(row);
-      @include justify-content(space-between);
+      @include justify-content(space-around);
       li {
         @include flex;
         @include display-flex;
         @include flex-direction(row);
-        @include justify-content(space-between);
-        a {
+        @include justify-content(space-around);
+        a, button {
           text-decoration: underline;
+          font-size: 1rem;
           &:hover {
             font-style: italic;
           }
+        }
+        button {
+          background-color: transparent;
+          border: 0px;
         }
       }
     }

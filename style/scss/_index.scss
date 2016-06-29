@@ -4,10 +4,7 @@
   @include flex-direction(column);
   @include justify-content(space-between);
   h1, h2 {
-    @include flex;
-    @include display-flex;
-    @include flex-direction(row);
-    @include justify-content(space-between);
+    text-align: center
   }
 
   div {
@@ -46,5 +43,39 @@
       }
     }
   }
+  span{
+    text-align: center;
+    font-size: 1.2rem;
+    color:#036FBD;
+  }
+  form {
+    @include flex;
+    @include display-flex;
+    @include flex-direction(column);
+    @include justify-content(space-between);
+    @include align-self(center);
+    width: 50%;
+    label {
+      @include flex;
+      @include display-flex;
+      @include flex-direction(row);
+      @include justify-content(space-between);
+      @include align-self(center);
+      width:100%;
+      input {
+        border: 1px groove grey;
+        &:valid{
+          border-left: green 10px solid;
+        }
 
+        &:invalid{
+          border-left: red 10px solid;
+        }
+      }
+    }
+    span {
+      color: #000000;
+    }
+
+  }
 }

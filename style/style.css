@@ -74,16 +74,12 @@ button, input, select {
 }
 
 @font-face {
-  font-family: 'calibri';
-  src: url("../fonts/Calibri.ttf") format("truetype");
+  font-family: 'road_rage';
+  src: url("./fonts/road_rage.otf") format("truetype");
 }
 @font-face {
-  font-family: 'anke';
-  src: url("../fonts/ankecallig.ttf") format("truetype");
-}
-@font-face {
-  font-family: 'dactylo';
-  src: url("../fonts/dactylo.ttf") format("truetype");
+  font-family: 'used';
+  src: url("./fonts/used.ttf") format("truetype");
 }
 /* 1600 - 1200 - 800 - 600 */
 /* line 1, scss/_body.scss */
@@ -232,14 +228,17 @@ header {
   -moz-flex-direction: column;
   -ms-flex-direction: column;
   flex-direction: column;
-  -webkit-box-pack: justify;
-  -ms-flex-pack: justify;
-  -webkit-justify-content: space-between;
-  -moz-justify-content: space-between;
-  justify-content: space-between;
+  -webkit-box-pack: space-around;
+  -ms-flex-pack: space-around;
+  -webkit-justify-content: space-around;
+  -moz-justify-content: space-around;
+  justify-content: space-around;
+  -webkit-align-self: center;
+  -moz-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
   text-align: center;
   padding: 10px;
-  width: 90%;
   font-size: xx-large;
 }
 /* line 11, scss/_header.scss */
@@ -262,11 +261,14 @@ header div, header nav {
   -moz-flex-direction: row;
   -ms-flex-direction: row;
   flex-direction: row;
-  -webkit-box-pack: justify;
-  -ms-flex-pack: justify;
-  -webkit-justify-content: space-between;
-  -moz-justify-content: space-between;
-  justify-content: space-between;
+}
+/* line 17, scss/_header.scss */
+header div {
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  -moz-justify-content: center;
+  justify-content: center;
 }
 /* line 19, scss/_header.scss */
 header div .logo {
@@ -282,7 +284,7 @@ header div .logo {
   display: -moz-flex;
   display: -ms-flexbox;
   display: flex;
-  background: url(../images/perso.png) no-repeat center center;
+  background: url(../images/logo.jpg) no-repeat center right;
   background-size: contain;
 }
 /* line 25, scss/_header.scss */
@@ -305,13 +307,14 @@ header div bar {
   -moz-flex-direction: Column;
   -ms-flex-direction: Column;
   flex-direction: Column;
-  -webkit-box-pack: justify;
-  -ms-flex-pack: justify;
-  -webkit-justify-content: space-between;
-  -moz-justify-content: space-between;
-  justify-content: space-between;
+  -webkit-box-pack: space-around;
+  -ms-flex-pack: space-around;
+  -webkit-justify-content: space-around;
+  -moz-justify-content: space-around;
+  justify-content: space-around;
+  padding: 0 0 0 10%;
 }
-/* line 30, scss/_header.scss */
+/* line 32, scss/_header.scss */
 header div bar h1, header div bar h2 {
   -webkit-box-flex: 1;
   -webkit-flex: 1;
@@ -331,17 +334,33 @@ header div bar h1, header div bar h2 {
   -moz-flex-direction: Column;
   -ms-flex-direction: Column;
   flex-direction: Column;
-  -webkit-box-pack: justify;
-  -ms-flex-pack: justify;
-  -webkit-justify-content: space-between;
-  -moz-justify-content: space-between;
-  justify-content: space-between;
+  -webkit-box-pack: space-around;
+  -ms-flex-pack: space-around;
+  -webkit-justify-content: space-around;
+  -moz-justify-content: space-around;
+  justify-content: space-around;
+  text-align: left;
 }
-/* line 39, scss/_header.scss */
+/* line 40, scss/_header.scss */
+header div bar h1 {
+  font-size: 3rem;
+  font-family: road_rage;
+  margin: 0.5ex;
+}
+/* line 46, scss/_header.scss */
+header div bar h2 {
+  font-family: used;
+}
+/* line 52, scss/_header.scss */
 header nav {
+  -webkit-box-pack: space-around;
+  -ms-flex-pack: space-around;
+  -webkit-justify-content: space-around;
+  -moz-justify-content: space-around;
+  justify-content: space-around;
   margin: 1ex;
 }
-/* line 41, scss/_header.scss */
+/* line 55, scss/_header.scss */
 header nav ul {
   -webkit-box-flex: 1;
   -webkit-flex: 1;
@@ -361,13 +380,13 @@ header nav ul {
   -moz-flex-direction: row;
   -ms-flex-direction: row;
   flex-direction: row;
-  -webkit-box-pack: justify;
-  -ms-flex-pack: justify;
-  -webkit-justify-content: space-between;
-  -moz-justify-content: space-between;
-  justify-content: space-between;
+  -webkit-box-pack: space-around;
+  -ms-flex-pack: space-around;
+  -webkit-justify-content: space-around;
+  -moz-justify-content: space-around;
+  justify-content: space-around;
 }
-/* line 46, scss/_header.scss */
+/* line 60, scss/_header.scss */
 header nav ul li {
   -webkit-box-flex: 1;
   -webkit-flex: 1;
@@ -387,19 +406,25 @@ header nav ul li {
   -moz-flex-direction: row;
   -ms-flex-direction: row;
   flex-direction: row;
-  -webkit-box-pack: justify;
-  -ms-flex-pack: justify;
-  -webkit-justify-content: space-between;
-  -moz-justify-content: space-between;
-  justify-content: space-between;
+  -webkit-box-pack: space-around;
+  -ms-flex-pack: space-around;
+  -webkit-justify-content: space-around;
+  -moz-justify-content: space-around;
+  justify-content: space-around;
 }
-/* line 51, scss/_header.scss */
-header nav ul li a {
+/* line 65, scss/_header.scss */
+header nav ul li a, header nav ul li button {
   text-decoration: underline;
+  font-size: 1rem;
 }
-/* line 53, scss/_header.scss */
-header nav ul li a:hover {
+/* line 68, scss/_header.scss */
+header nav ul li a:hover, header nav ul li button:hover {
   font-style: italic;
+}
+/* line 72, scss/_header.scss */
+header nav ul li button {
+  background-color: transparent;
+  border: 0px;
 }
 
 /* line 1, scss/_index.scss */
@@ -430,31 +455,9 @@ header nav ul li a:hover {
 }
 /* line 6, scss/_index.scss */
 .main h1, .main h2 {
-  -webkit-box-flex: 1;
-  -webkit-flex: 1;
-  -moz-box-flex: 1;
-  -moz-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -moz-box;
-  display: -moz-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-direction: normal;
-  -webkit-box-orient: horizontal;
-  -webkit-flex-direction: row;
-  -moz-flex-direction: row;
-  -ms-flex-direction: row;
-  flex-direction: row;
-  -webkit-box-pack: justify;
-  -ms-flex-pack: justify;
-  -webkit-justify-content: space-between;
-  -moz-justify-content: space-between;
-  justify-content: space-between;
+  text-align: center;
 }
-/* line 13, scss/_index.scss */
+/* line 10, scss/_index.scss */
 .main div {
   -webkit-box-flex: 1;
   -webkit-flex: 1;
@@ -480,7 +483,7 @@ header nav ul li a:hover {
   -moz-justify-content: space-between;
   justify-content: space-between;
 }
-/* line 19, scss/_index.scss */
+/* line 16, scss/_index.scss */
 .main div p {
   -webkit-box-flex: 1;
   -webkit-flex: 1;
@@ -506,7 +509,7 @@ header nav ul li a:hover {
   -moz-justify-content: space-between;
   justify-content: space-between;
 }
-/* line 24, scss/_index.scss */
+/* line 21, scss/_index.scss */
 .main div p span {
   -webkit-box-flex: 1;
   -webkit-flex: 1;
@@ -532,7 +535,7 @@ header nav ul li a:hover {
   -moz-justify-content: space-between;
   justify-content: space-between;
 }
-/* line 25, scss/_index.scss */
+/* line 22, scss/_index.scss */
 .main div p span:first-child {
   -webkit-box-flex: 1.5;
   -webkit-flex: 1.5;
@@ -541,7 +544,7 @@ header nav ul li a:hover {
   -ms-flex: 1.5;
   flex: 1.5;
 }
-/* line 28, scss/_index.scss */
+/* line 25, scss/_index.scss */
 .main div p span:nth-child(2) {
   -webkit-box-flex: 2.5;
   -webkit-flex: 2.5;
@@ -550,7 +553,7 @@ header nav ul li a:hover {
   -ms-flex: 2.5;
   flex: 2.5;
 }
-/* line 31, scss/_index.scss */
+/* line 28, scss/_index.scss */
 .main div p span:nth-child(3) {
   -webkit-box-flex: 0.8;
   -webkit-flex: 0.8;
@@ -559,7 +562,7 @@ header nav ul li a:hover {
   -ms-flex: 0.8;
   flex: 0.8;
 }
-/* line 34, scss/_index.scss */
+/* line 31, scss/_index.scss */
 .main div p span:last-child {
   -webkit-box-flex: 1.2;
   -webkit-flex: 1.2;
@@ -568,7 +571,7 @@ header nav ul li a:hover {
   -ms-flex: 1.2;
   flex: 1.2;
 }
-/* line 41, scss/_index.scss */
+/* line 38, scss/_index.scss */
 .main div p span button {
   -webkit-box-flex: 1;
   -webkit-flex: 1;
@@ -587,4 +590,88 @@ header nav ul li a:hover {
   -webkit-justify-content: space-between;
   -moz-justify-content: space-between;
   justify-content: space-between;
+}
+/* line 46, scss/_index.scss */
+.main span {
+  text-align: center;
+  font-size: 1.2rem;
+  color: #036FBD;
+}
+/* line 51, scss/_index.scss */
+.main form {
+  -webkit-box-flex: 1;
+  -webkit-flex: 1;
+  -moz-box-flex: 1;
+  -moz-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -moz-box;
+  display: -moz-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-direction: normal;
+  -webkit-box-orient: vertical;
+  -webkit-flex-direction: column;
+  -moz-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-box-pack: justify;
+  -ms-flex-pack: justify;
+  -webkit-justify-content: space-between;
+  -moz-justify-content: space-between;
+  justify-content: space-between;
+  -webkit-align-self: center;
+  -moz-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+  width: 50%;
+}
+/* line 58, scss/_index.scss */
+.main form label {
+  -webkit-box-flex: 1;
+  -webkit-flex: 1;
+  -moz-box-flex: 1;
+  -moz-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -moz-box;
+  display: -moz-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-direction: normal;
+  -webkit-box-orient: horizontal;
+  -webkit-flex-direction: row;
+  -moz-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  -webkit-box-pack: justify;
+  -ms-flex-pack: justify;
+  -webkit-justify-content: space-between;
+  -moz-justify-content: space-between;
+  justify-content: space-between;
+  -webkit-align-self: center;
+  -moz-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+  width: 100%;
+}
+/* line 65, scss/_index.scss */
+.main form label input {
+  border: 1px groove grey;
+}
+/* line 67, scss/_index.scss */
+.main form label input:valid {
+  border-left: green 10px solid;
+}
+/* line 71, scss/_index.scss */
+.main form label input:invalid {
+  border-left: red 10px solid;
+}
+/* line 76, scss/_index.scss */
+.main form span {
+  color: #000000;
 }
