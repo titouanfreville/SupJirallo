@@ -53,6 +53,18 @@ jirallo.config(function ($stateProvider, $urlRouterProvider, $routeProvider) {
       templateUrl: 'private/show.html'
     })
 
+    .state('mytickets', {
+      url: '/mytickets',
+      onEnter: function($rootScope, $window, $state) {
+        if (!($rootScope.userName || $window.sessionStorage.userName)) {
+          $window.alert('You are log in the application. Please login before trying to access.');
+          $state.go('index');
+        }
+      },
+      controller: 'mainCtrl',
+      templateUrl: 'private/myticket.html'
+    })
+
     .state('details', {
       url: '/details',
       onEnter: function($rootScope, $window, $state) {
