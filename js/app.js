@@ -14,7 +14,7 @@
 /* jshint +W097 */
 'use strict';
 /*jshint -W097 */
-var jirallo=angular.module('jirallo', [ 'ngRoute', 'ui.router', 'angoose.client' ,'jirallo.loginCtrl', 'jirallo.tickets']);
+var jirallo=angular.module('jirallo', [ 'ngRoute', 'ui.router', 'angoose.client' ,'jirallo.loginCtrl', 'jirallo.tickets', 'jirallo.comment']);
 jirallo.config(function ($stateProvider, $urlRouterProvider, $routeProvider) {
   $stateProvider
     .state('jiralo', {
@@ -85,6 +85,28 @@ jirallo.config(function ($stateProvider, $urlRouterProvider, $routeProvider) {
       },
       controller: 'mainCtrl',
       templateUrl: 'private/add.html'
+    })
+
+    .state('edit', {
+      url: '/edit',
+      onEnter: function($rootScope, $window, $state) {
+        if (!($rootScope.userName || $window.sessionStorage.userName)) {
+          $window.alert('You are log in the application. Please login before trying to access.');
+          $state.go('index');
+        }
+        var ispo;
+        if ($rootScope.userRole) ispo = ($rootScope.userRole == 'ProductOwner')
+        else {
+          if ($window.sessionStorage.userName) ispo = ($window.sessionStorage.userRole == 'ProductOwner');
+        }
+        console.log(ispo);
+        if (ispo == false) {
+          $window.alert('You are not allowed to access this space');
+          $state.go('logged');
+        }
+      },
+      controller: 'mainCtrl',
+      templateUrl: 'private/edit.html'
     })
   ;
 

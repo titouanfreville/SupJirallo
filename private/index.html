@@ -39,9 +39,9 @@
       <span>{{ t.reporter }}</span>
       <span>{{ t.status }}</span>
       <span>
-        <button ng-click="go_details(t);">Views</button>
+        <button ng-click="go_details(t.summary);">Views</button>
         <span ng-show="{{ispo}}">
-          | <button ng-click="go_edit()">Edit Ticket</button> | <button ng-click="destroy()">Delete Ticket</button>
+          | <button ng-click="go_edit(t.summary)">Edit Ticket</button> | <button ng-click="destroy(t.summary)">Delete Ticket</button>
         </span>
       </span>
     </p>

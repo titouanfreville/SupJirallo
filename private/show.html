@@ -1,16 +1,18 @@
 <!-- Header to be inserted on every page.  -->
 <header>
   <!-- Please don't use <img> tag for logo. It should be a DIV background image instead :) -->
-  <div class="logo"></div>
-  <bar>
-    <h1>SupJiralo</h1>
-    <h2>Enjoy being Agile</h2>
-  </bar>
+  <div>
+    <div class="logo"></div>
+    <bar>
+      <h1>SupJiralo</h1>
+      <h2>Enjoy being Agile</h2>
+    </bar>
+  </div>
   <!-- Navigation tools -->
   <nav>
     <ul>
       <li><a ui-sref="logged">New Tickets</a></li>
-      <li><a href="/#/addticket">Create Ticket</a></li>
+      <li><a ui-sref="addticket">Create Ticket</a></li>
       <li><a ui-sref="listtickets">All Tickets</a></li>
       <li ng-controller="logoutCtrl"><button ng-click='destroy();' type="button" name="submit" >Logout</button></li>
     </ul>
@@ -40,7 +42,7 @@
       <span>
         <button ng-click="go_details(t.summary);">Views</button>
         <span ng-show="{{ispo}}">
-          | <button ng-click="go_edit()">Edit Ticket</button> | <button ng-click="destroy()">Delete Ticket</button>
+          | <button ng-click="go_edit(t.summary)">Edit Ticket</button> | <button ng-click="destroy(t.summary)">Delete Ticket</button>
         </span>
       </span>
     </p>

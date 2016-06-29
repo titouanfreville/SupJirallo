@@ -89,6 +89,7 @@ po.methods.updateTicket = function(ticket_name, new_ticket, cb) {
 po.methods.deleteTicket = function (ticket_name, cb) {
   po = this;
   Ticket.findOne({summary: ticket_name}, function(err, t) {
+    if (!t) return cb({name: 'MyOwnMessage', message: 'Error : The ticket you are trying to remove is not existing'});
     t.remove(function(err) {
       po.po_ticket.pull(t);
     });

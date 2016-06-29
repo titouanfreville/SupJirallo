@@ -1,16 +1,18 @@
 <!-- Header to be inserted on every page.  -->
 <header>
   <!-- Please don't use <img> tag for logo. It should be a DIV background image instead :) -->
-  <div class="logo"></div>
-  <bar>
-    <h1>SupJiralo</h1>
-    <h2>Enjoy being Agile</h2>
-  </bar>
+  <div>
+    <div class="logo"></div>
+    <bar>
+      <h1>SupJiralo</h1>
+      <h2>Enjoy being Agile</h2>
+    </bar>
+  </div>
   <!-- Navigation tools -->
   <nav>
     <ul>
       <li><a ui-sref="logged">New Tickets</a></li>
-      <li><a href="/#/addticket">Create Ticket</a></li>
+      <li><a ui-sref="addticket">Create Ticket</a></li>
       <li><a ui-sref="listtickets">All Tickets</a></li>
       <li ng-controller="logoutCtrl"><button ng-click='destroy();' type="button" name="submit" >Logout</button></li>
     </ul>
@@ -33,13 +35,19 @@
   </div>
   <div class='actions'>
     <!-- ng-show is visible for PO only, ng-hide is visible for DEVELOPPER only. Can be break as it's a js property evaluate on navigator -->
-    <span ng-show='{{ispo}}'><button ng-click="go_edit()">Edit Ticket</button> | <button ng-click="destroy()">Delete Ticket</button></span>
-    <span ng-hide='{{ispo}}'><button ng-click="start_working()">Edit Ticket</button> | <button ng-click="stop_working(done)">DONE</button> | <button ng-click="stop_working(TO_TO)">Back to TO DO</button></span>
+    <span ng-show='{{ispo}}'><button ng-click="go_edit(ticket.summary)">Edit Ticket</button> | <button ng-click="destroy('ticket.summary')">Delete Ticket</button></span>
+    <span ng-hide='{{ispo}}'><button ng-click="start_working()">Start working on ticket</button> | <button ng-click="stop_working('DONE')">DONE</button> | <button ng-click="stop_working('TO DO')">Back to TO DO</button></span>
   </div>
   <div class='comments'>
     <p ng-repeat="c in comments">
-      <span>{{ c.author }}</span>
-      <span>{{ c.creationDate }}</span>
+      <span class='c_hearder'>
+        <span>{{ c.author }}</span>
+        <span>{{ c.creationDate }}</span>
+      </span>
       <span>{{ c.content }}</span>
     </p>
+  </div>
+  <div class='c_action'>
+    <button ng-click='add_comment();'>Comment</button>
+  </div>
 </div>
