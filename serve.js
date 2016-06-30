@@ -86,6 +86,7 @@ app.use('/bower_components', express.static(path.join(__dirname, 'bower_componen
 app.use('/js', express.static(path.join(__dirname, 'js')));
 app.use('/node_modules', express.static(path.join(__dirname, 'node_modules')));
 app.use('/style', express.static(path.join(__dirname, 'style')));
+app.use('/images', express.static(path.join(__dirname, 'images')));
 app.use('/index.html', express.static(path.join(__dirname, 'index.html')));
 app.use('/main_view.html', express.static(path.join(__dirname, 'main_view.html')));
 // Defin private as path so we can protect it

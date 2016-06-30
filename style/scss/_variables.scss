@@ -2,21 +2,13 @@
 
 // Fonts ---------------------
 @font-face {
-  font-family: 'calibri';
-  src: url('../fonts/Calibri.ttf') format('truetype');
+  font-family: 'road_rage';
+  src: url('./fonts/road_rage.otf') format('truetype');
 }
-
 @font-face {
-  font-family: 'anke';
-  src: url('../fonts/ankecallig.ttf') format('truetype');
+  font-family: 'used';
+  src: url('./fonts/used.ttf') format('truetype');
 }
-
-@font-face {
-  font-family: 'dactylo';
-  src: url('../fonts/dactylo.ttf') format('truetype');
-}
-
-
 $fonts:                       Calibri, 'calibri', Arial, Helvetica, sans-serif !default;
 $ptitle-font-style:           $fonts;
 $stitle-font-style:           $ptitle-font-style;
@@ -65,13 +57,9 @@ $description-font-style:      normal;
 $description-font-weight:     normal;
 
 // Menu & cie ---------------
-$logo:                       url(../images/perso.png);
-$name-font:                  'anke',$fonts;
-$name-font-size:             3rem;
-$name-color:                 #860001;
-
-$action-font:                'dactylo',$fonts;
-$action-font-size:           1.5rem;
+$logo:                       url(../images/logo.jpg);
+$header_title:               road_rage;
+$header_sub_title:           used;
 
 // Images -------------------
 $warning:                    url(../images/warning.svg);
