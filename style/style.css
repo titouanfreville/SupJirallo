@@ -658,20 +658,24 @@ header nav ul li button {
   -ms-flex-item-align: center;
   align-self: center;
   width: 100%;
+  margin: 5px;
 }
-/* line 65, scss/_index.scss */
+/* line 66, scss/_index.scss */
 .main form label input {
   border: 1px groove grey;
+  padding: 0 1rem;
 }
-/* line 67, scss/_index.scss */
+/* line 69, scss/_index.scss */
 .main form label input:valid {
-  border-left: green 10px solid;
+  border-left: 10px solid;
+  border-color: green;
 }
-/* line 71, scss/_index.scss */
+/* line 74, scss/_index.scss */
 .main form label input:invalid {
-  border-left: red 10px solid;
+  border-left: 10px solid;
+  border-color: red;
 }
-/* line 76, scss/_index.scss */
+/* line 80, scss/_index.scss */
 .main form span {
   color: #000000;
 }
