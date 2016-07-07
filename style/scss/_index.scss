@@ -62,14 +62,18 @@
       @include justify-content(space-between);
       @include align-self(center);
       width:100%;
+      margin: 5px;
       input {
         border: 1px groove grey;
+        padding: 0 1rem;
         &:valid{
-          border-left: green 10px solid;
+          border-left: 10px solid;
+          border-color: green;
         }
 
         &:invalid{
-          border-left: red 10px solid;
+          border-left: 10px solid;
+          border-color: red;
         }
       }
     }
